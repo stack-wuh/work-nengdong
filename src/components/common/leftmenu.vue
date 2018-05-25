@@ -2,9 +2,13 @@
   <section class="wrapper">
     <h3>校友端<span>管理平台</span></h3>
     <ul>
-      <li @click="handleClick(item,$event)" :class="{'active' : item.active}" v-for="(item,index) in menuList" :key="index">
+      <li v-on:mouseover="mouseOver(item,$event)" v-on:mouseout="mouseOut(item,$event)" @click="handleClick(item,$event)" :class="{'active' : item.active}" v-for="(item,index) in menuList" :key="index">
+        <img class="nav-icon" :src="item.navIcon" alt="nav-icon">
         <span>{{item.name}}</span>
-        <subnav v-if="list.length>0" v-show="item.active" :class="[list.length > 6 ? 'sub-list-other sub-list' : 'sub-list']" :subList="list" />
+        <i  :class="[item.active ? 'my-icon-moreunfold' : 'my-icon-more']"></i>
+        <transition name="fade">
+          <subnav v-if="list.length>0" v-show="item.active" :class="[list.length > 6 ? 'sub-list-other sub-list' : 'sub-list']" :subList="format" />
+        </transition>
       </li>
     </ul>
   </section>  
@@ -12,15 +16,17 @@
 
 <script>
 import Subnav  from '@/components/common/subnav'
+const iconRootPath = '../../../static'
   export default{
     components:{
       Subnav
     },
     data(){
       return{
+        iconRootPath:iconRootPath,
         menuList:[
           {
-            navIcon:'',
+            navIcon:iconRootPath + '/img/index-list1.png',
             name:'消息中心',
             subList:[],
             tips:0,
@@ -28,7 +34,7 @@ import Subnav  from '@/components/common/subnav'
             active:false,
           },  
           {
-            navIcon:'',
+            navIcon:iconRootPath + '/img/index-list2.png',
             name:'校友管理',
             subList:[],
             tips:0,
@@ -36,7 +42,7 @@ import Subnav  from '@/components/common/subnav'
             active:false
           },              
           {
-            navIcon:'',
+            navIcon:iconRootPath + '/img/index-list3.png',
             name:'活动管理',
             urlPath:'',
             subList:[
@@ -53,7 +59,7 @@ import Subnav  from '@/components/common/subnav'
             active:false,
           },              
           {
-            navIcon:'',
+            navIcon:iconRootPath + '/img/index-list4.png',
             name:'黄页管理',
             active:false,
             subList:[
@@ -78,7 +84,7 @@ import Subnav  from '@/components/common/subnav'
             urlPath:''
           },              
           {
-            navIcon:'',
+            navIcon:iconRootPath + '/img/index-list7.png',
             name:'互联互助',
             active:false,
             subList:[
@@ -95,7 +101,7 @@ import Subnav  from '@/components/common/subnav'
             urlPath:''
           },             
           {
-            navIcon:'',
+            navIcon:iconRootPath + '/img/index-list5.png',
             name:'联系学院',
             subList:[],
             tips:0,
@@ -103,7 +109,7 @@ import Subnav  from '@/components/common/subnav'
             active:false,
           },            
           {
-            navIcon:'',
+            navIcon:iconRootPath + '/img/index-list6.png',
             name:'校友捐赠',
             subList:[],
             tips:0,
@@ -111,7 +117,7 @@ import Subnav  from '@/components/common/subnav'
             active:false,
           },            
           {
-            navIcon:'',
+            navIcon:iconRootPath + '/img/index-list8.png',
             name:'系统设置',
             subList:[
               {
@@ -163,7 +169,20 @@ import Subnav  from '@/components/common/subnav'
         list:[]
       }
     },
+    computed:{
+      format(){
+        return this.list
+      }
+    },
     methods:{ 
+      mouseOver(data,$event){
+        data.active = true
+        this.list = data.subList
+      },
+      mouseOut(data,$event){
+        data.active = false
+        this.list = []
+      },
       handleClick(data,$event){
         data.active = true
         this.list = data.subList
@@ -215,6 +234,17 @@ import Subnav  from '@/components/common/subnav'
         height: 60px;
         line-height: 60px;
 
+        .nav-icon{
+          width: 24px;
+          height:24px;
+          padding-top:5px;
+          margin-right: 5px;
+          vertical-align: -4px;
+        }
+
+        .my-icon-more{
+          margin-left: 10px;
+        }
         .sub-list{
           position: relative;
           right:-100%;
@@ -229,6 +259,13 @@ import Subnav  from '@/components/common/subnav'
         }
         .sub-list-other{
           top:-320px !important;
+        }
+
+        .fade-enter-active , .fade-leave-active{
+          transition: opacity .5s;
+        }
+        .fade-enter , .fade-leave-to{
+          opacity: 0;
         }
       }
 

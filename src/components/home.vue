@@ -4,7 +4,7 @@
       <left-menu />
     </section>
     <section class="main">
-      <header></header>
+      <header-top class="header"></header-top>
       <div class="body">
         <router-view />
       </div>
@@ -13,11 +13,11 @@
 </template>
 
 <script>
-import Header from '@/components/common/header'
+import HeaderTop from '@/components/common/header'
 import LeftMenu from '@/components/common/leftmenu'
   export default{
     components:{
-      Header,
+      HeaderTop,
       LeftMenu,
     },
     data(){
@@ -56,7 +56,7 @@ import LeftMenu from '@/components/common/leftmenu'
     display: flex;
     flex-flow: column wrap;
 
-    header{
+    .header{
       height:80px;
       background-color: #007A71;
     }
