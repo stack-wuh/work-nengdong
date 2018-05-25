@@ -7,6 +7,7 @@ import ElementUI from '../static/js/index'
 import '../static/element-default/index.css'
 import '../static/css/base.css'
 import '../static/css/base.less'
+import '../static/css/font/iconfont.css'
 
 Vue.use(ElementUI)
 
