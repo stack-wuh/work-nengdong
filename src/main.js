@@ -10,6 +10,8 @@ import '../static/css/base.less'
 
 Vue.use(ElementUI)
 
+Vue.prototype.$bus = new Vue()
+
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */

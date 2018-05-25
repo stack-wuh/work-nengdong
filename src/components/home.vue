@@ -18,12 +18,15 @@ import LeftMenu from '@/components/common/leftmenu'
   export default{
     components:{
       Header,
-      LeftMenu
+      LeftMenu,
     },
     data(){
       return{
-
+        list:[]
       }
+    },
+    created(){
+
     }
   }
 </script>
@@ -46,9 +49,9 @@ import LeftMenu from '@/components/common/leftmenu'
   }
   .nav-left{
     width: 220px;
-    // background-color: #2F3534;
   }
   .main{
+    position: relative;
     flex:auto;
     display: flex;
     flex-flow: column wrap;
@@ -61,6 +64,7 @@ import LeftMenu from '@/components/common/leftmenu'
     .body{
       flex:auto;
       padding:20px;
+      background-color: #E3EEED;
       box-sizing: border-box;
     }
   }

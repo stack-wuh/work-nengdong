@@ -2,18 +2,20 @@
   <section class="wrapper">
     <h3>校友端<span>管理平台</span></h3>
     <ul>
-      <li @click="handleClick(item)" :class="{'active' : item.active}" v-for="(item,index) in menuList" :key="index">
+      <li @click="handleClick(item,$event)" :class="{'active' : item.active}" v-for="(item,index) in menuList" :key="index">
         <span>{{item.name}}</span>
-        <div class="subnav">
-
-        </div>
+        <subnav v-if="list.length>0" v-show="item.active" class="sub-list" :subList="list" />
       </li>
     </ul>
   </section>  
 </template>
 
 <script>
+import Subnav  from '@/components/common/subnav'
   export default{
+    components:{
+      Subnav
+    },
     data(){
       return{
         menuList:[
@@ -157,18 +159,20 @@
             urlPath:'',
             active:false,
           },            
-        ]
+        ],
+        list:[]
       }
     },
     methods:{ 
-      handleClick(data){
+      handleClick(data,$event){
         data.active = true
+        this.list = data.subList
         this.menuList.map(item=>{
           if(item.name !== data.name){
             item.active = false
           }
         })
-      }
+      },
     }
   }
 </script>
@@ -208,13 +212,25 @@
       text-align: center;
       
       li{
+        position:relative;
         height: 60px;
         line-height: 60px;
+
+        .sub-list{
+          position: relative;
+          right:-100%;
+          top:-60px;
+          width: 180px !important;
+          height:100% !important;
+          background-color: #fff;
+          box-sizing: border-box;
+        }
       }
 
       li.active,
       li:hover{
         background-color: #00776E;
+        transition: all .5s linear;
       }
     }
   }
