@@ -1,7 +1,7 @@
 <template>
   <section class="wrapper">
-    <ul class="list">
-      <li class="list-item" v-for="(item,index) in format" :key="index">{{item.name}}</li>
+    <ul class='list'>
+      <li :class="[format.length > 5 ? 'list-item-other list-item' : 'list-item']" v-for="(item,index) in format" :key="index">{{item.name}}</li>
     </ul>
   </section>  
 </template>
@@ -27,7 +27,9 @@
     position: absolute;
     color: #333;
     z-index: 1000 !important;
-
+    .list-item-other{
+      top:-320px !important;
+    }
     .list{
       width:100%;
       padding:10px 0;
@@ -41,6 +43,7 @@
         text-align: left;
         line-height:30px;
       }
+      .list-item .active,
       .list-item:hover{
         background:#00998d;
         color: #fff;

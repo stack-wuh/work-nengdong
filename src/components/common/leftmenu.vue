@@ -4,7 +4,7 @@
     <ul>
       <li @click="handleClick(item,$event)" :class="{'active' : item.active}" v-for="(item,index) in menuList" :key="index">
         <span>{{item.name}}</span>
-        <subnav v-if="list.length>0" v-show="item.active" class="sub-list" :subList="list" />
+        <subnav v-if="list.length>0" v-show="item.active" :class="[list.length > 6 ? 'sub-list-other sub-list' : 'sub-list']" :subList="list" />
       </li>
     </ul>
   </section>  
@@ -138,12 +138,12 @@ import Subnav  from '@/components/common/subnav'
                 name:'权限设置',
                 urlPath:''
               },
-              { 
-                name:'校友捐赠公告',
-                urlPath:''
-              },
               {
                 name:'联系学院',
+                urlPath:''
+              },
+              { 
+                name:'校友捐赠公告',
                 urlPath:''
               },
               {
@@ -186,7 +186,6 @@ import Subnav  from '@/components/common/subnav'
     height: 100%;
     color: #fff;
     background-color: #2F3534;
-
     h3{
       align-self:center;
       width:100%;
@@ -220,10 +219,16 @@ import Subnav  from '@/components/common/subnav'
           position: relative;
           right:-100%;
           top:-60px;
+          height: 100%;
+          background-color: #E3EEED;
           width: 180px !important;
           height:100% !important;
           background-color: #fff;
           box-sizing: border-box;
+          border-radius: 4px;
+        }
+        .sub-list-other{
+          top:-320px !important;
         }
       }
 
