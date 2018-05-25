@@ -66,6 +66,11 @@ import LeftMenu from '@/components/common/leftmenu'
       padding:20px;
       background-color: #E3EEED;
       box-sizing: border-box;
+
+      .wrapper{
+        width: 100% ;
+        height:100% ;
+      }
     }
   }
 }
