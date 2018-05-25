@@ -10,6 +10,9 @@ html,body,#app{
   color: #333;
   box-sizing: border-box;
 }
+ul,ol,li{
+  list-style-type: none;
+}
 .flex-box{
   display: flex;
   align-items: center;

@@ -62,12 +62,15 @@ import LeftMenu from '@/components/common/leftmenu'
     }
 
     .body{
-      flex:auto;
+      flex:1;
+      min-height:300px;
       padding:20px;
       background-color: #E3EEED;
       box-sizing: border-box;
 
       .wrapper{
+        display: flex;
+        flex-direction: column;
         width: 100% ;
         height:100% ;
       }
