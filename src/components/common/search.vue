@@ -46,7 +46,7 @@ export default {
           type:3,
           subList:[
             {
-              name:'创建'
+              name:'发起活动'
             },
             {
               name:'批量操作'

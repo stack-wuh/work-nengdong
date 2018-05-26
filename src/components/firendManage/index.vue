@@ -18,20 +18,6 @@
               </p>
             </li>
           </ul>
-          <!-- <el-table :data="list" border stripe>
-            <el-table-column center label="姓名" prop="name"></el-table-column>
-            <el-table-column label="账号信息">
-              <el-table-column label="入学年份"></el-table-column>
-              <el-table-column label="学号"></el-table-column>
-              <el-table-column label="身份证号"></el-table-column>
-              <el-table-column label="专业班级"></el-table-column>
-            </el-table-column>
-            <el-table-column label="基础信息">
-              <el-table-column label="手机号"></el-table-column>
-              <el-table-column label="邮箱"></el-table-column>
-            </el-table-column>
-            <el-table-column label="操作"></el-table-column>
-          </el-table> -->
           <e-table class="el-table" type="firend" :info="info"></e-table>
       </div>
     </section>
@@ -143,7 +129,6 @@ export default {
           ]
         }
       ],
-      // list:list,
       info:{
         type:'firend',
         list:list
@@ -191,7 +176,6 @@ export default {
     }
     .el-table{
       height:calc(100% - 300px);
-      border:1px solid red;
     }
   }
 }
