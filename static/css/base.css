@@ -13,6 +13,9 @@ html,body,#app{
 ul,ol,li{
   list-style-type: none;
 }
+::-webkit-scrollbar{
+  display: none;
+}
 .flex-box{
   display: flex;
   align-items: center;
