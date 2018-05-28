@@ -18,8 +18,9 @@
               </p>
             </li>
           </ul>
-          <e-table v-show="false" class="el-table" type="firend" :info="info" />
+          <!-- <e-table v-show="false" class="el-table" type="firend" :info="info" /> -->
           <e-table class="el-table" type="firends" :info="info" />
+          <bottom type="pagination" />
       </div>
     </section>
 </template>
@@ -27,6 +28,7 @@
 <script>
 import Search from  '@/components/common/search'
 import ETable from '@/components/common/table'
+import Bottom from '@/components/common/bottom'
 const list = [
         {
           date: '2016-05-03',
@@ -82,7 +84,8 @@ const list = [
 export default {
   components:{
     Search,
-    ETable
+    ETable,
+    Bottom
   },
   data() {
     return {
@@ -150,7 +153,7 @@ export default {
     padding:20px;
     box-sizing: border-box;
     background-color: #fff;
-
+    // overflow: hidden;
     ul.item-list{
       width: 100%;
       
@@ -177,7 +180,7 @@ export default {
       }
     }
     .el-table{
-      height:calc(100% - 300px);
+      // height:calc(100% - 300px);
     }
   }
 }
