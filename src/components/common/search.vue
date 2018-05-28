@@ -35,6 +35,7 @@ export default {
         },
         {
           type:2,
+          showInput:false,
           subList:[
             {
               name:'返回上一级',
@@ -51,6 +52,51 @@ export default {
             {
               name:'批量操作'
             },
+          ],
+          showInput:true
+        },
+        {
+          type:4,
+          showInput:true,
+          subList:[
+            {
+              name:'待审核'
+            },
+            {
+              name:'未通过'
+            }
+          ]
+        },
+        {
+          type:5,
+          subList:[
+            {
+              name:'创建'
+            },
+            {
+              name:'批量操作'
+            }
+          ],
+          showInput:true
+        },
+        {
+          type:6,
+          subList:[
+            {
+              name:'发布',
+            },
+            {
+              name:'批量操作'
+            }
+          ],
+          showInput:true
+        },
+        {
+          type:7,
+          subList:[
+            {
+              name:'添加'
+            }
           ],
           showInput:true
         }

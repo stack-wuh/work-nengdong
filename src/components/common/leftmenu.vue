@@ -233,7 +233,7 @@ const iconRootPath = '../../../static'
         position:relative;
         height: 60px;
         line-height: 60px;
-
+        user-select: none;
         .nav-icon{
           width: 24px;
           height:24px;
@@ -268,7 +268,9 @@ const iconRootPath = '../../../static'
           opacity: 0;
         }
       }
-
+      li:hover{
+        cursor:pointer;
+      }
       li.active,
       li:hover{
         background-color: #00776E;
