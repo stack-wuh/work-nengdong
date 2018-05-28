@@ -19,7 +19,7 @@
 
 <script>
 import Search from '@/components/common/search'
-import ItemList from '@/components/common/itemlist'
+import ItemList from '@/components/common/itemList'
   export default{
     components:{
       Search,

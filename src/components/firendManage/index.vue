@@ -4,11 +4,11 @@
       <div class="content">
           <ul class="item-list">
             <li v-for="(item,index) in checkList" :key="index">
-              <span>{{item.name}}: </span>
+              <span class="item-name">{{item.name}}: </span>
               <p>
                 <span v-if="item.type == 1"  v-for="(subItem,subIndex) in item.list" :key="subIndex">{{subItem}}</span>
-                <span style="width:150px" v-if="item.type == 2" v-for="(subItem,subIndex) in item.list" :key="subIndex">
-                  <el-select clearable style="width:150px;margin-right:30px" :placeholder="subItem.name" v-model="subItem.value">
+                <span style="width:150px;margin-right:20px;" v-if="item.type == 2" v-for="(subItem,subIndex) in item.list" :key="subIndex">
+                  <el-select clearable style="width:150px;height:40px;line-height:40px;" :placeholder="subItem.name" v-model="subItem.value">
                     <el-option label="1111" value="1111"></el-option>
                     <el-option label="1112" value="1112"></el-option>
                     <el-option label="1113" value="1113"></el-option>
@@ -18,7 +18,8 @@
               </p>
             </li>
           </ul>
-          <e-table class="el-table" type="firend" :info="info"></e-table>
+          <e-table v-show="false" class="el-table" type="firend" :info="info" />
+          <e-table class="el-table" type="firends" :info="info" />
       </div>
     </section>
 </template>
@@ -159,14 +160,15 @@ export default {
         justify-content: flex-start;
         padding:10px 0;
         border-bottom:1px solid #eee;
-        span{
-          width: 80px;
+
+        span.item-name{
+          width: 70px;
           margin-right:20px;
         }
         p{
           span{
             display: inline-block;
-            min-width: 40px;
+            min-width: 80px;
           }
           span.active{
             color: #00998d;

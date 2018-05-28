@@ -4,7 +4,7 @@
       <section class="content">
         <p class="nav-title">当前位置：活动管理>活动列表>活动详情</p>
 
-        <section class="list-content">
+        <!-- <section class="list-content">
           <ul>
             <li>
               <span></span>
@@ -42,7 +42,8 @@
             <li><span>微信:</span>100/人</li>
             <li><span>备注:</span>100/人</li>
           </ul>
-        </section>
+        </section> -->
+        <action-info></action-info>
         <p><span>报名详情</span><span>导出报名表</span></p>
         <e-table class="el-table" type="action" :info="info"></e-table>
 
@@ -53,6 +54,7 @@
 <script>
 import Search from '@/components/common/search'
 import ETable from '@/components/common/table'
+import ActionInfo from '@/components/common/actionInfo'
 const list = [
   {
     name:'张晓晓',
@@ -70,7 +72,8 @@ const list = [
   export default{
     components:{
       Search,
-      ETable
+      ETable,
+      ActionInfo
     },
     data(){
       return{
@@ -84,56 +87,7 @@ const list = [
 </script>
 
 <style lang="less" scoped>
-  .list-content{
-    margin:20px 0 10px 0;
-    border:1px solid #eee;
-    ul{
-      padding:0 10px;
-      box-sizing: border-box;
-      border-bottom:1px solid #eee;
-      li{
-        margin:10px 0;
-        padding: 0 15px;
-        color: #666;
-        span{
-          padding-right:5px;
-          color: #333;
-        }
-        span ~ span{
-          margin-left:20px;
-        }
-      }
 
-      li:first-of-type{
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        h3{
-          margin-left:70px;
-        }
-        p{
-          img{
-            margin:0 10px;
-          }
-          img:hover{
-            cursor:pointer;
-          }
-        }
-      }
-      li:nth-child(2),
-      li:nth-child(3),
-      li:nth-child(4){
-        text-align:center;
-      }
-      li:nth-child(4){
-        img{
-          width: 170px;
-          height:112px;
-          margin-right:20px;
-        }
-      }
-    }
-  }
   .el-table{
     width: 100%;
     border:1px solid red;
