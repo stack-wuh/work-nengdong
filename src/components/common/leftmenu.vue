@@ -30,7 +30,7 @@ const iconRootPath = '../../../static'
             name:'消息中心',
             subList:[],
             tips:0,
-            urlPath:'',
+            urlPath:'/firend',
             active:false,
           },  
           {
@@ -38,13 +38,13 @@ const iconRootPath = '../../../static'
             name:'校友管理',
             subList:[],
             tips:0,
-            urlPath:'',
+            urlPath:'/firend',
             active:false
           },              
           {
             navIcon:iconRootPath + '/img/index-list3.png',
             name:'活动管理',
-            urlPath:'',
+            urlPath:'/action',
             subList:[
               {
                 name:'活动列表',
@@ -81,7 +81,7 @@ const iconRootPath = '../../../static'
               }
             ],
             tips:0,
-            urlPath:''
+            urlPath:'/pages'
           },              
           {
             navIcon:iconRootPath + '/img/index-list7.png',
@@ -98,14 +98,14 @@ const iconRootPath = '../../../static'
               }
             ],
             tips:0,
-            urlPath:''
+            urlPath:'/concat'
           },             
           {
             navIcon:iconRootPath + '/img/index-list5.png',
             name:'联系学院',
             subList:[],
             tips:0,
-            urlPath:'',
+            urlPath:'/concat',
             active:false,
           },            
           {
@@ -113,7 +113,7 @@ const iconRootPath = '../../../static'
             name:'校友捐赠',
             subList:[],
             tips:0,
-            urlPath:'',
+            urlPath:'/donate',
             active:false,
           },            
           {
@@ -141,10 +141,6 @@ const iconRootPath = '../../../static'
                 urlPath:''
               },
               {
-                name:'权限设置',
-                urlPath:''
-              },
-              {
                 name:'联系学院',
                 urlPath:''
               },
@@ -162,7 +158,7 @@ const iconRootPath = '../../../static'
               }
             ],
             tips:0,
-            urlPath:'',
+            urlPath:'/setting',
             active:false,
           },            
         ],
@@ -189,6 +185,7 @@ const iconRootPath = '../../../static'
         this.menuList.map(item=>{
           if(item.name !== data.name){
             item.active = false
+            this.$router.push(item.urlPath)
           }
         })
       },
@@ -224,7 +221,7 @@ const iconRootPath = '../../../static'
 
     ul{
       flex:1;
-      width: 100%;
+      width: 220px;
       font-size: 20px;
       color: #fff;
       text-align: center;

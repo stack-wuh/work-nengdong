@@ -1,6 +1,6 @@
 <template>
   <section class="wrapper">
-    <el-table :data="newList" border stripe style="100%" height="400">
+    <el-table class="my-table" :data="newList" border stripe style="width:100%" :height="heightValue">
       <el-table-column width="80px" fixed align="center" label="序号" type="index"></el-table-column>
       <el-table-column :width="item.width" fixed="left" align="center" v-for="(item,index) in sublist.list" :key="index" v-if="!item.child" :label="item.name" :prop="item.prop">
       </el-table-column>
@@ -19,7 +19,7 @@
 
 <script>
 export default {
-  props: ["info", "type"],
+  props: ["info", "type",'height'],
   data() {
     return {
       list: [
@@ -359,11 +359,58 @@ export default {
               ]
             }
           ]
-        }      
-      ]
+        },
+        {
+          type:'major',
+          list:[
+            {
+              name:'专业名称',
+              prop:'name'
+            },
+            {
+              name:'操作',
+              child:[],
+              btnList:[
+                {
+                  name:'编辑'
+                },
+                {
+                  name:'删除'
+                }
+              ]
+            }
+          ]
+        },
+        {
+          type:'klass',
+          list:[
+            {
+              name:'班级名称',
+              prop:'name'
+            },
+            {
+              name:'操作',
+              child:[],
+              width:200,
+              btnList:[
+                {
+                  name:'编辑'
+                },
+                {
+                  name:'删除'
+                }
+              ]
+            }
+          ]
+        }     
+      ],
+      // heightValue:'100%'
     };
   },
   computed: {
+    heightValue(){
+      return this.height ? this.height : '100%'
+    },
     newData() {
       return this.info;
     },
@@ -383,4 +430,13 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.my-table{
+  min-height:300px;
+  max-width:100%;
+}
+@media screen and (max-width:1366px) {
+  .my-table{
+    max-width:calc(1200px - 140px);
+  }
+}
 </style>

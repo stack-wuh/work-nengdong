@@ -6,7 +6,9 @@
     <section class="main">
       <header-top class="header"></header-top>
       <div class="body">
-        <router-view />
+        <transition name="fade" mode="out-in">
+          <router-view />
+        </transition>
       </div>
     </section>
   </section>
@@ -76,5 +78,11 @@ import LeftMenu from '@/components/common/leftmenu'
       }
     }
   }
+}
+.fade-enter-active, .fade-leave-active{
+  transition: opacity .3s ease 
+}
+.fade-fade-enter, .fade-leave-to{
+  opacity: 0
 }
 </style>
