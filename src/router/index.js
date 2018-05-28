@@ -29,6 +29,8 @@ const SettingConcat = resolve => require(['@/components/settingManage/child/conc
 const SettingAction = resolve => require(['@/components/settingManage/child/action'],resolve)
 const SettingHelp = resolve => require(['@/components/settingManage/child/help'],resolve)
 const SettingFirends = resolve => require(['@/components/settingManage/child/firends'],resolve)
+const SettingMajor = resolve => require(['@/components/settingManage/child/major'],resolve)
+const SettingKlass = resolve => require(['@/components/settingManage/child/klass'],resolve)
 Vue.use(Router)
 
 export default new Router({
@@ -183,6 +185,16 @@ export default new Router({
               path:'/setting/firends',
               name:'settingFirends',
               component:SettingFirends
+            },
+            {
+              path:'/setting/major',
+              name:'major',
+              component:SettingMajor
+            },
+            {
+              path:'/setting/klass',
+              name:'klass',
+              component:SettingKlass
             }
           ]
         }

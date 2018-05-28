@@ -9,6 +9,7 @@ html,body,#app{
   min-height:580px;
   color: #333;
   box-sizing: border-box;
+  overflow-x: auto;
 }
 ul,ol,li{
   list-style-type: none;
