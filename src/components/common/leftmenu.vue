@@ -2,12 +2,13 @@
   <section class="wrapper">
     <h3>校友端<span>管理平台</span></h3>
     <ul>
-      <li v-on:mouseover="mouseOver(item,$event)" v-on:mouseout="mouseOut(item,$event)" @click="handleClick(item,$event)" :class="{'active' : item.active}" v-for="(item,index) in menuList" :key="index">
+      <li v-on:mouseover="mouseOver(item,$event)" v-on:mouseout="mouseOut(item,$event)" @click.stop="handleClick(item,$event)" :class="{'active' : item.active}" v-for="(item,index) in menuList" :key="index">
         <img class="nav-icon" :src="item.navIcon" alt="nav-icon">
         <span>{{item.name}}</span>
-        <i  :class="[item.active ? 'my-icon-moreunfold' : 'my-icon-more']"></i>
+        <i :class="[item.active ? 'my-icon-moreunfold' : 'my-icon-more',item.subList.length>0 ? 'full':'empty']"></i>
+        
         <transition name="fade">
-          <subnav v-if="list.length>0" v-show="item.active" :class="[list.length > 6 ? 'sub-list-other sub-list' : 'sub-list']" :subList="format" />
+          <subnav  v-show="item.active && format.length>0" :class="[list.length > 6 ? 'sub-list-other sub-list' : 'sub-list']" :subList="format" />
         </transition>
       </li>
     </ul>
@@ -32,6 +33,7 @@ const iconRootPath = '../../../static'
             tips:0,
             urlPath:'/firend',
             active:false,
+            mouse:false
           },  
           {
             navIcon:iconRootPath + '/img/index-list2.png',
@@ -39,7 +41,8 @@ const iconRootPath = '../../../static'
             subList:[],
             tips:0,
             urlPath:'/firend',
-            active:false
+            active:false,
+            mouse:false,
           },              
           {
             navIcon:iconRootPath + '/img/index-list3.png',
@@ -48,20 +51,22 @@ const iconRootPath = '../../../static'
             subList:[
               {
                 name:'活动列表',
-                urlPath:''
+                urlPath:'/action/list'
               },
               {
                 name:"待审核活动",
-                urlPath:''
+                urlPath:'/action/list/detail'
               }
             ],
             tips:0,
             active:false,
+            mouse:false
           },              
           {
             navIcon:iconRootPath + '/img/index-list4.png',
             name:'黄页管理',
             active:false,
+            mouse:false,
             subList:[
               {
                 name:'杰出校友名录',
@@ -87,6 +92,7 @@ const iconRootPath = '../../../static'
             navIcon:iconRootPath + '/img/index-list7.png',
             name:'互联互助',
             active:false,
+            mouse:false,
             subList:[
               {
                 name:'消息列表',
@@ -107,6 +113,7 @@ const iconRootPath = '../../../static'
             tips:0,
             urlPath:'/concat',
             active:false,
+            mouse:false
           },            
           {
             navIcon:iconRootPath + '/img/index-list6.png',
@@ -115,6 +122,7 @@ const iconRootPath = '../../../static'
             tips:0,
             urlPath:'/donate',
             active:false,
+            mouse:false
           },            
           {
             navIcon:iconRootPath + '/img/index-list8.png',
@@ -160,6 +168,7 @@ const iconRootPath = '../../../static'
             tips:0,
             urlPath:'/setting',
             active:false,
+            mouse:false
           },            
         ],
         list:[]
@@ -180,11 +189,11 @@ const iconRootPath = '../../../static'
         this.list = []
       },
       handleClick(data,$event){
-        data.active = true
-        this.list = data.subList
+        // data.active = true
+        // this.list = data.subList
         this.menuList.map(item=>{
-          if(item.name !== data.name){
-            item.active = false
+          if(item.name == data.name){
+            // item.active = false
             this.$router.push(item.urlPath)
           }
         })
@@ -273,6 +282,13 @@ const iconRootPath = '../../../static'
         background-color: #00776E;
         transition: all .5s linear;
       }
+    }
+
+    .full{
+      opacity: 1;
+    }
+    .empty{
+      opacity: 0;
     }
   }
 </style>

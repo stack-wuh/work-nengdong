@@ -10,7 +10,7 @@
                   <span>类型：</span>校友活动
                   <span class="empty"></span>
                   <span class="info">进行中</span>
-                    <img src="../../../static/img/icon-share.png" alt="icon-share">
+                    <img @click="jumpToOther" src="../../../static/img/icon-share.png" alt="icon-share">
                     <img src="../../../static/img/icon-edit.png" alt="icon-edit">
                     <img src="../../../static/img/icon-delete.png" alt="icon-delete">
                 </p>
@@ -31,7 +31,18 @@
 </template>
 
 <script>
-  
+  export default{
+    data(){
+      return{
+
+      }
+    },
+    methods:{
+      jumpToOther(){
+        this.$router.push('/action/detail') 
+      }
+    }
+  }
 </script>
 
 <style lang="less" scoped>

@@ -1,7 +1,7 @@
 <template>
   <section class="wrapper">
     <ul class='list'>
-      <li :class="[format.length > 5 ? 'list-item-other list-item' : 'list-item']" v-for="(item,index) in format" :key="index">{{item.name}}</li>
+      <li @click.stop="jump2other(item)" :class="[format.length > 5 ? 'list-item-other list-item' : 'list-item']" v-for="(item,index) in format" :key="index">{{item.name}}</li>
     </ul>
   </section>  
 </template>
@@ -16,9 +16,14 @@
     },
     computed:{
       format(){
-        return this.subList
+       return this.subList
       }
     },
+    methods:{
+      jump2other(e){
+        this.$router.push(e.urlPath)
+      },
+    }
   }
 </script>
 

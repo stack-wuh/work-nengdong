@@ -1,12 +1,12 @@
 <template>
     <section class="father">
         <div v-for="(item,index) in format.subList" :key="index">
-          <span class="btn">{{item.name}}</span>
+          <span class="btn" v-on:click="item.click">{{item.name}}</span>
         </div>
         <div class="empty"></div>
         <div>
-          <el-input class="my-input" placeholder="请输入关键字">
-            <template slot="append"><span class="my-input-text">搜索</span></template>
+          <el-input v-model="keywords" class="my-input" placeholder="请输入关键字">
+            <template slot="append"><span v-on:click="$emit('propKey',keywords)" class="my-input-text">搜索</span></template>
           </el-input>
         </div>
     </section>
@@ -22,13 +22,16 @@ export default {
           type: 1,
           subList: [
             {
-              name: "添加"
+              name: "添加",
+              click:'handleClickAdd'
             },
             {
-              name: "批量导入"
+              name: "批量导入",
+              click:'otherImport'
             },
             {
-              name: "导出当前页名单"
+              name: "导出当前页名单",
+              click:'export2excel'
             }
           ],
           showInput: true
@@ -39,7 +42,8 @@ export default {
           subList:[
             {
               name:'返回上一级',
-              showInput:true
+              showInput:true,
+              click:this.pageBack
             }
           ]
         },
@@ -47,10 +51,12 @@ export default {
           type:3,
           subList:[
             {
-              name:'发起活动'
+              name:'发起活动',
+              click:this.handleClickAction
             },
             {
-              name:'批量操作'
+              name:'批量操作',
+              click:this.handleClickPick
             },
           ],
           showInput:true
@@ -60,10 +66,12 @@ export default {
           showInput:true,
           subList:[
             {
-              name:'待审核'
+              name:'待审核',
+              click:this.handleClickPedding
             },
             {
-              name:'未通过'
+              name:'未通过',
+              click:this.peddingFail
             }
           ]
         },
@@ -101,6 +109,7 @@ export default {
           showInput:true
         }
       ],
+      keywords:''
     };
   },
   computed: {
@@ -108,6 +117,32 @@ export default {
       return this.list.find(item=>{
         return item.type == this.type
       })
+    }
+  },
+  created(){
+    console.log(this.format)
+  },
+  methods:{
+    //活动模块
+    //返回上一级
+    pageBack(){
+      this.$router.go(-1)
+    },
+    //发起活动
+    handleClickAction(){
+      console.log('发起活动')
+    },
+    //批量操作
+    handleClickPick(){
+      console.log('批量操作')
+    },
+    //待审核
+    handleClickPedding(){
+      console.log('待审核')
+    },
+    //未通过
+    peddingFail(){
+      console.log('未通过')
     }
   }
 };
@@ -136,5 +171,8 @@ export default {
     display: inline-block;
     width: 100%;
     height:100%;
+    text-align: center;
+    line-height:40px;
+    user-select: none;
   }
 </style>

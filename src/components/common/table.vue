@@ -1,6 +1,6 @@
 <template>
   <section class="wrapper">
-    <el-table class="my-table" :data="newList" border stripe style="width:100%" :height="heightValue">
+    <el-table v-on:row-click="$emit('handleRowClick',{id:1})" class="my-table" :data="newList" border stripe style="width:100%" :height="heightValue">
       <el-table-column width="80px" fixed align="center" label="序号" type="index"></el-table-column>
       <el-table-column :width="item.width" fixed="left" align="center" v-for="(item,index) in sublist.list" :key="index" v-if="!item.child" :label="item.name" :prop="item.prop">
       </el-table-column>
