@@ -1,6 +1,6 @@
 <template>
     <section class="wrapper">
-        <search type="1" />
+        <search type="1" @handleClickAdd="handleClickAdd" @otherImport="otherImport" @export2excel="export2excel" @propKey="Search" />
       <div class="content">
           <ul class="item-list">
             <li v-for="(item,index) in checkList" :key="index">
@@ -19,7 +19,7 @@
             </li>
           </ul>
           <!-- <e-table v-show="false" class="el-table" type="firend" :info="info" /> -->
-          <e-table class="el-table" type="firends" :info="info" />
+          <e-table @handleRowClick="handleRowClick" class="el-table" type="firends" :info="info" />
           <bottom type="pagination" />
       </div>
     </section>
@@ -138,6 +138,23 @@ export default {
         list:list
       }
     }
+  },
+  methods:{
+    handleClickAdd(msg){
+      console.log('添加')
+    },
+    otherImport(msg){
+      console.log('导入')
+    },
+    export2excel(msg){
+      console.log('导出')
+    },
+    Search(e){
+      console.log(e)
+    },
+    handleRowClick(e){
+      console.log(e)
+    },
   }
 };
 </script>

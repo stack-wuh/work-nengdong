@@ -4,7 +4,7 @@
       <div class="content">
         <p class="nav-title">当前位置: 活动管理>活动列表</p>
         <ul class="item-list">
-          <li v-for="(item,index) in checkList" :key="index" >
+          <li  v-for="(item,index) in checkList" :key="index" >
             <span>{{item.name}}: </span>
             <p>
               <span v-for="(subItem,subIndex) in item.list" :key="subIndex">{{subItem}}</span>
@@ -12,7 +12,8 @@
           </li>
         </ul>
         
-        <item-list />
+        <item-list  />
+        <bottom type="pagination" />
       </div>
     </section>
 </template>
@@ -20,10 +21,12 @@
 <script>
 import Search from '@/components/common/search'
 import ItemList from '@/components/common/itemList'
+import Bottom from '@/components/common/bottom'
   export default{
     components:{
       Search,
-      ItemList
+      ItemList,
+      Bottom
     },
     data(){
       return{
@@ -47,9 +50,26 @@ import ItemList from '@/components/common/itemList'
         ]
       }
     },
+    methods:{
+
+    }
   }
 </script>
 
 <style lang="less" scoped>
-
+.item-list{
+  li{
+    span{
+      min-width:80px;
+    }
+    p{
+      span{
+        width: 80px;
+      }
+      span.active{
+        color: #00998d;
+      }
+    }
+  }
+}
 </style>

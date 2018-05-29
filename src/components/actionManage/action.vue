@@ -29,6 +29,7 @@
               <span class="btn base">提交</span>
             </div>
           </div>
+
         </section>
     </section>
 </template>
@@ -37,7 +38,8 @@
   import Search from '@/components/common/search'
   export default{
     components:{
-      Search
+      Search,
+      Bottom
     },
     data(){
       return{}
