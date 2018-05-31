@@ -9,14 +9,14 @@
         <h3>校友端后台管理系统</h3>
         <div class="group-item">
           <img src="../../../static/img/icon-user.png" alt="icon-user">
-          <el-input></el-input>
+          <el-input v-model="user.name"></el-input>
         </div>
         <div class="group-item">
           <img src="../../../static/img/icon-pwd.png" alt="icon-pwd">
-          <el-input></el-input>
+          <el-input type="password" v-model="user.password"></el-input>
         </div>
         <div class="btn-area">
-          <span>登陆</span>
+          <span @click="Login" @keyup.enter="Login">登陆</span>
         </div>
       </div>
     </section>
@@ -24,7 +24,39 @@
 </template>
 
 <script>
-
+export default{
+  data(){
+    return{
+      user:{
+        name:'',
+        password:''
+      }
+    }
+  },
+  methods:{
+    Login(){
+      if(!this.user.name){
+        _g.toastMsg('error','请输入用户名')
+        return
+      }
+      if(!this.user.password){
+        _g.toastMsg('error','请输入密码')
+        return
+      }
+      this.$http('LoginAdministrators',this.user).then(res=>{
+        let error = res.error == 0 ? 'success' : 'error'
+        _g.toastMsg(error,res.msg)
+        if(res.error == 0){
+           setTimeout(()=>{
+             this.$router.push('/')
+           },1000)
+        }
+      })
+    }
+  },
+  created(){
+  }
+}
 </script>
 
 <style lang="less" scoped>
