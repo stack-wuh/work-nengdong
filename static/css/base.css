@@ -15,7 +15,7 @@ ul,ol,li{
   list-style-type: none;
 }
 ::-webkit-scrollbar{
-  display: none;
+  /* display: none; */
 }
 .flex-box{
   display: flex;
