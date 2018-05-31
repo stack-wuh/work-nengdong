@@ -10,7 +10,7 @@
       </el-table-column>
       <el-table-column :width="item.width" :fixed="item.fixed" align="center" v-if="item.btnList" v-for="(item,index) in sublist.list" :key="index" :label="item.name" >
         <template slot-scope="scope">
-          <el-button size="mini" type="text" v-for="(btn,btnIndex) in item.btnList" :key="btnIndex">{{btn.name}}</el-button>
+          <el-button size="mini" type="text"  v-for="(btn,btnIndex) in item.btnList" @click="btn.click(scope)" :key="btnIndex">{{btn.name}}</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -37,7 +37,7 @@ export default {
               child: [
                 {
                   name: "入学年份",
-                  prop: "year"
+                  prop: "school_age"
                 },
                 {
                   name: "学号",
@@ -49,7 +49,7 @@ export default {
                 },
                 {
                   name: "专业班级",
-                  prop: "klass"
+                  prop: "classes"
                 }
               ]
             },
@@ -58,7 +58,7 @@ export default {
               child:[
                 {
                   name:'手机号',
-                  prop:'phone'
+                  prop:'phone_number'
                 },
                 {
                   name:'邮箱',
@@ -71,19 +71,23 @@ export default {
               child:[
                 {
                   name:'用人单位名称',
-                  prop:'compnay'
+                  prop:'unit_name'
                 },
                 {
-                  name:'单位性质'
+                  name:'单位性质',
+                  prop:'unit_property'
                 },
                 {
-                  name:'所在行业'
+                  name:'所在行业',
+                  prop:'unit_way'
                 },
                 {
-                  name:'职位类别'
+                  name:'职位类别',
+                  prop:'post_name'
                 },
                 {
-                  name:'岗位名称'
+                  name:'岗位名称',
+                  prop:'place_class'
                 }
               ]
             },
@@ -91,17 +95,25 @@ export default {
               name:'升学档案',
               child:[
                 {
-                  name:'起薪'
+                  name:'起薪',
+                  prop:'money'
                 },
                 {
-                  name:'层次'
+                  name:'层次',
+                  prop:'levels'
                 },
                 {
-                  name:'学校'
+                  name:'学校',
+                  prop:'schools'
                 },
                 {
-                  name:'院系'
+                  name:'院系',
+                  prop:'faculty'
                 },
+                {
+                  name:'专业',
+                  prop:'line_text'
+                }
               ]
             },
             {
@@ -114,7 +126,8 @@ export default {
                   name:'编辑'
                 },
                 {
-                  name:'删除'
+                  name:'删除',
+                  click:this.handleClickDel
                 },
                 {
                   name:'重置密码'
@@ -404,7 +417,6 @@ export default {
           ]
         }     
       ],
-      // heightValue:'100%'
     };
   },
   computed: {
@@ -422,6 +434,22 @@ export default {
           return item.type == this.type
         })
     }
+  },
+  methods:{
+    handleClickDel($event){
+      let url = '' ,data = {}
+      switch(this.type){
+        case 'firend' : url = 'delStudent_Info' , data.id = $event.my_id
+                        break;
+      }
+      this.$http(url,data).then(res=>{
+        let error = res.error == 0 ? 'success' : 'error'
+        _g.toastMsg(error,res.msg)
+        if(error == 0){
+          this.$emit('getDelMsg',true)
+        }
+      })
+    },
   },
   created() {
     console.log(this.sublist)

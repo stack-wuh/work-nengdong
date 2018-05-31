@@ -23,15 +23,15 @@ export default {
           subList: [
             {
               name: "添加",
-              click:'handleClickAdd'
+              click:this.handleClickAdd
             },
             {
               name: "批量导入",
-              click:'otherImport'
+              click:this.otherImport
             },
             {
               name: "导出当前页名单",
-              click:'export2excel'
+              click:this.export2excel
             }
           ],
           showInput: true
@@ -123,6 +123,15 @@ export default {
     console.log(this.format)
   },
   methods:{
+    handleClickAdd(){
+      console.log('添加')
+    },
+    otherImport(){
+      console.log('批量导入')
+    },
+    export2excel(){
+      console.log('导出当前页菜单')
+    },
     //活动模块
     //返回上一级
     pageBack(){

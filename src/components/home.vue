@@ -22,6 +22,7 @@ import LeftMenu from '@/components/common/leftmenu'
       HeaderTop,
       LeftMenu,
     },
+
     data(){
       return{
         list:[]
@@ -29,7 +30,7 @@ import LeftMenu from '@/components/common/leftmenu'
     },
     created(){
 
-    }
+    },
   }
 </script>
 
