@@ -1,0 +1,7 @@
+const mutations = {
+  showLoading(state,status){
+    state.globlaLoading = status
+  }
+}
+
+export default mutations
