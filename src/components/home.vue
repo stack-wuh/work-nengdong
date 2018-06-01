@@ -6,8 +6,9 @@
     <section class="main">
       <header-top class="header"></header-top>
       <div class="body">
+        <my-dialog :title="title" :isShowDialog="isShowDialog" />
         <transition name="fade" mode="out-in">
-          <router-view />
+          <router-view v-loading="isShowLoading" />
         </transition>
       </div>
     </section>
@@ -17,15 +18,27 @@
 <script>
 import HeaderTop from '@/components/common/header'
 import LeftMenu from '@/components/common/leftmenu'
+import MyDialog from '@/components/common/dialog'
   export default{
     components:{
       HeaderTop,
       LeftMenu,
+      MyDialog
     },
-
+    computed:{
+      title(){
+        return this.$store.state.dialogTitle
+      },
+      isShowDialog(){
+        return this.$store.state.isShowDialog
+      },
+      isShowLoading(){
+        return this.$store.state.isShowLoading
+      }
+    },
     data(){
       return{
-        list:[]
+        list:[],
       }
     },
     created(){
@@ -55,10 +68,9 @@ import LeftMenu from '@/components/common/leftmenu'
   }
   .main{
     position: relative;
-    flex:auto;
+    flex:1;
     display: flex;
     flex-flow: column wrap;
-
     .header{
       height:80px;
       background-color: #007A71;
