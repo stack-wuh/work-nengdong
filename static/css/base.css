@@ -9,13 +9,10 @@ html,body,#app{
   min-height:580px;
   color: #333;
   box-sizing: border-box;
-  overflow-x: auto;
+  overflow: hidden;
 }
 ul,ol,li{
   list-style-type: none;
-}
-::-webkit-scrollbar{
-  /* display: none; */
 }
 .flex-box{
   display: flex;
@@ -48,4 +45,7 @@ ul,ol,li{
   background-color: #009489;
   border-top-right-radius: 4px;
   border-bottom-right-radius: 4px;
+}
+.v-modal{
+  display: none !important;
 }
