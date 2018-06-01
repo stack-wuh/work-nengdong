@@ -1,5 +1,9 @@
 const state = {
-  globlaLoading:false
+  globlaLoading:false,
+  isShowDialog:false,
+  dialogTitle:'提示',
+  isShowLoading:false,
+  formType:''
 }
 
 export default state
