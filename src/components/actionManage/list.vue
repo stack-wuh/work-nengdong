@@ -1,10 +1,10 @@
 <template>
     <section class="wrapper">
-        <search type="4" />
+        <search @getList="getList" type="4" />
         <section class="content">
-          <p class="nav-title">当前位置：活动管理>待审核</p>
-          <item-list  />
-          <bottom type="pagination" />
+          <p class="nav-title">当前位置：活动管理>{{msg.name ? msg.name : '待审核'}}</p>
+          <item-list @getDelMsg="getDelMsg" :list="list" />
+          <bottom type="pagination" :total="total" />
         </section>
     </section>
 </template>
@@ -21,12 +21,44 @@
     },
     data(){
       return{
-
+        list:[],
+        subList:[],
+        page:1,
+        total:0,
+        msg:{}
       }
-    }
+    },
+    computed:{
+    },
+    methods:{
+      getDelMsg(e){
+        e && this.fetchData()
+      },
+      getList(e){
+        this.msg = e
+        this.list = this.subList.filter(item=>{
+          return item.check_text == e.name
+        })
+        this.total  = this.list.length
+      },
+      fetchData(){
+        this.$http('getActivity_Manager').then(res=>{
+          this.list = res.data
+          this.subList = res.data
+          this.total = Number.parseInt(res.total)
+        })
+      }
+    },
+    created(){
+      this.fetchData()
+    },
   }
 </script>
 
 <style lang="less" scoped>
-
+.wrapper{
+  ::-webkit-scrollbar{
+    display: none;
+  }
+}
 </style>

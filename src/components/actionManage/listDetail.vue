@@ -18,7 +18,8 @@
     },
     data(){
       return{}
-    }
+    },
+
   }
 </script>
 

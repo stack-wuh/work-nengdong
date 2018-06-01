@@ -1,72 +1,135 @@
 <template>
     <section class="wrapper">
-      <search type='3' />
+      <search @confirm="fetchData" type='3' />
       <div class="content">
         <p class="nav-title">当前位置: 活动管理>活动列表</p>
         <ul class="item-list">
           <li  v-for="(item,index) in checkList" :key="index" >
             <span>{{item.name}}: </span>
             <p>
-              <span v-for="(subItem,subIndex) in item.list" :key="subIndex">{{subItem}}</span>
+              <span @click="handleClickChange(item,index,subItem)" :class="{'active' : subItem.isActive}" v-for="(subItem,subIndex) in item.list" :key="subIndex">{{subItem.name ?subItem.name : '全部'}}</span>
             </p>
           </li>
         </ul>
-        
-        <item-list  />
-        <bottom type="pagination" />
+        <item-list @getDelMsg="getDelMsg" :list="list" />
+        <bottom :total="total" type="pagination" />
       </div>
     </section>
 </template>
 
 <script>
-import Search from '@/components/common/search'
-import ItemList from '@/components/common/itemList'
-import Bottom from '@/components/common/bottom'
-  export default{
-    components:{
-      Search,
-      ItemList,
-      Bottom
+import Search from "@/components/common/search";
+import ItemList from "@/components/common/itemList";
+import Bottom from "@/components/common/bottom";
+export default {
+  components: {
+    Search,
+    ItemList,
+    Bottom
+  },
+  data() {
+    return {
+      checkList: [
+        {
+          name: "类型",
+          list: [
+            { name: "", isActive: true },
+            { name: "校友活动", isActive: false },
+            { name: "学院活动", isActive: false },
+            { name: "专业活动", isActive: false },
+            { name: "班级活动", isActive: false },
+            { name: "讲座活动", isActive: false }
+          ],
+          prop: "type",
+          rename: "type_name"
+        },
+        {
+          name: "组织者",
+          list: [
+            { name: "", isActive: true },
+            { name: "官方", isActive: false },
+            { name: "非官方", isActive: false }
+          ],
+          prop: "whether"
+        },
+        {
+          name: "官方组织",
+          list: [
+            { name: "", isActive: true },
+            { name: "校友会", isActive: false },
+            { name: "院学生会", isActive: false },
+            { name: "院科协", isActive: false }
+          ],
+          prop: "official"
+        },
+        {
+          name: "状态",
+          list: [
+            { name: "", isActive: true },
+            { name: "进行中", isActive: false },
+            { name: "已结束", isActive: false }
+          ],
+          prop: "check_text"
+        }
+      ],
+      list: [],
+      page: 1,
+      total: 0,
+      search:{}
+    };
+  },
+  methods: {
+    getDelMsg(e){
+      e && this.fetchData()
     },
-    data(){
-      return{
-        checkList:[
-          {
-            name:'类型',
-            list:['全部','校友活动','学院活动','专业活动','班级活动','讲座活动']
-          },
-          {
-            name:'组织者',
-            list:['全部','官方','非官方']
-          },
-          {
-            name:'官方组织',
-            list:['全部','校友会','院学生会','院科协']
-          },
-          {
-            name:'状态',
-            list:['全部','进行中','已结束']
-          }
-        ]
+    handleClickChange(item,subIndex,subItem) {
+      subItem.isActive = true
+      item.list.map(list=>{
+        if(list.name !== subItem.name){
+          list.isActive = false
+        }
+      })
+      for(var i =0 ; i<=4; i++){
+        if(i == subIndex){
+          this.search[item.prop] = subItem.name
+        }
       }
+      this.fetchData()
     },
-    methods:{
-
+    fetchData(e) {
+      let data = Object.assign({title:e},this.search)
+      this.$http("getActivity_Manager",data).then(res => {
+        this.list = res.data;
+        this.total = Number.parseInt(res.total);
+      });
     }
+  },
+  created() {
+    this.fetchData();
   }
+};
 </script>
 
 <style lang="less" scoped>
-.item-list{
-  li{
-    span{
-      min-width:80px;
+.wrapper {
+  overflow: hidden;
+  ::-webkit-scrollbar {
+    display: none;
+  }
+}
+.item-list {
+  li {
+    span {
+      min-width: 80px;
     }
-    p{
-      span{
+    p {
+      span {
         width: 80px;
       }
-      span.active{
+      span:hover {
+        cursor: pointer;
+      }
+      span.active {
         color: #00998d;
       }
     }
