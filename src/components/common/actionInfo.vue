@@ -1,10 +1,10 @@
 <template>
-    <section class="wrapper">
+    <section class="wrapper hideScroll">
         <section class="list-content">
           <ul>
             <li>
               <span></span>
-              <h3>活动标题</h3>
+              <h3>{{newList.title}}</h3>
               <p>
                 <img src="../../../static/img/icon-share.png" alt="icon-share">
                 <img src="../../../static/img/icon-edit.png" alt="icon-share">
@@ -12,13 +12,13 @@
               </p>
             </li>
             <li>
-              <span>类型：</span>校友活动
-              <span>组织者：</span>校友活动
-              <span>人数：</span>57/100
+              <span>类型：</span>{{newList.type}}
+              <span>组织者：</span>{{newList.organizer}}
+              <span>人数：</span>{{newList.number}}/{{newList.participants}}
             </li>
             <li>
-              <span>时间:</span>2018-01-01 14:00
-              <span>地点:</span>地点
+              <span>时间:</span>{{newList.starttime | format}} 至 {{newList.endtime | format}}
+              <span>地点:</span>{{newList.place}}
             </li>
             <li>
               <img src="../../../static/img/logo.png" alt="avatar">
@@ -26,53 +26,72 @@
               <img src="../../../static/img/logo.png" alt="avatar">
               <img src="../../../static/img/logo.png" alt="avatar">
             </li>
-            <li><span>参与费用:</span>100/人</li>
-            <li><span>参与要求:</span>100/人</li>
-            <li><span>活动介绍:</span>100/人</li>
-            <li><span>负责人:</span>100/人</li>
-            <li><span>联系方式:</span>100/人</li>
-            <li><span>手机号:</span>100/人</li>
-            <li><span>邮箱:</span>100/人</li>
-            <li><span>QQ:</span>100/人</li>
-            <li><span>QQ群:</span>100/人</li>
-            <li><span>微信:</span>100/人</li>
-            <li><span>备注:</span>100/人</li>
+            <li><span>参与费用:</span>{{newList.money}}/元</li>
+            <li><span>参与要求:</span>{{newList.require_text}}</li>
+            <li><span>活动介绍:</span>{{newList.activity_introduction }}</li>
+            <li><span>负责人:</span>{{newList.leading_name}}</li>
+            <li><span>手机号:</span>{{newList.phone }}</li>
+            <li><span>邮箱:</span>{{newList.email }}</li>
+            <li><span>QQ:</span>{{newList.qq}} </li>
+            <li><span>QQ群:</span>{{newList.group_text}}</li>
+            <li><span>微信:</span>{{newList.weixin}}</li>
+            <li><span>备注:</span>{{newList.remark}}</li>
           </ul>
           <div class="user-info">
             <p>提交人信息</p>
             <p>
-              <span>姓名: 李涛</span>
-              <span>学号: 20180001</span>
-              <span>专业: 能动学院</span>
-              <span>班级: 1001</span>
+              <span>姓名: {{user.name}}</span>
+              <span>学院: {{user.school}}</span>
+              <span>专业: {{user.line}}</span>
+              <span>班级: {{user.classes}}</span>
             </p>
             <p>
-              <span>手机号: 15642422323</span>
-              <span>邮箱: 15642422323</span>
-              <span>QQ: 15642422323</span>
-              <span>微信: 15642422323</span>
+              <span>手机号:{{user.phone_number}}</span>
+              <span>邮箱: {{user.email}}</span>
+              <span>QQ: {{user.qq}}</span>
+              <span>微信: {{user.weixin}}</span>
             </p>
           </div>
         </section>
 
         <section class="nopass">
           <p class="title">反馈意见</p>
-          <p class="detail">意见意见意见意见意见意见意见意见意见意见意见意见意见意见意见意见意见意见意见意见意见意见意见意见意见意见意见意见意见意见意见意见意见意见意见意见意见意见意见意见意见意见意见意见意见意见意见意见意见意见意见意见意见意见意见意见意见意见意见意见</p>
+          <p class="detail">{{newList.feedback}}</p>
         </section>
     </section>
 </template>
 
 <script>
   export default{
+    props:['info'],
     data(){
       return{
-
+        user:{}
       }
-    }
+    },
+    computed:{
+      newList(){ 
+        for(var k in this.info){
+          if(!this.info[k]){  
+            this.info[k] = '暂无'
+          }
+          if(k == 'student_info'){
+            this.user = this.info[k]
+            for(var j in this.user){
+              if(!this.user[j]){
+                this.user[j] = '暂无'
+              }
+            }
+          }
+        } 
+        return this.info
+      },
+    },
   }
 </script>
 
 <style lang="less" scoped>
+
   .list-content{
     margin:20px 0 10px 0;
     border:1px solid #eee;

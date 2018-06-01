@@ -5,24 +5,31 @@
     </div>
     <div class="empty"></div>
     <div class="btn-list">
-        <el-dropdown trigger="click">
+        <el-dropdown @command="ShowDialog" trigger="click">
               <span class="el-dropdown-link my-icon-center">
                 用户名<i class="el-icon-arrow-down el-icon--right"></i>
               </span>
               <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item>修改密码</el-dropdown-item>
+                <el-dropdown-item command="password" >修改密码</el-dropdown-item>
              </el-dropdown-menu>
         </el-dropdown>
       <span class="my-icon-dianyuan">退出</span>
     </div>
+
   </section>
 </template>
 
 
 <script>
 export default {
+
   data() {
     return {};
+  },
+  methods:{
+    ShowDialog(e){
+      this.$store.commit('changeDialogStatus',{title:'修改密码',status:true,type:'updatePwd'})
+    }
   }
 };
 </script>

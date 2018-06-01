@@ -51,11 +51,11 @@ const iconRootPath = '../../../static'
             subList:[
               {
                 name:'活动列表',
-                urlPath:'/action/list'
+                urlPath:'/action'
               },
               {
                 name:"待审核活动",
-                urlPath:'/action/list/detail'
+                urlPath:'/action/list'
               }
             ],
             tips:0,

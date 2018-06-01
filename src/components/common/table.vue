@@ -1,6 +1,6 @@
 <template>
-  <section class="wrapper">
-    <el-table v-on:row-click="$emit('handleRowClick',{id:1})" class="my-table" :data="newList" border stripe style="width:100%" :height="heightValue">
+  <section class="father">
+    <el-table v-on:row-click="$emit('handleRowClick',{id:1})" class="my-table" :data="newList" border stripe  >
       <el-table-column width="80px" fixed align="center" label="序号" type="index"></el-table-column>
       <el-table-column :width="item.width" fixed="left" align="center" v-for="(item,index) in sublist.list" :key="index" v-if="!item.child" :label="item.name" :prop="item.prop">
       </el-table-column>
@@ -420,9 +420,6 @@ export default {
     };
   },
   computed: {
-    heightValue(){
-      return this.height ? this.height : '100%'
-    },
     newData() {
       return this.info;
     },
@@ -439,9 +436,11 @@ export default {
     handleClickDel($event){
       let url = '' ,data = {}
       switch(this.type){
-        case 'firend' : url = 'delStudent_Info' , data.id = $event.my_id
+        case 'firend' : url = 'delStudent_Info' , data.id = $event.row.id
                         break;
       }
+      this.$emit('getDelMsg',true)
+      return
       this.$http(url,data).then(res=>{
         let error = res.error == 0 ? 'success' : 'error'
         _g.toastMsg(error,res.msg)
@@ -452,15 +451,18 @@ export default {
     },
   },
   created() {
-    console.log(this.sublist)
+
   }
 };
 </script>
 
 <style lang="less" scoped>
+// .wrapper{
+//   width:100%;
+//   height:100%;
+// }
 .my-table{
-  min-height:300px;
-  max-width:100%;
+  min-height: 300px;
 }
 @media screen and (max-width:1366px) {
   .my-table{

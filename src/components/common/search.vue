@@ -1,11 +1,11 @@
 <template>
     <section class="father">
         <div v-for="(item,index) in format.subList" :key="index">
-          <span class="btn" v-on:click="item.click">{{item.name}}</span>
+          <span :class="[item.isActive ? 'base' : '','btn']" v-on:click="item.click(item)">{{item.name}}</span>
         </div>
         <div class="empty"></div>
         <div>
-          <el-input v-model="keywords" class="my-input" placeholder="请输入关键字">
+          <el-input clearable @change="$emit('confirm',keywords)" v-model="keywords" class="my-input" placeholder="请输入关键字">
             <template slot="append"><span v-on:click="$emit('propKey',keywords)" class="my-input-text">搜索</span></template>
           </el-input>
         </div>
@@ -67,11 +67,13 @@ export default {
           subList:[
             {
               name:'待审核',
-              click:this.handleClickPedding
+              click:this.handleClickPedding,
+              isActive:true
             },
             {
               name:'未通过',
-              click:this.peddingFail
+              click:this.peddingFail,
+              isActive:false
             }
           ]
         },
@@ -120,11 +122,11 @@ export default {
     }
   },
   created(){
-    console.log(this.format)
+    // console.log(this.format)
   },
   methods:{
     handleClickAdd(){
-      console.log('添加')
+      this.$store.commit('changeDialogStatus',{title:'修改密码',status:true})
     },
     otherImport(){
       console.log('批量导入')
@@ -146,12 +148,20 @@ export default {
       console.log('批量操作')
     },
     //待审核
-    handleClickPedding(){
-      console.log('待审核')
+    handleClickPedding(e){
+      e.isActive = true
+      this.format.subList.filter(item=>{
+        return item.name !== e.name
+      })[0].isActive = false
+      this.$emit('getList',{state:false,name:e.name})
     },
     //未通过
-    peddingFail(){
-      console.log('未通过')
+    peddingFail(e){
+      e.isActive = true
+      this.format.subList.filter(item=>{
+        return item.name !== e.name
+      })[0].isActive = false
+      this.$emit('getList',{state:true,name:e.name})
     }
   }
 };
@@ -170,12 +180,11 @@ export default {
   border-top-left-radius: 4px;
   box-sizing: border-box;
 
-
-
   .empty{
     flex:1;
   }
-}
+} 
+
   .my-input-text{
     display: inline-block;
     width: 100%;
