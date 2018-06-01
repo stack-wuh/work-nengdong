@@ -74,7 +74,7 @@ export default new Router({
           component:ActionIndex
         },
         {
-          path:'/action/detail',
+          path:'/action/detail/:id',
           name:'actionDetail',
           component:ActionDetail
         },

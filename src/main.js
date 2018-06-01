@@ -16,6 +16,7 @@ import apiMethods from '../static/js/http'
 Vue.use(ElementUI)
 
 Vue.prototype.$http = apiMethods
+Vue.prototype.$store = store
 // Vue.prototype.$bus = new Vue()
 Vue.config.productionTip = false
 
@@ -41,4 +42,10 @@ new Vue({
   store,
   components: { App },
   template: '<App/>'
+})
+
+Vue.filter('format',(value)=>{
+  let date = new Date(value)
+  let year = date.getFullYear() , month = date.getMonth() , day = date.getDay() 
+    return year +'-'+ month +'-'+ day 
 })
