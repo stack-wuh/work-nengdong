@@ -1,6 +1,6 @@
 <template>
     <section class="wrapper">
-      <search type="1" @handleClickAdd="handleClickAdd" @otherImport="otherImport" @export2excel="export2excel" @propKey="Search" />
+      <search type="1" @confirm="fetchData" @handleClickAdd="handleClickAdd" @otherImport="otherImport" @export2excel="export2excel" @propKey="Search" />
       <div class="content">
           <ul class="item-list">
             <li v-for="(item,index) in checkList" :key="index">
@@ -15,9 +15,9 @@
               </p>
             </li>
           </ul>
-          <e-table  @getDelMsg="getDelMsg" class="el-table" type="firend" :info="info" />
+          <e-table   @getDelMsg="getDelMsg" class="el-table" type="firend" :info="info" />
           <e-table v-show="false" @handleRowClick="handleRowClick" class="el-table" type="firends" :info="info" />
-          <bottom type="pagination" />
+          <bottom @getCurrentPage="getCurrentPage" :total="total" type="pagination" />
       </div>
     </section>
 </template>
@@ -26,12 +26,13 @@
 import Search from  '@/components/common/search'
 import ETable from '@/components/common/table'
 import Bottom from '@/components/common/bottom'
+
 const list = []
 export default {
   components:{
     Search,
     ETable,
-    Bottom
+    Bottom,
   },
   data() {
     return {
@@ -96,21 +97,35 @@ export default {
         list:list
       },
       newList:{},
-      selectList:{}
+      selectList:{},
+      page:1,
+      total:0,
     }
   },
   methods:{
+    //获取子组件出来的页码
+    getCurrentPage(e){
+      this.page = e
+      this.fetchData()
+    },
+    //删除操作成功之后刷新数据
     getDelMsg(e){
       e && this.fetchData()
     },
     //获取数据 传给子组件etable
-    fetchData(){
-      let data = Object.assign(this.newList,this.selectList)
+    fetchData(e){
+      let data = Object.assign(this.newList,this.selectList,{pageNo:this.page,name:e})
       this.$http('getStudent_Info',data).then(res=>{
-        res.data.map(item=>{
-          item = Object.assign(item,item.employment_archives,item.advance_archives)
-        })
-        this.info.list = res.data
+        if(Array.isArray(res.data)){
+          res.data.map(item=>{
+            item = Object.assign(item,item.employment_archives,item.advance_archives)
+            this.info.list = res.data
+          })
+        }else{
+          this.info.list = []
+        }
+  
+        this.total = Number.parseInt(res.total)
       })
     },
     handleClickSelect(index,$event,item){
@@ -249,7 +264,7 @@ export default {
 
 
     handleClickAdd(msg){
-      console.log('添加')
+  
     },
     otherImport(msg){
       console.log('导入')
@@ -294,7 +309,6 @@ export default {
     padding:20px;
     box-sizing: border-box;
     background-color: #fff;
-    // overflow: hidden;
     ul.item-list{
       width: 100%;
       user-select: none;
@@ -322,9 +336,6 @@ export default {
           }
         }
       }
-    }
-    .el-table{
-      // height:calc(100% - 300px);
     }
   }
 }
