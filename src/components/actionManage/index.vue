@@ -98,7 +98,7 @@ export default {
     },
     fetchData(e) {
       let data = Object.assign({title:e},this.search)
-      this.$http("getActivity_Manager",data).then(res => {
+      this.$http("SchoolFellow/getActivity_Manager",data).then(res => {
         this.list = res.data;
         this.total = Number.parseInt(res.total);
       });

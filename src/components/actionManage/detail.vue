@@ -55,7 +55,7 @@ import Bottom from '@/components/common/bottom'
         e && this.fetchData()
       },
       fetchData(){
-        this.$http('getActivity_Manager',{id:this.$route.params.id}).then(res=>{
+        this.$http('SchoolFellow/getActivity_Manager',{id:this.$route.params.id}).then(res=>{
          this.info.list = res.data.find(item=>{
               return item.id == this.$route.params.id
           })

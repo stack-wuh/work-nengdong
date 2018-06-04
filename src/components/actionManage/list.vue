@@ -42,7 +42,7 @@
         this.total  = this.list.length
       },
       fetchData(){
-        this.$http('getActivity_Manager').then(res=>{
+        this.$http('SchoolFellow/getActivity_Manager').then(res=>{
           this.list = res.data
           this.subList = res.data
           this.total = Number.parseInt(res.total)
