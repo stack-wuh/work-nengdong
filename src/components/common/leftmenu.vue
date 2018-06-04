@@ -130,19 +130,19 @@ const iconRootPath = '../../../static'
             subList:[
               {
                 name:'入学年份',
-                urlPath:''
+                urlPath:'/setting/year'
               },
               {
                 name:'专业',
-                urlPath:''
+                urlPath:'/setting/major'
               },
               {
                 name:'班级',
-                urlPath:''
+                urlPath:'/setting/klass'
               },
               {
                 name:'活动类型',
-                urlPath:''
+                urlPath:'/setting/type'
               },
               {
                 name:'官方组织',
@@ -150,15 +150,15 @@ const iconRootPath = '../../../static'
               },
               {
                 name:'联系学院',
-                urlPath:''
+                urlPath:'/setting/concat'
               },
               { 
                 name:'校友捐赠公告',
-                urlPath:''
+                urlPath:'/setting/firends'
               },
               {
                 name:'互帮互助公告',
-                urlPath:''
+                urlPath:'/setting/help'
               },
               {
                 name:'互帮互助类型',
