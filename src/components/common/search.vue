@@ -105,11 +105,12 @@ export default {
           type:7,
           subList:[
             {
-              name:'添加'
+              name:'添加',
+              click:this.handleClickAdd
             }
           ],
           showInput:true
-        }
+        },
       ],
       keywords:''
     };
@@ -125,8 +126,18 @@ export default {
     // console.log(this.format)
   },
   methods:{
-    handleClickAdd(){
+    handleClickAdd(data){
       this.$store.commit('changeDialogStatus',{title:'修改密码',status:true})
+      if(data){
+        let path = this.$router.history.current.path
+        let params = {title:data.name,status:true}
+        if(path == '/setting/year'){
+          params.type = 'addYear'
+        }else if(path == '/setting/concat'){
+          params.type = 'addYear'
+        }
+        this.$store.commit('changeDialogStatus',params)
+      }
     },
     otherImport(){
       console.log('批量导入')
@@ -141,7 +152,7 @@ export default {
     },
     //发起活动
     handleClickAction(){
-      console.log('发起活动')
+      this.$router.push('/action/active')
     },
     //批量操作
     handleClickPick(){
