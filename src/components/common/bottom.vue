@@ -26,14 +26,19 @@
     methods:{
       handleClickPassOrNo(state){
         let url = ''
-        url = state ? 'Activity_Manager_Pass' : 'Activity_Manager_NoPass'
+        url = state ? 'SchoolFellow/Activity_Manager_Pass' : 'SchoolFellow/Activity_Manager_NoPass'
         if(!state){
-          this.$store.commit('changeDialogStatus',{title:'反馈意见',status:true,type:'feedback'})
+          this.$store.commit('changeDialogStatus',{title:'反馈意见',status:true,type:'feedback',id:this.data.id})
         }else{
           this.$http(url,this.data).then(res=>{
             let error = res.error == 0 ? 'success' :'error'
             _g.toastMsg(error,res.msg)
             res.error == 0  && this.$emit('getClickMsg',true)
+            if(res.error == 0){
+              setTimeout(() => {
+                this.$router.go(-1)
+              }, 1000);
+            }
           })
         }
       },
