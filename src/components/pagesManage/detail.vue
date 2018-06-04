@@ -3,7 +3,7 @@
     <search type="2" />
     <section class="content">
         <p class="nav-title">当前位置：黄业管理>校友会黄页>校友会详情</p>
-        <action-info />
+        <action-info :info="info" />
         <p class="el-title">活动</p>
         <e-table class="my-table" :info="info" type="pages" />
     </section>
@@ -35,6 +35,11 @@
     data(){
       return{
         info:info
+      }
+    },
+    methods:{
+      fetchData(){
+        
       }
     }
   }

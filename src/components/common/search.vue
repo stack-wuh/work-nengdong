@@ -81,7 +81,8 @@ export default {
           type:5,
           subList:[
             {
-              name:'创建'
+              name:'创建',
+              click:this.handleClickFirends
             },
             {
               name:'批量操作'
@@ -153,6 +154,10 @@ export default {
     //发起活动
     handleClickAction(){
       this.$router.push('/action/active')
+    },
+    //创建校友会
+    handleClickFirends(){
+      this.$router.push('/pages/new')
     },
     //批量操作
     handleClickPick(){

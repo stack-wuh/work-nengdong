@@ -1,8 +1,8 @@
 <template>
     <section class="wrapper">
-        <search @getList="getList" type="4" />
+        <search @propKey="propKey" @confirm="fetchData" @getList="getList" type="4" />
         <section class="content">
-          <p class="nav-title">当前位置：活动管理>{{msg.name ? msg.name : '待审核'}}</p>
+          <p class="nav-title">当前位置：{{$route.params.type == 'action' ? '活动管理' : '校友会管理'}}>{{msg.name ? msg.name : '待审核'}}</p>
           <item-list @getDelMsg="getDelMsg" :list="list" />
           <bottom type="pagination" :total="total" />
         </section>
@@ -30,7 +30,13 @@
     },
     computed:{
     },
+    watch:{
+      $router:'fetchData'
+    },
     methods:{
+      propKey(e){
+        this.fetchData(e)
+      },
       getDelMsg(e){
         e && this.fetchData()
       },
@@ -41,8 +47,14 @@
         })
         this.total  = this.list.length
       },
-      fetchData(){
-        this.$http('SchoolFellow/getActivity_Manager').then(res=>{
+      fetchData(title){
+        let url = ''
+        if(this.$route.params.type == 'action'){
+          url = 'SchoolFellow/getActivity_Manager'
+        }else if(this.$route.params.type == 'pages'){
+          url = 'SchoolFellow/dshORwtg'  
+        }
+        this.$http(url,{title:title}).then(res=>{
           this.list = res.data
           this.subList = res.data
           this.total = Number.parseInt(res.total)

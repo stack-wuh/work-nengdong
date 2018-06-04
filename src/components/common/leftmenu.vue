@@ -55,7 +55,7 @@ const iconRootPath = '../../../static'
               },
               {
                 name:"待审核活动",
-                urlPath:'/action/list'
+                urlPath:'/action/list/' + 'action'
               }
             ],
             tips:0,
@@ -82,7 +82,7 @@ const iconRootPath = '../../../static'
               },
               {
                 name:'待审核校友会',
-                urlPath:''
+                urlPath:'/action/list/'+ 'pages'
               }
             ],
             tips:0,

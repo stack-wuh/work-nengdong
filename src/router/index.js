@@ -84,7 +84,7 @@ export default new Router({
           component:ActionItem
         },
         {
-          path:'/action/list',
+          path:'/action/list/:type',
           name:'actionList',
           component:ActionList,
         },
@@ -106,7 +106,7 @@ export default new Router({
           component:PagesIndex
         },
         {
-          path:'/pages/detail',
+          path:'/pages/detail/:id',
           name:'pagesDetail',
           component:PagesDetail
         },

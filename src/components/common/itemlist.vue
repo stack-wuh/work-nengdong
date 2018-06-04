@@ -18,13 +18,13 @@
                 <p>
                   <span>标题: </span>{{item.title}}
                 </p>
-                <p>
+                <p v-if="url != 'pages'" v-show="path != '/pages'">
                   <span>组织者: </span>{{item.organizer}}
                 </p>
                 <p>
-                  <span>时间：</span>{{item.starttime | format}}
-                  <span>地点：</span>{{item.place}}
-                  <small class="txt-active">{{item.number}}</small>/<span>{{item.participants}}</span>
+                  <span>时间：</span>{{item.starttime || item.time | format}}
+                  <span v-if="url != 'pages'" v-show="path != '/pages'">地点：</span>{{item.place}}
+                  <small v-if="url != 'pages'" v-show="path != '/pages'" class="txt-active">{{item.number}}/</small><span v-if="url != 'pages'" v-show="path != '/pages'">{{item.participants}}</span>
                 </p>
         </div>
       </div>
@@ -34,7 +34,7 @@
 
 <script>
   export default{
-    props:['list'],
+    props:['list','type'],
     data(){
       return{
 
@@ -43,14 +43,30 @@
     computed:{
       newList(){
         return this.list
+      },
+      url(){
+        return this.$route.params.type
+      },
+      path(){
+        return this.$route.path
       }
     },
     methods:{
       jumpToOther(e){
-        this.$router.push('/action/detail/'+e.id) 
+        if(this.url == 'action'){
+          this.$router.push('/action/detail/'+e.id)
+        } else if(this.url == 'pages'){
+          this.$router.push('/pages/detail/'+e.id)
+        }
       },
       handleClickDel(e){
-        this.$http('delActivityDetails_Manager',{id:e.id}).then(res=>{
+        let url = ''
+        if(this.url == 'action'){
+          url = 'SchoolFwllow/delActivityDetails_Manager'
+        }else if (this.url == 'pages'){
+          url = 'SchoolFellow/delAlumni_Pages'
+        }
+        this.$http(url,{id:e.id}).then(res=>{
           let error = res.error == 0 ? 'success' : 'error'
           _g.toastMsg(error,res.msg)
           if(res.error == 0){
@@ -58,6 +74,9 @@
           }
         })
       },
+    },
+    created(){
+      console.log(this.$route)
     }
   }
 </script>
