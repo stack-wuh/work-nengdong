@@ -6,7 +6,7 @@
     <section class="main">
       <header-top class="header"></header-top>
       <div class="body">
-        <my-dialog :title="title" :isShowDialog="isShowDialog" />
+        <my-dialog @handleClickSubmit="handleClickSubmit" :title="title" :isShowDialog="isShowDialog" />
         <transition name="fade" mode="out-in">
           <router-view v-loading="isShowLoading" />
         </transition>
@@ -34,6 +34,11 @@ import MyDialog from '@/components/common/dialog'
       },
       isShowLoading(){
         return this.$store.state.isShowLoading
+      }
+    },
+    methods:{
+      handleClickSubmit(e){
+        // e && location.reload()
       }
     },
     data(){
