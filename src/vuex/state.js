@@ -3,7 +3,10 @@ const state = {
   isShowDialog:false,
   dialogTitle:'提示',
   isShowLoading:false,
-  formType:''
+  formType:'',
+  addState:false,
+  action:'add',
+  id:''
 }
 
 export default state

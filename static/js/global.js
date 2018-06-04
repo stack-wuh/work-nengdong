@@ -34,5 +34,11 @@ const _g = {
         break
     }
   },
+  hideDialog(){
+    store.commit('changeDialogStatus',{status:false,type:''})
+  },
+  showDialog(type){
+    store.commit('changeDialogStatus',{status:true,type:type})
+  }
 }
 export default _g
