@@ -17,7 +17,6 @@ Vue.use(ElementUI)
 
 Vue.prototype.$http = apiMethods
 Vue.prototype.$store = store
-// Vue.prototype.$bus = new Vue()
 Vue.config.productionTip = false
 
 window.axios = axios
@@ -26,14 +25,15 @@ window.store = store
 window.$bus = new Vue()
 
 axios.interceptors.request.use((config)=>{
-
+  store.commit('changeLoading',{state:true})
   return config
 })
 axios.interceptors.response.use((config)=>{
-
+  store.commit('changeLoading',{state:false})
   return config
 })
-window.rootPath = '/api/'
+
+window.rootPath = '/adminapi/'
 
 /* eslint-disable no-new */
 new Vue({

@@ -79,7 +79,7 @@ export default new Router({
           component:ActionDetail
         },
         {
-          path:'/action/action',
+          path:'/action/active',
           name:'actionItem',
           component:ActionItem
         },
@@ -159,6 +159,7 @@ export default new Router({
         {
           path:'/setting',
           name:'setting',
+          redirect:'/setting/year',
           component:SettingIndex,
           children:[
             {
