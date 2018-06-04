@@ -4,7 +4,7 @@
       <div v-for="(item,index) in newList" :key="index" class="item-detail flex-box">
         <div @click="jumpToOther(item)" class="img-box">
           <img v-if="!item.cover" src="../../../static/img/logo.png" alt="avatar">
-          <img v-else :src="item.cover" alt="">
+          <img v-else :src="item.cover" alt="avatar">
         </div>
         <div class="right-content flex-box flex-column">
                 <p class="flex-box">
