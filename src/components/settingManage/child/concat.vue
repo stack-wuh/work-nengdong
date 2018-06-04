@@ -1,11 +1,13 @@
 <template>
   <section class="wrapper">
+    <search  type="7"/>
     <e-table type="concat" :info="info" />
   </section>  
 </template>
 
 <script>
   import ETable from '@/components/common/table'
+  import Search from '@/components/common/search'
   const list = [
     {
       type:'寻求帮助',
@@ -18,7 +20,8 @@
   ]
   export default{
     components:{
-      ETable
+      ETable,
+      Search
     },
     data(){
       return{

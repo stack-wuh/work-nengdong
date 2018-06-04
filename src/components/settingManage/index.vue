@@ -1,8 +1,9 @@
 <template>
   <section class="wrapper">
-    <search type=7 />
+    <!-- <search @propKey="getKey" type=7 /> -->
     <section class="content">
       <p class="nav-title">当前位置: 系统设置</p>
+
       <router-view class="my-view" />
     </section>
   </section>
@@ -19,6 +20,11 @@
       return{
 
       }
+    },
+    methods:{
+      getKey(e){
+        this.$router.push({path:'/setting/year',params:{key:e}})
+      },
     }
   }
 </script>
