@@ -115,7 +115,7 @@ export default {
     //获取数据 传给子组件etable
     fetchData(e){
       let data = Object.assign(this.newList,this.selectList,{pageNo:this.page,name:e})
-      this.$http('getStudent_Info',data).then(res=>{
+      this.$http('SchoolFellow/getStudent_Info',data).then(res=>{
         if(Array.isArray(res.data)){
           res.data.map(item=>{
             item = Object.assign(item,item.employment_archives,item.advance_archives)
@@ -152,10 +152,10 @@ export default {
     },
     //获取入学年份
     getYears(){
-      this.$http('getYear').then(res=>{
+      this.$http('/SchoolFellow/getYear').then(res=>{
         this.checkList.map(item=>{
           if(item.prop == 'school_age'){
-            item.list = res.map(list=>{
+            item.list = res.data.map(list=>{
               return list = Object.assign(list,{isActive:false,rename:'age_name'})
             })
           }
@@ -164,7 +164,7 @@ export default {
     },
     //获取状态
     getStatus(){
-      this.$http('getStudent_State').then(res=>{
+      this.$http('SchoolFellow/getStudent_State').then(res=>{
         this.checkList.map(item=>{
           if(item.prop == 'state'){
             item.list = res.map(list=>{
@@ -176,7 +176,7 @@ export default {
     },
     //获取专业
     getMajor(){
-      this.$http('getStudent_Info_Line').then(res=>{
+      this.$http('SchoolFellow/getStudent_Info_Line').then(res=>{
         this.checkList.map(item=>{
           if(item.prop == 'line'){
             item.list = res.map(list=>{
@@ -188,7 +188,7 @@ export default {
     },
     //获取班级
     getKlasses(){
-      this.$http('getStudent_Info_Class').then(res=>{
+      this.$http('SchoolFellow/getStudent_Info_Class').then(res=>{
         this.checkList.map(item=>{
           if(item.prop == 'classes'){
             item.list = res.map(list=>{
@@ -200,7 +200,7 @@ export default {
     },
     //获得单位性质
     getProto(){
-      this.$http('getStudent_Info_Property').then(res=>{
+      this.$http('SchoolFellow/getStudent_Info_Property').then(res=>{
         this.checkList.map(item=>{
           if(item.type == 2){
             item.list.map(list=>{
@@ -216,7 +216,7 @@ export default {
     },
     //获得所在行业
     getOnWay(){
-      this.$http('getStudent_Info_WayService').then(res=>{
+      this.$http('SchoolFellow/getStudent_Info_WayService').then(res=>{
         this.checkList.map(item=>{
           if(item.type == 2){
             item.list.map(list=>{
@@ -232,7 +232,7 @@ export default {
     },
     //获得职位类别
     getWorkClassify(){
-      this.$http('getStudent_Info_Place_Class').then(res=>{
+      this.$http('SchoolFellow/getStudent_Info_Place_Class').then(res=>{
         this.checkList.map(item=>{
           if(item.type == 2){
             item.list.map(list=>{
@@ -247,7 +247,7 @@ export default {
       })
     },
     getLevel(){
-      this.$http('getStudent_Info_Level').then(res=>{
+      this.$http('SchoolFellow/getStudent_Info_Level').then(res=>{
         this.checkList.map(item=>{
           if(item.type == 2){
             item.list.map(list=>{
@@ -294,6 +294,7 @@ export default {
         item.type == 1 && item.list.unshift({name:'全部',isActive:true})
       })
      },1000)
+     console.log(this.$store.state)
   },
 };
 </script>
