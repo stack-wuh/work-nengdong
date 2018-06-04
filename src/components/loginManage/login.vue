@@ -43,9 +43,10 @@ export default{
         _g.toastMsg('error','请输入密码')
         return
       }
-      this.$http('LoginAdministrators',this.user).then(res=>{
+      this.$http('SchoolFellow/LoginAdministrators',this.user).then(res=>{
         let error = res.error == 0 ? 'success' : 'error'
         _g.toastMsg(error,res.msg)
+        window.sessionStorage.setItem('userId',res.id)
         if(res.error == 0){
            setTimeout(()=>{
              this.$router.push('/')
