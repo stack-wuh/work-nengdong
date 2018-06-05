@@ -2,7 +2,12 @@
   <section class="wrapper">
     <!-- <search @propKey="getKey" type=7 /> -->
     <section class="content">
-      <p class="nav-title">当前位置: 系统设置</p>
+      <p class="nav-title">当前位置: 系统设置 
+          {{$route.path == '/setting/year' ? '>入学年份设置' :$route.path == '/setting/major' ? '>专业设置' 
+            : $route.path == '/setting/klass' ? '>班级设置' : $route.path == '/setting/concat' ? '>联系学院' 
+            : $route.path == '/setting/firends' ? '>校友捐赠公告设置': $route.path == '/setting/help' ? ">互帮互助设置" 
+            : $route.path == '/setting/type' ? ">活动类型设置" : '>互联互助设置'}}
+      </p>
 
       <router-view class="my-view" />
     </section>
