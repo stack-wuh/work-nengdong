@@ -92,6 +92,29 @@ const state = {
     }
   },
 
+  //校友会反馈
+  pagesFeed:{
+    info:[
+      {
+        name:'填写反馈',
+        value:'',
+        prop:'feedback',
+        isInput:true,
+        inputType:'textArea',
+        row:2,
+        rules:[
+          {
+            required:true,
+            message:'请填写反馈',
+            trigger:'blur'   
+          }
+        ]
+      }
+    ],
+    validForm:{
+      feedback:''
+    }
+  },
   //设置 -- 添加互助类型
   addHelp:{
     info:[
@@ -101,6 +124,45 @@ const state = {
         value:''
       }
     ]
+  },
+
+  //校友捐赠 -- 添加新的校友捐赠
+  addDonate:{
+    info:[
+      {
+        name:'添加标题',
+        isInput:true,
+        prop:'title',
+        rules:[
+          {
+            required:true,
+            message:'请添加标题',
+            trigger:'blur'
+          }
+        ]
+      },
+      {
+        name:'添加公告',
+        prop:'proclaim',
+        isInput:true,
+        rules:[
+          {
+            required:true,
+            message:'请添加公告',
+            trigger:'blur'
+          }
+        ]
+      },
+      {
+        name:'选择图片',
+        isUpload:true
+      }
+    ],
+    validForm:{
+      title:'',
+      image:'',
+      proclaim:''
+    }
   }
 }
 
