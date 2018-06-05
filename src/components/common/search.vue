@@ -112,6 +112,19 @@ export default {
           ],
           showInput:true
         },
+        {
+          type:8,
+          subList:[
+            {
+              name:'添加',
+              click:this.handleClickAdd
+            },
+            {
+              name:'批量操作',
+              click:''
+            }
+          ]
+        }
       ],
       keywords:''
     };
@@ -136,6 +149,8 @@ export default {
           params.type = 'addYear'
         }else if(path == '/setting/concat'){
           params.type = 'addYear'
+        }else if(path == '/donate'){
+          params.type = 'addDonate'
         }
         this.$store.commit('changeDialogStatus',params)
       }
