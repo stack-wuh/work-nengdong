@@ -2,7 +2,7 @@
     <section class="wrapper">
         <search @propKey="propKey" @confirm="fetchData" @getList="getList" type="4" />
         <section class="content">
-          <p class="nav-title">当前位置：{{$route.params.type == 'action' ? '活动管理' : '校友会管理'}}>{{msg.name ? msg.name : '待审核'}}</p>
+          <p class="nav-title">当前位置：{{$route.params.type == 'action' ? '活动管理' : $route.params.type == 'pages' ? '校友会管理' : '互助列表'}}>{{msg.name ? msg.name : '待审核'}}</p>
           <item-list @getDelMsg="getDelMsg" :list="list" />
           
           <bottom type="pagination" :total="total" />
@@ -54,6 +54,8 @@
           url = 'SchoolFellow/getActivity_Manager'
         }else if(this.$route.params.type == 'pages'){
           url = 'SchoolFellow/dshORwtg'  
+        }else if(this.$route.params.type == 'concat'){
+          url = 'SchoolFellow/getMutual_Help'
         }
         this.$http(url,{title:title}).then(res=>{
           this.list = res.data

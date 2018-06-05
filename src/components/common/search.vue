@@ -151,6 +151,8 @@ export default {
           params.type = 'addYear'
         }else if(path == '/donate'){
           params.type = 'addDonate'
+        }else if(path == '/setting/helpType'){
+          params.type = 'addHelpType'
         }
         this.$store.commit('changeDialogStatus',params)
       }

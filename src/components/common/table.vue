@@ -2,7 +2,7 @@
   <section class="father">
     <el-table v-on:row-click="$emit('handleRowClick')" class="my-table" :data="newList" border stripe  >
       <el-table-column width="80px" fixed align="center" label="序号" type="index"></el-table-column>
-      <el-table-column :width="item.width" fixed="left" align="center" v-for="(item,index) in sublist.list" :key="index" v-if="!item.child && !item.isSwitch" :label="item.name" :prop="item.prop">
+      <el-table-column :width="item.width" fixed="left" align="center" v-for="(item,index) in sublist.list" :key="index" v-if="!item.child && !item.isSwitch && !item.isColorPicker && !item.isCheck" :label="item.name" :prop="item.prop">
       </el-table-column>
       <el-table-column :width="item.width" fixed="left" align="center" v-for="(item,index) in sublist.list" :key="index" v-if="!item.child && item.isSwitch" :label="item.name" :prop="item.prop">
         <template slot-scope="scope">
@@ -13,6 +13,16 @@
         <el-table-column align="center" v-for="(subItem,subIndex) in item.child" :key="subIndex" :label="subItem.name" :prop="subItem.prop">
         </el-table-column>
       </el-table-column>
+      <el-table-column align="center" v-for="(item,index) in sublist.list" :key="index" v-if="item.isColorPicker" :label="item.name">
+        <template slot-scope="scope">
+          <el-color-picker :disabled='false' @change="colorPickerChange(scope.row.id,$event)" v-model="scope.row[item.prop]"></el-color-picker>
+        </template>
+      </el-table-column>
+      <el-table-column align="center" v-for="(item,index) in sublist.list" :key="index" v-if="item.isCheck" :label="item.name">
+        <template slot-scope="scope">
+          <el-checkbox v-for="(subItem,subIndex) in item.checkList" :key="subIndex" v-model="scope.row[subItem.prop]" >{{subItem.name}}</el-checkbox>
+        </template>
+      </el-table-column>      
       <el-table-column :width="item.width" :fixed="item.fixed" align="center" v-if="item.btnList" v-for="(item,index) in sublist.list" :key="index" :label="item.name" >
         <template slot-scope="scope">
           <el-button size="mini" type="text"  v-for="(btn,btnIndex) in item.btnList" @click="btn.click(scope)" :key="btnIndex">{{btn.name}}</el-button>
@@ -24,7 +34,7 @@
 
 <script>
 export default {
-  props: ["info", "type", "height"],
+  props: ["info", "type"],
   data() {
     return {
       list: [
@@ -191,10 +201,12 @@ export default {
               child: [],
               btnList: [
                 {
-                  name: "编辑"
+                  name: "编辑",
+                  click:this.handleClickEdit
                 },
                 {
-                  name: "删除"
+                  name: "删除",
+                  click:this.handleClickDel
                 }
               ]
             }
@@ -216,10 +228,12 @@ export default {
               child: [],
               btnList: [
                 {
-                  name: "编辑"
+                  name: "编辑",
+                  click:this.handleClickEdit
                 },
                 {
-                  name: "删除"
+                  name: "删除",
+                  click:this.handleClickDel
                 }
               ]
             }
@@ -313,13 +327,12 @@ export default {
               child: [],
               btnList: [
                 {
-                  name: "移除"
+                  name: "移除",
+                  click:this.handleClickDel
                 },
                 {
-                  name: "备注"
-                },
-                {
-                  name: "查看"
+                  name: "备注",
+                  click:this.handleClickEdit
                 }
               ]
             }
@@ -384,14 +397,30 @@ export default {
           list: [
             {
               name: "活动类型",
-              prop: "type"
+              prop: "type_name"
             },
             {
               name: "自定义颜色",
-              prop: "color"
+              prop: "color",
+              isColorPicker:true
             },
             {
-              name: "同步展示设置"
+              name: "同步展示设置",
+              isCheck:true,
+              checkList:[
+                {
+                  name:'教工端',
+                  prop:"faculty"
+                },
+                {
+                  name:'校友端',
+                  prop:'schoolfellow'
+                },
+                {
+                  name:'学生端',
+                  prop:'pupil'
+                }
+              ]
             },
             {
               name: "操作",
@@ -412,7 +441,13 @@ export default {
           list: [
             {
               name: "专业名称",
-              prop: "name"
+              prop: "name",
+              isColorPicker:false,
+            },
+            {
+              name:'自定义色彩',
+              prop:'color',
+              isColorPicker:true
             },
             {
               name: "操作",
@@ -449,6 +484,34 @@ export default {
               ]
             }
           ]
+        },
+        {
+          type:'helpType',
+          list:[
+            {
+              name:'类型',
+              prop:'name'
+            },
+            {
+              name:'自定义色彩',
+              prop:'color',
+              isColorPicker:true
+            },
+            {
+              name:'操作',
+              child:[],
+              btnList:[
+                {
+                  name:'编辑',
+                  click:this.handleClickEdit
+                },
+                {
+                  name:'删除',
+                  click:this.handleClickDel
+                }
+              ]
+            }
+          ]
         }
       ]
     };
@@ -467,15 +530,39 @@ export default {
     }
   },
   methods: {
+    colorPickerChange(id,$event){
+      let url = '' , data = {id:id,color:$event}
+      switch(this.$route.path){
+        case '/setting/helpType' : url = 'SchoolFellow/addMutual_Help_Type' 
+                    break;
+
+      }
+      this.$http(url,data).then(res=>{
+        let error = res.error == 0 ? 'success' : 'error'
+        _g.toastMsg(error,res.msg)
+      })
+    },
     handleClickDel($event) {
-      let url = "",
-        data = {};
+      console.log(this.type)
+      let url = "",data = {};
       switch (this.type) {
         case "firend":
           (url = "SchoolFellow/delStudent_Info"), (data.id = $event.row.id);
           break;
         case 'year':
           (url = 'SchoolFellow/delStudent_Info_Age'),(data.id = $event.row.id)
+          break;
+        case 'school' : 
+          (url = 'SchoolFellow/delSchool_Info_School') , (data.id = $event.row.id)
+          break;
+        case 'college' : 
+          (url = 'SchoolFellow/delXueXiao'),(data.id = $event.row.id)
+          break;
+        case 'firends' : 
+          (url = 'SchoolFellow/del_outstandin'),(data.id = $event.row.id)
+          break;
+        case 'helpType' : 
+          (url = 'SchoolFellow/delMutual_Help_Type'),(data.id = $event.row.id)
           break;
       }
       this.$http(url, data).then(res => {
@@ -487,7 +574,21 @@ export default {
       });
     },
     handleClickEdit($event){
-      this.$store.commit('saveValue',{title:'编辑',status:true,name:'addNewYear',value:$event.row,type:'addYear',action:'edit',id:$event.row.id})
+      if(this.$route.path == '/setting/year'){
+          this.$store.commit('saveValue',{title:'编辑',status:true,name:'addNewYear',value:$event.row,type:'addYear',action:'edit',id:$event.row.id})
+      }
+      if(this.$route.path == '/pages/school' && this.type=='scholl'){
+         this.$store.commit('saveValue',{title:'编辑',status:true,name:'editCollege',value:$event.row,type:'editCollege',action:'edit',id:$event.row.id})
+      }
+      if(this.$route.path == '/pages/school' && this.type == 'college'){
+        this.$store.commit('saveValue',{title:'编辑',status:true,name:'editSchool',value:$event.row,type:'editSchool',action:'edit',id:$event.row.id})
+      }
+      if(this.type == 'firends'){
+        this.$store.commit('saveValue',{title:'编辑',status:true,name:'addRemark',value:$event.row,type:'addRemark',action:'edit',id:$event.row.id})
+      }
+      if(this.type == 'helpType'){
+        this.$store.commit('saveValue',{title:'编辑',status:true,name:'addHelpType',value:$event.row,type:'addHelpType',action:'edit',id:$event.row.id})
+      }
 },
     //单击改变状态
     handleClickChangeState($event){
