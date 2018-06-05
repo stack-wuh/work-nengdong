@@ -4,7 +4,15 @@
         <el-form :model="form.validForm" ref="myForm" class="my-form">
           <el-form-item class="my-form-item" :prop="item.prop" v-for="(item,index) in form.info" :key="index" :label="item.name" :rules="item.rules" label-width="100px">
             <el-input v-if="item.isInput && !item.row" :type="item.type" v-model="form.validForm[item.prop]" ></el-input>
-            <el-input type="textarea" :row="item.row" v-model="form.validForm[item.prop]"></el-input>
+            <el-upload v-else-if="item.isUpload" 
+              class="avatar-uploader"
+              :action="uploadUrl"
+              :show-file-list='false'
+              :on-success="handleAvatarSuccess">
+              <img v-if="form.validForm.image" :src="form.validForm.image" alt="avatar">
+              <el-button>{{imgUrl ? '重新选择' : '选择文件'}}</el-button>
+            </el-upload> 
+            <el-input v-else type="textarea" :row="item.row" v-model="form.validForm[item.prop]"></el-input>
             <el-switch v-if="item.isSwitch" active-text="是" inactive-text="否" active-value='1' inactive-value="0" v-model="form.validForm[item.prop]"></el-switch>
           </el-form-item>
         </el-form>
@@ -73,7 +81,9 @@
             }
           ]
         },
-        error:1
+        error:1,
+        uploadUrl:rootPath + 'SchoolFellow/addImages',
+        imgUrl:''
       }
     },
     computed:{
@@ -86,11 +96,18 @@
                             break;
           case 'addYear' : form = this.$store.state.form.addNewYear
                             break;
+          case 'pagesFeedback' : form = this.$store.state.form.pagesFeed
+                            break;
+          case 'addDonate' : form = this.$store.state.form.addDonate
+                            break;
         }
         return form
       }
     },
     methods:{
+      handleAvatarSuccess(e){
+        this.form.validForm.image = e
+      },
       hideDialog(){
         this.$store.commit('changeDialogStatus',{status:false,formType:''})
       },
@@ -98,15 +115,71 @@
         let type = this.$store.state.formType
         let action = this.$store.state.action
         let id = this.$store.state.id
+        let data = {}
+        data = Object.assign(this.form.validForm,{id,id})
         this.$refs['myForm'].validate((valid)=>{
-          if(type == 'updatePwd'){
-            if(this.form.validForm.password != this.form.validForm.checkword){
-              _g.toastMsg('error','两次密码不一致')
-              return
-            }else{
+          if(valid){
+            if(type == 'updatePwd'){
+              if(this.form.validForm.password != this.form.validForm.checkword){
+                _g.toastMsg('error','两次密码不一致')
+                return
+              }else{
+                let data = {}
+                data = Object.assign(this.form.validForm,{id:window.sessionStorage.getItem('userId')})
+                this.$http('SchoolFellow/UpdatePassword',this.form.validForm).then(res=>{
+                  let error = res.error == 0 ? 'success' : 'error'
+                  _g.toastMsg(error,res.msg)
+                  if(res.error == 0){
+                    this.hideDialog()
+                  }
+                })
+              }
+            }else if(type == 'feedback'){
               let data = {}
-              data = Object.assign(this.form.validForm,{id:window.sessionStorage.get('userId').value})
-              this.$http('SchoolFellow/UpdatePassword',this.form.validForm).then(res=>{
+              data = Object.assign(this.form.validForm,{id:id})
+              this.$http('SchoolFellow/Activity_Manager_NoPass',data).then(res=>{
+                let error = res.error == 0 ? 'success' : 'error'
+                _g.toastMsg(error,res.msg)
+                if(res.error == 0){
+                  this.hideDialog()
+                  setTimeout(()=>{
+                    this.$router.go(0)
+                  },1000)
+                }
+              })
+            }else if(type == 'addYear'){
+              let url = '' , data = {}
+              if(action == 'add'){
+                  url = 'SchoolFellow/addStudent_Info_Age'
+                  data = this.form.validForm
+              }else if(action == 'edit'){
+                url = 'SchoolFellow/updateStudent_Info_Age'
+                data = Object.assign(this.form.validForm,{id:id})
+              }
+              this.$http(url,data).then(res=>{
+                let error = res.error == 0 ? 'success' : 'error'
+                _g.toastMsg(error,res.msg)
+                this.error = res.error
+                this.$store.commit('handleClickStatus',{state:res.error})
+                if(res.error == 0){
+                  this.hideDialog()
+                }
+              })
+            }else if (type == 'addHelp'){
+              
+            }else if(type=='pagesFeedback'){
+              this.$http('SchoolFellow/updateAlumni_Pages_no',data).then(res=>{
+                let error = res.error == 0 ? 'success' : 'error'
+                _g.toastMsg(error,res.msg)
+                if(res.error == 0){
+                  this.hideDialog()
+                  setTimeout(()=>{
+                    this.$router.go(0)
+                  },1000)
+                }
+              })
+            }else if(type == 'addDonate'){
+              this.$http('SchoolFellow/addAlumni',data).then(res=>{
                 let error = res.error == 0 ? 'success' : 'error'
                 _g.toastMsg(error,res.msg)
                 if(res.error == 0){
@@ -114,39 +187,6 @@
                 }
               })
             }
-          }else if(type == 'feedback'){
-            let data = {}
-            data = Object.assign(this.form.validForm,{id:id})
-            this.$http('SchoolFellow/Activity_Manager_NoPass',data).then(res=>{
-              let error = res.error == 0 ? 'success' : 'error'
-              _g.toastMsg(error,res.msg)
-              if(res.error == 0){
-                this.hideDialog()
-                setTimeout(()=>{
-                  this.$router.go(0)
-                },1000)
-              }
-            })
-          }else if(type == 'addYear'){
-            let url = '' , data = {}
-            if(action == 'add'){
-                url = 'SchoolFellow/addStudent_Info_Age'
-                data = this.form.validForm
-            }else if(action == 'edit'){
-              url = 'SchoolFellow/updateStudent_Info_Age'
-              data = Object.assign(this.form.validForm,{id:id})
-            }
-            this.$http(url,data).then(res=>{
-              let error = res.error == 0 ? 'success' : 'error'
-              _g.toastMsg(error,res.msg)
-              this.error = res.error
-              this.$store.commit('handleClickStatus',{state:res.error})
-              if(res.error == 0){
-                this.hideDialog()
-              }
-            })
-          }else if (type == 'addHelp'){
-            
           }
         })
       }
@@ -176,5 +216,27 @@
       }
     }
   }
-
+  .avatar-uploader .el-upload {
+    border: 1px dashed #d9d9d9;
+    border-radius: 6px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+  }
+  .avatar-uploader .el-upload:hover {
+    border-color: #409EFF;
+  }
+  .avatar-uploader-icon {
+    font-size: 28px;
+    color: #8c939d;
+    width: 178px;
+    height: 178px;
+    line-height: 178px;
+    text-align: center;
+  }
+  .avatar {
+    width: 178px;
+    height: 178px;
+    display: block;
+  }
 </style>
