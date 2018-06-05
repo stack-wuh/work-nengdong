@@ -13,7 +13,7 @@
                 <el-dropdown-item command="password" >修改密码</el-dropdown-item>
              </el-dropdown-menu>
         </el-dropdown>
-      <span class="my-icon-dianyuan">退出</span>
+      <span @click="logout" class="my-icon-dianyuan">退出</span>
     </div>
 
   </section>
@@ -29,6 +29,15 @@ export default {
   methods:{
     ShowDialog(e){
       this.$store.commit('changeDialogStatus',{title:'修改密码',status:true,type:'updatePwd'})
+    },
+    logout(){
+      this.$http('SchoolFellow/removeCookie',{id:2}).then(res=>{
+        let error = res.error == 0 ? 'success' : 'error'
+        _g.toastMsg(error,res.msg)
+        if(res.error == 0){
+         this.$router.push('/login')
+        }
+      })
     }
   }
 };
@@ -43,7 +52,7 @@ export default {
   font-size: 24px;
   color: #fff;
   box-sizing: border-box;
-
+  user-select: none;
   div{
     color: #fff;
     font-size: 24px;
@@ -73,6 +82,9 @@ export default {
 
   span {
     font-size: 20px;
+  }
+  span:hover{
+    cursor: pointer;
   }
 }
 </style>
