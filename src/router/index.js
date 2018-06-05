@@ -106,7 +106,7 @@ export default new Router({
           component:PagesIndex
         },
         {
-          path:'/pages/detail/:id',
+          path:'/pages/detail/:id/:sid',
           name:'pagesDetail',
           component:PagesDetail
         },
