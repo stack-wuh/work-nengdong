@@ -1,16 +1,16 @@
 <template>
   <section class="wrapper">
-    <search type=6 />
+    <search @propKey="propKey" @confirm="fetchData" type='6' />
     <section class="content">
       <p class="nav-title">当前位置: 互联互助>列表</p>
-
       <nav class="nav">
         类型: 
-        <span class="txt-active">全部</span>
-        <span>寻求帮助</span>
-        <span>提供帮助</span>
+        <span @click="handleClickChange(1)" :class="{'txt-active':current==1}">全部</span>
+        <span @click="handleClickChange(2)" :class="{'txt-active':current==2}">寻求帮助</span>
+        <span @click="handleClickChange(3)" :class="{'txt-active':current==3}">提供帮助</span>
       </nav>
-      <item-list />
+      <item-list @getDelMsg="getDelMsg" :list="list" />
+      <bottom :total="total" type="pagination" />
     </section>
   </section>
 </template>
@@ -18,15 +18,43 @@
 <script>
   import Search from '@/components/common/search'
   import ItemList from '@/components/common/itemList'
+  import Bottom from '@/components/common/bottom'
   export default{
     components:{
       Search,
-      ItemList
+      ItemList,
+      Bottom
     },
     data(){
       return{
-
+        list:[],
+        total:0,
+        pageNo:1,
+        current:1,
+        type:''
       }
+    },
+    methods:{
+      getDelMsg(e){
+        e && this.fetchData()
+      },
+      handleClickChange(e){
+        this.current = e
+        this.type = e== 1 ? '' : e == 2 ? '寻求帮助' : '提供帮助'
+        this.fetchData()
+      },
+      propKey(e){
+        this.fetchData(e)  
+      },
+      fetchData(title){
+        this.$http('SchoolFellow/getMutual_Help',{title:title,type:this.type,pageNo:this.pageNo}).then(res=>{
+          this.list = res.data
+          this.total = res.total
+        })
+      }
+    },
+    created(){
+      this.fetchData()
     }
   }
 </script>
@@ -41,6 +69,9 @@ nav.nav{
   span{
     margin-right:15px;
     font-size: 15px;
+  }
+  span:hover{
+    cursor: pointer;
   }
   span:first-of-type{
     margin-left:10px;
