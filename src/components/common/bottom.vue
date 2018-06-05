@@ -27,8 +27,16 @@
       handleClickPassOrNo(state){
         let url = ''
         url = state ? 'SchoolFellow/Activity_Manager_Pass' : 'SchoolFellow/Activity_Manager_NoPass'
+        if(this.$route.name == 'pagesDetail'){
+          url = state ? 'SchoolFellow/updateAlumni_Pages_tg' : 'SchoolFellow/updateAlumni_Pages_no'
+        }
         if(!state){
-          this.$store.commit('changeDialogStatus',{title:'反馈意见',status:true,type:'feedback',id:this.data.id})
+          if(this.$route.name == 'actionDetail'){
+            this.$store.commit('changeDialogStatus',{title:'反馈意见',status:true,type:'feedback',id:this.data.id})
+          }
+          if(this.$route.name == 'pagesDetail'){
+           this.$store.commit('changeDialogStatus',{title:'反馈意见',status:true,type:'pagesFeedback',id:this.data.id})
+          }
         }else{
           this.$http(url,this.data).then(res=>{
             let error = res.error == 0 ? 'success' :'error'
