@@ -29,6 +29,8 @@
         url = state ? 'SchoolFellow/Activity_Manager_Pass' : 'SchoolFellow/Activity_Manager_NoPass'
         if(this.$route.name == 'pagesDetail'){
           url = state ? 'SchoolFellow/updateAlumni_Pages_tg' : 'SchoolFellow/updateAlumni_Pages_no'
+        }else if(this.$route.name == 'concatDetail'){
+          url = state ? 'SchoolFellow/Mutual_Help_Yes' : 'SchoolFellow/Mutual_Help_No'
         }
         if(!state){
           if(this.$route.name == 'actionDetail'){
@@ -36,6 +38,9 @@
           }
           if(this.$route.name == 'pagesDetail'){
            this.$store.commit('changeDialogStatus',{title:'反馈意见',status:true,type:'pagesFeedback',id:this.data.id})
+          }
+          if(this.$route.name == 'concatDetail'){
+            this.$store.commit('changeDialogStatus',{title:'反馈意见',status:true,type:'concatFeedback',id:this.data.id})
           }
         }else{
           this.$http(url,this.data).then(res=>{

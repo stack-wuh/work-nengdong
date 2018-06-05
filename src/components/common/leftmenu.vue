@@ -96,11 +96,11 @@ const iconRootPath = '../../../static'
             subList:[
               {
                 name:'消息列表',
-                urlPath:''
+                urlPath:'/concat'
               },
               {
                 name:'待审核列表',
-                urlPath:''
+                urlPath:'/action/list/' + 'concat'
               }
             ],
             tips:0,
@@ -162,7 +162,7 @@ const iconRootPath = '../../../static'
               },
               {
                 name:'互帮互助类型',
-                urlPath:''
+                urlPath:'/setting/helpType'
               }
             ],
             tips:0,

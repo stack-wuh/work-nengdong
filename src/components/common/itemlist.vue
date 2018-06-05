@@ -1,7 +1,7 @@
 <template>
   <section class="wrapper">
     <div class="item-content">
-      <div v-for="(item,index) in newList" :key="index" class="item-detail flex-box">
+      <!-- <div v-if="$route.path != '/concat'" v-for="(item,index) in newList" :key="index" class="item-detail flex-box">
         <div v-if="path != '/donate'" @click="jumpToOther(item)" class="img-box">
           <img v-if="!item.cover" src="../../../static/img/logo.png" alt="avatar">
           <img v-else :src="item.cover" alt="avatar">
@@ -32,7 +32,39 @@
                   <small v-if="url != 'pages'" v-show="path != '/pages' && path != '/donate'" class="txt-active">{{item.number}}/</small><span v-if="url != 'pages'" v-show="path != '/pages'">{{item.participants}}</span>
                 </p>
         </div>
-      </div>
+      </div> -->
+      <div v-if="$route.path == '/concat' || $route.path == '/action/list/concat'" v-for="(item,index) in newList" :key="index" class="item-detail flex-box">
+        <div @click="jumpToOther(item)" class="img-box">
+          <img v-if="!item.image" src="../../../static/img/logo.png" alt="avatar">
+          <img v-else :src="item.image" alt="avatar">
+        </div>
+        <div class="right-content flex-box flex-column">
+                <p class="flex-box">
+                  <span >类型：</span>{{item.type}}
+                  <span class="empty"></span>
+                  <span class="info">{{item.type}}</span>
+                  <img class="img-btn" src="../../../static/img/icon-share.png" alt="icon-share">
+                  <img class="img-btn" src="../../../static/img/icon-edit.png" alt="icon-edit">
+                  <img @click="handleClickDel(item)" class="img-btn" src="../../../static/img/icon-delete.png" alt="icon-delete">
+                </p>
+                <p >
+                  <span>标题: </span>{{item.title}}
+                </p>
+                <p>
+                  <span>发布者: </span>{{item.college}}
+                </p>
+                <p>
+                  <span>专业班级:</span>{{item.student_info.school}}{{item.student_info.line}}{{item.student_info.classes}}
+                </p>
+                <p class="last-flex">
+                  <span>时间：</span>{{item.starttime || item.time | format}}
+                  <span class="empty"></span>
+                  <span>{{item.praise}}
+                    <img src="../../../static/img/icon-prise-active.png" class="icon-praise" />
+                  </span>
+                </p>
+        </div>
+      </div>      
     </div>
   </section>  
 </template>
@@ -63,6 +95,8 @@
           this.$router.push('/pages/detail/'+e.id+'/'+e.student_info_id)
         } else if(this.path == '/donate'){
 
+        }else if(this.path == '/action/list/concat' || this.path == '/concat'){
+          this.$router.push('/concat/detail/'+e.id)
         }
       },
       handleClickDel(e){
@@ -73,6 +107,8 @@
           url = 'SchoolFellow/delAlumni_Pages'
         }else if(this.path == '/donate'){
           url = 'SchoolFellow/delAlumni'
+        }else if(this.path == '/concat'){
+          url = 'SchoolFellow/delMutual_Help'  
         }
         this.$http(url,{id:e.id}).then(res=>{
           let error = res.error == 0 ? 'success' : 'error'
@@ -84,7 +120,7 @@
       },
     },
     created(){
-      console.log(this.$route,this.list)
+      console.log(this.list)
     }
   }
 </script>
@@ -145,5 +181,20 @@
 }
 .item-detail:hover{
   border:1px solid #00998d;
+}
+.icon-praise{
+  width:15px;
+  height:15px;
+  margin-left:10px;
+  vertical-align: bottom;
+}
+.last-flex{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  .empty{
+    flex:1;
+  }
 }
 </style>

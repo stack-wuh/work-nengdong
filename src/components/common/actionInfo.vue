@@ -57,10 +57,6 @@
             </li>
             <li>
               <img v-for="(item,index) in  address" :key="index" :src="item" alt="avatar">
-              <!-- <img src="../../../static/img/logo.png" alt="avatar">
-              <img src="../../../static/img/logo.png" alt="avatar">
-              <img src="../../../static/img/logo.png" alt="avatar">
-              <img src="../../../static/img/logo.png" alt="avatar"> -->
             </li>
             <li><span>校友会介绍:</span>{{list.introduced}}</li>
             <li><span>入会要求:</span>{{list.require_text}}</li>
@@ -71,6 +67,34 @@
             <li><span>QQ:</span>{{list.qq}} </li>
             <li><span>QQ群:</span>{{list.group_text}}</li>
             <li><span>微信:</span>{{list.weixin}}</li>
+          </ul>
+          <ul v-if="type == 'concat'">
+             <li>
+              <span></span>
+              <h3>{{list.title}}</h3>
+              <p>
+                <img src="../../../static/img/icon-share.png" alt="icon-share">
+                <img src="../../../static/img/icon-edit.png" alt="icon-share">
+                <img src="../../../static/img/icon-delete.png" alt="icon-share">
+              </p>
+            </li>
+            <li>
+              <span>类型：</span>{{list.type}}
+              <span>组织者：</span>{{list.college}}
+            </li>
+            <li>
+              <!-- <span>专业班级:</span>{{list.student_info.school}}{{list.student_info.line}}{{list.student_info.classes}} -->
+              <span>时间:</span>{{list.time | format}}
+            </li>
+            <li>
+              <img v-for="(item,index) in  address" :key="index" :src="item" alt="avatar">
+            </li>
+            <li><span>详细内容:</span>{{list.content}}</li>
+            <li><span>手机号:</span>{{list.phone }}</li>
+            <li><span>邮箱:</span>{{list.email }}</li>
+            <li><span>QQ:</span>{{list.qq}} </li>
+            <li><span>QQ群:</span>{{list.group_text}}</li>
+            <li><span>微信:</span>{{list.weixin}}</li>            
           </ul>
         </section>
         <section class="nopass">
@@ -108,11 +132,13 @@
         } 
         return this.info
       },
+
       pageList(){
         
       }
     },
     methods:{
+      //黄页
       fetchData(){
         this.$http('SchoolFellow/getAlumni_Pages').then(res=>{
           this.list = res.data.find(item=>{ 
@@ -120,16 +146,27 @@
           })
           this.address = this.list.alumni_pages_album.address.split(',')
         })
+      },
+      //互联互助详情
+      getConcatList(){
+        this.$http('SchoolFellow/getMutual_Help').then(res=>{
+          this.list = res.data.find(item=>{
+            return item.id == this.$route.params.id
+          })
+          this.address = this.list.mutual_help_image.address.split(',')
+        })
       }
     },
     created(){
       let path = this.$route.path
-      let result =  path.search('pages')
-      if(result>0){
+      if(path.search('pages')>0){
         this.type = 'pages'
         this.fetchData()
-      }else{
+      }else if(path.search('action')>0){
         this.type = 'action'
+      }else if (path.search('concat')>0){
+        this.type = 'concat'
+        this.getConcatList()
       }
     }
   }

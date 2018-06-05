@@ -12,6 +12,7 @@
               <img v-if="form.validForm.image" :src="form.validForm.image" alt="avatar">
               <el-button>{{imgUrl ? '重新选择' : '选择文件'}}</el-button>
             </el-upload> 
+            <el-color-picker v-else-if="item.isColorPicker" v-model="form.validForm[item.prop]"></el-color-picker>
             <el-input v-else type="textarea" :row="item.row" v-model="form.validForm[item.prop]"></el-input>
             <el-switch v-if="item.isSwitch" active-text="是" inactive-text="否" active-value='1' inactive-value="0" v-model="form.validForm[item.prop]"></el-switch>
           </el-form-item>
@@ -105,6 +106,10 @@
           case 'editSchool' : form = this.$store.state.form.editSchool
                             break;
           case 'addRemark' : form = this.$store.state.form.addRemark
+                            break;
+          case 'concatFeedback' :form = this.$store.state.form.addConcatFeed
+                            break;
+          case 'addHelpType'  :form = this.$store.state.form.addHelpType
                             break;
         }
         return form
@@ -210,6 +215,22 @@
               })
             }else if(type == 'addRemark'){
               this.$http('SchoolFellow/updateStudent_Remarks',data).then(res=>{
+                let error = res.error == 0 ? 'success' : 'error'
+                _g.toastMsg(error,res.msg)
+                if(res.error == 0){
+                  this.hideDialog()
+                }
+              })
+            }else if(type == 'concatFeedback'){
+              this.$http('SchoolFellow/Mutual_Help_No',data).then(res=>{
+                let error = res.error == 0 ? 'success' : 'error'
+                _g.toastMsg(error,res.msg)
+                if(res.error == 0){
+                  this.hideDialog()
+                }
+              })
+            }else if(type == 'addHelpType'){
+              this.$http('SchoolFellow/addMutual_Help_Type',data).then(res=>{
                 let error = res.error == 0 ? 'success' : 'error'
                 _g.toastMsg(error,res.msg)
                 if(res.error == 0){
