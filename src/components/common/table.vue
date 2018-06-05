@@ -180,6 +180,31 @@ export default {
           list: [
             {
               name: "名称",
+              prop: "school_name"
+            },
+            {
+              name: "电话",
+              prop: "phone"
+            },
+            {
+              name: "操作",
+              child: [],
+              btnList: [
+                {
+                  name: "编辑"
+                },
+                {
+                  name: "删除"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          type: "college",
+          list: [
+            {
+              name: "名称",
               prop: "name"
             },
             {
