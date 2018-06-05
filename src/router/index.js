@@ -31,6 +31,8 @@ const SettingHelp = resolve => require(['@/components/settingManage/child/help']
 const SettingFirends = resolve => require(['@/components/settingManage/child/firends'],resolve)
 const SettingMajor = resolve => require(['@/components/settingManage/child/major'],resolve)
 const SettingKlass = resolve => require(['@/components/settingManage/child/klass'],resolve)
+const SettingType = resolve => require(['@/components/settingManage/child/type'],resolve)
+const SettingHelpType = resolve => require(['@/components/settingManage/child/helpType'],resolve)
 Vue.use(Router)
 
 export default new Router({
@@ -38,7 +40,7 @@ export default new Router({
     {
       path:'/',
       name:'home',
-      redirect:'/firend',
+      redirect:'/firend/firend',
       component:Home
     },
     {
@@ -52,7 +54,7 @@ export default new Router({
       component:Home,
       children:[
         {
-          path:'/firend',
+          path:'/firend/:type',
           name:'firendIndex',
           component:FirendIndex
         },
@@ -133,7 +135,7 @@ export default new Router({
           component:ConcatIndex
         },
         {
-          path:'/concat/detail',
+          path:'/concat/detail/:id',
           name:'concatDetail',
           component:ConcatDetail
         }
@@ -196,6 +198,16 @@ export default new Router({
               path:'/setting/klass',
               name:'klass',
               component:SettingKlass
+            },
+            {
+              path:'/setting/type',
+              name:'type',
+              component:SettingType
+            },
+            {
+              path:'/setting/helpType',
+              name:'helpType',
+              component:SettingHelpType
             }
           ]
         }
