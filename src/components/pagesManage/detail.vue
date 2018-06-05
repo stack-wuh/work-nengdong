@@ -6,6 +6,7 @@
         <action-info :info="info" />
         <p class="el-title">活动</p>
         <e-table class="my-table" :info="info" type="pages" />
+        <bottom type="btn" :data="{id:$route.params.id}" />
     </section>
   </section>
 </template>
@@ -14,7 +15,7 @@
   import Search from '@/components/common/search'
   import ActionInfo from '@/components/common/actionInfo'
   import ETable from '@/components/common/table'
-
+  import Bottom from '@/components/common/bottom'
   const info = {
     type:'pages',
     list:[
@@ -30,7 +31,7 @@
   }
   export default{
     components:{
-      Search,ActionInfo,ETable
+      Search,ActionInfo,ETable,Bottom
     },
     data(){
       return{
@@ -38,9 +39,25 @@
       }
     },
     methods:{
+      //获取发布者的历史消息
+      getList(){
+        this.$http('SchoolFellow/getAlumni_PagesByME',{student_info_id:this.$route.params.sid}).then(res=>{
+          this.info.list = res.data.map(item=>{
+            return item = {title:item.title,time:new Date(item.time).getFullYear()+'-'+new Date(item.time).getMonth()+'-'+new Date(item.time).getDay() 
+                  + ' '+ new Date(item.time).getHours() + ":"+new Date(item.time).getMinutes()}
+          })
+          
+        })
+      },
       fetchData(){
         
-      }
+      },
+    },
+    created(){
+      this.getList()
+    },
+    destroyed(){
+      
     }
   }
 </script>

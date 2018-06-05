@@ -4,11 +4,13 @@
     <div class="content">
       <p class="nav-title">当前位置: 校友管理>校友详情</p>
       <nav class="nav flex-box">
-        <span class="btn active">学院黄页</span>
-        <span class="btn">学校黄页</span>
+        <span @click="handleClickChange(1)" :class="[type == 1 ? 'btn active' : 'btn']">学院黄页</span>
+        <span @click="handleClickChange(2)" :class="[type == 2 ? 'btn active' : 'btn']">学校黄页</span>
         <span class="empty"></span>
       </nav>
-      <e-table :info="info" type="school" />
+      <e-table v-if="type == 1" :info="info" type="school" />
+      <e-table v-if="type == 2" :info="info" type="college" />
+      <bottom type="pagination" :total="total" />
     </div>
   </section>
 
@@ -17,6 +19,7 @@
 <script>
   import Search from '@/components/common/search'
   import ETable from '@/components/common/table'
+  import Bottom from '@/components/common/bottom'
   const list = [
     {
       name:'名称',
@@ -30,15 +33,35 @@
   export default{
     components:{
       Search,
-      ETable
+      ETable,
+      Bottom
     },
     data(){
       return{
         info:{
           type:'school',
           list:list
-        }
+        },
+        pageNo:1,
+        total:0,
+        type:1
       }
+    },
+    methods:{
+      handleClickChange(type){
+        this.type = type
+        this.fetchData()
+      },
+      fetchData(e=1){
+        let url = this.type == 1 ? 'SchoolFellow/ShowSchool_Info_School' : 'SchoolFellow/getXueXiao'
+        this.$http(url,{pageNo:e}).then(res=>{
+          this.info.list = res.data
+          this.total = res.total
+        })
+      }
+    },
+    created(){
+      this.fetchData()
     }
   }
 </script>

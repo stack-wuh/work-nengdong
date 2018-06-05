@@ -4,6 +4,7 @@
         <section class="content">
           <p class="nav-title">当前位置：{{$route.params.type == 'action' ? '活动管理' : '校友会管理'}}>{{msg.name ? msg.name : '待审核'}}</p>
           <item-list @getDelMsg="getDelMsg" :list="list" />
+          
           <bottom type="pagination" :total="total" />
         </section>
     </section>

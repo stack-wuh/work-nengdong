@@ -10,7 +10,7 @@
         <span @click="handleClickChange(3)" :class="{'txt-active' : No == 3}">按地域分</span>
         <span @click="handleClickChange(4)" :class="{'txt-active' : No == 4}">按行业分</span>
       </nav>
-      <item-list :list="list" type="pages" />
+      <item-list @getDelMsg="getDelMsg" :list="list" type="pages" />
       <bottom type="pagination" :total="total" />
     </section>
   </section>
@@ -29,13 +29,16 @@
     data(){
       return{
         No:1,
-        list:[11,22,33],
+        list:[],
         total:0,
         pageNo:1,
         type:''
       }
     },
     methods:{
+      getDelMsg(e){
+        e && this.fetchData()
+      },
       propKey(e){
         this.fetchData(e)
       },

@@ -2,29 +2,34 @@
   <section class="wrapper">
     <div class="item-content">
       <div v-for="(item,index) in newList" :key="index" class="item-detail flex-box">
-        <div @click="jumpToOther(item)" class="img-box">
+        <div v-if="path != '/donate'" @click="jumpToOther(item)" class="img-box">
           <img v-if="!item.cover" src="../../../static/img/logo.png" alt="avatar">
           <img v-else :src="item.cover" alt="avatar">
         </div>
+        <div v-if="path == '/donate'" @click="jumpToOther(item)" class="img-box">
+          <img v-if="!item.image" src="../../../static/img/logo.png" alt="avatar">
+          <img v-else :src="item.image" alt="avatar">
+        </div>
         <div class="right-content flex-box flex-column">
                 <p class="flex-box">
-                  <span>类型：</span>{{item.type}}
+                  <span v-if="path == '/donate'" >类型：</span>{{item.title}}
+                  <span v-if="path != '/donate'">类型：</span>{{item.type}}
                   <span class="empty"></span>
-                  <span class="info">{{item.check_text}}</span>
+                  <span v-if="path != '/donate'" class="info">{{item.check_text}}</span>
                   <img class="img-btn" src="../../../static/img/icon-share.png" alt="icon-share">
                   <img class="img-btn" src="../../../static/img/icon-edit.png" alt="icon-edit">
                   <img @click="handleClickDel(item)" class="img-btn" src="../../../static/img/icon-delete.png" alt="icon-delete">
                 </p>
-                <p>
+                <p v-if="path != '/donate'">
                   <span>标题: </span>{{item.title}}
                 </p>
-                <p v-if="url != 'pages'" v-show="path != '/pages'">
+                <p v-if="url != 'pages'" v-show="path != '/pages' && path != '/donate'">
                   <span>组织者: </span>{{item.organizer}}
                 </p>
                 <p>
                   <span>时间：</span>{{item.starttime || item.time | format}}
-                  <span v-if="url != 'pages'" v-show="path != '/pages'">地点：</span>{{item.place}}
-                  <small v-if="url != 'pages'" v-show="path != '/pages'" class="txt-active">{{item.number}}/</small><span v-if="url != 'pages'" v-show="path != '/pages'">{{item.participants}}</span>
+                  <span v-if="url != 'pages'" v-show="path != '/pages' && path !='/donate'">地点：</span>{{item.place}}
+                  <small v-if="url != 'pages'" v-show="path != '/pages' && path != '/donate'" class="txt-active">{{item.number}}/</small><span v-if="url != 'pages'" v-show="path != '/pages'">{{item.participants}}</span>
                 </p>
         </div>
       </div>
@@ -37,7 +42,6 @@
     props:['list','type'],
     data(){
       return{
-
       }
     },
     computed:{
@@ -53,18 +57,22 @@
     },
     methods:{
       jumpToOther(e){
-        if(this.url == 'action'){
+        if(this.url == 'action' || this.path == '/action'){
           this.$router.push('/action/detail/'+e.id)
-        } else if(this.url == 'pages'){
-          this.$router.push('/pages/detail/'+e.id)
+        } else if(this.url == 'pages' || this.path == '/pages'){
+          this.$router.push('/pages/detail/'+e.id+'/'+e.student_info_id)
+        } else if(this.path == '/donate'){
+
         }
       },
       handleClickDel(e){
         let url = ''
         if(this.url == 'action'){
           url = 'SchoolFwllow/delActivityDetails_Manager'
-        }else if (this.url == 'pages'){
+        }else if (this.url == 'pages' || this.path == '/pages'){
           url = 'SchoolFellow/delAlumni_Pages'
+        }else if(this.path == '/donate'){
+          url = 'SchoolFellow/delAlumni'
         }
         this.$http(url,{id:e.id}).then(res=>{
           let error = res.error == 0 ? 'success' : 'error'
@@ -76,7 +84,7 @@
       },
     },
     created(){
-      console.log(this.$route)
+      console.log(this.$route,this.list)
     }
   }
 </script>

@@ -1,7 +1,7 @@
 <template>
     <section class="wrapper hideScroll">
         <section class="list-content">
-          <ul>
+          <ul v-if="type == 'action'">
             <li>
               <span></span>
               <h3>{{newList.title}}</h3>
@@ -37,26 +37,45 @@
             <li><span>微信:</span>{{newList.weixin}}</li>
             <li><span>备注:</span>{{newList.remark}}</li>
           </ul>
-          <div class="user-info">
-            <p>提交人信息</p>
-            <p>
-              <span>姓名: {{user.name}}</span>
-              <span>学院: {{user.school}}</span>
-              <span>专业: {{user.line}}</span>
-              <span>班级: {{user.classes}}</span>
-            </p>
-            <p>
-              <span>手机号:{{user.phone_number}}</span>
-              <span>邮箱: {{user.email}}</span>
-              <span>QQ: {{user.qq}}</span>
-              <span>微信: {{user.weixin}}</span>
-            </p>
-          </div>
+          <ul v-if="type == 'pages'">
+             <li>
+              <span></span>
+              <h3>{{list.title}}</h3>
+              <p>
+                <img src="../../../static/img/icon-share.png" alt="icon-share">
+                <img src="../../../static/img/icon-edit.png" alt="icon-share">
+                <img src="../../../static/img/icon-delete.png" alt="icon-share">
+              </p>
+            </li>
+            <li>
+              <span>类型：</span>{{list.type}}
+              <span>组织者：</span>{{list.name}}
+            </li>
+            <li>
+              <span>时间:</span>{{list.time | format}}
+              <span>点赞人数：</span>{{list.praise}} 人
+            </li>
+            <li>
+              <img v-for="(item,index) in  address" :key="index" :src="item" alt="avatar">
+              <!-- <img src="../../../static/img/logo.png" alt="avatar">
+              <img src="../../../static/img/logo.png" alt="avatar">
+              <img src="../../../static/img/logo.png" alt="avatar">
+              <img src="../../../static/img/logo.png" alt="avatar"> -->
+            </li>
+            <li><span>校友会介绍:</span>{{list.introduced}}</li>
+            <li><span>入会要求:</span>{{list.require_text}}</li>
+            <li><span>入会方式:</span>{{list.way}}</li>
+            <li><span>发起人:</span>{{list.name}}</li>
+            <li><span>手机号:</span>{{list.phone }}</li>
+            <li><span>邮箱:</span>{{list.email }}</li>
+            <li><span>QQ:</span>{{list.qq}} </li>
+            <li><span>QQ群:</span>{{list.group_text}}</li>
+            <li><span>微信:</span>{{list.weixin}}</li>
+          </ul>
         </section>
-
         <section class="nopass">
           <p class="title">反馈意见</p>
-          <p class="detail">{{newList.feedback}}</p>
+          <p class="detail">{{newList.feedback || list.feedback}} </p>
         </section>
     </section>
 </template>
@@ -66,7 +85,10 @@
     props:['info'],
     data(){
       return{
-        user:{}
+        user:{},
+        type:'action',
+        list:{},
+        address:[]
       }
     },
     computed:{
@@ -86,7 +108,30 @@
         } 
         return this.info
       },
+      pageList(){
+        
+      }
     },
+    methods:{
+      fetchData(){
+        this.$http('SchoolFellow/getAlumni_Pages').then(res=>{
+          this.list = res.data.find(item=>{ 
+            return item.id == this.$route.params.id
+          })
+          this.address = this.list.alumni_pages_album.address.split(',')
+        })
+      }
+    },
+    created(){
+      let path = this.$route.path
+      let result =  path.search('pages')
+      if(result>0){
+        this.type = 'pages'
+        this.fetchData()
+      }else{
+        this.type = 'action'
+      }
+    }
   }
 </script>
 
