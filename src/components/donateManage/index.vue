@@ -1,6 +1,6 @@
 <template>
   <section class="wrapper">
-    <search @confirm="fetchData" @propKey="propKey" type=5 />
+    <search @confirm="fetchData" @propKey="propKey" type="8" />
     <section class="content">
       <p class="nav-title">当前位置: 校友捐赠>列表</p>
       <item-list :list="list" />
