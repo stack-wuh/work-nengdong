@@ -15,8 +15,8 @@
               </p>
             </li>
           </ul>
-          <e-table   @getDelMsg="getDelMsg" class="el-table" type="firend" :info="info" />
-          <e-table v-show="false" @handleRowClick="handleRowClick" class="el-table" type="firends" :info="info" />
+          <e-table v-show="$route.params.type == 'firend'"  @getDelMsg="getDelMsg" class="el-table" type="firend" :info="info" />
+          <e-table v-show="$route.params.type == 'pages'" @getDelMsg='getDelMsg' class="el-table" type="firends" :info="info" />
           <bottom @getCurrentPage="getCurrentPage" :total="total" type="pagination" />
       </div>
     </section>
@@ -102,6 +102,9 @@ export default {
       total:0,
     }
   },
+  watch:{
+    $router:'fetchData'
+  },
   methods:{
     //获取子组件出来的页码
     getCurrentPage(e){
@@ -114,8 +117,9 @@ export default {
     },
     //获取数据 传给子组件etable
     fetchData(e){
+      let url = this.$route.params.type == 'firend' ? 'SchoolFellow/getStudent_Info' : 'SchoolFellow/getStudent_Info_outstandin'
       let data = Object.assign(this.newList,this.selectList,{pageNo:this.page,name:e})
-      this.$http('SchoolFellow/getStudent_Info',data).then(res=>{
+      this.$http(url,data).then(res=>{
         if(Array.isArray(res.data)){
           res.data.map(item=>{
             item = Object.assign(item,item.employment_archives,item.advance_archives)
@@ -294,7 +298,6 @@ export default {
         item.type == 1 && item.list.unshift({name:'全部',isActive:true})
       })
      },1000)
-     console.log(this.$store.state)
   },
 };
 </script>

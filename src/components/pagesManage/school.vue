@@ -8,8 +8,8 @@
         <span @click="handleClickChange(2)" :class="[type == 2 ? 'btn active' : 'btn']">学校黄页</span>
         <span class="empty"></span>
       </nav>
-      <e-table v-if="type == 1" :info="info" type="school" />
-      <e-table v-if="type == 2" :info="info" type="college" />
+      <e-table @getDelMsg="getDelMsg" v-if="type == 1" :info="info" type="school" />
+      <e-table @getDelMsg="getDelMsg" v-if="type == 2" :info="info" type="college" />
       <bottom type="pagination" :total="total" />
     </div>
   </section>
@@ -48,6 +48,9 @@
       }
     },
     methods:{
+      getDelMsg(e){
+        e && this.fetchData()
+      },
       handleClickChange(type){
         this.type = type
         this.fetchData()

@@ -100,6 +100,12 @@
                             break;
           case 'addDonate' : form = this.$store.state.form.addDonate
                             break;
+          case 'editCollege' :form = this.$store.state.form.editCollege
+                            break;
+          case 'editSchool' : form = this.$store.state.form.editSchool
+                            break;
+          case 'addRemark' : form = this.$store.state.form.addRemark
+                            break;
         }
         return form
       }
@@ -180,6 +186,30 @@
               })
             }else if(type == 'addDonate'){
               this.$http('SchoolFellow/addAlumni',data).then(res=>{
+                let error = res.error == 0 ? 'success' : 'error'
+                _g.toastMsg(error,res.msg)
+                if(res.error == 0){
+                  this.hideDialog()
+                }
+              })
+            }else if(type == 'editCollege'){
+              this.$http('SchoolFellow/updateSchool_Info_School',data).then(res=>{
+                let error = res.error == 0 ? 'success' : 'error'
+                _g.toastMsg(error,res.msg)
+                if(res.error == 0){
+                  this.hideDialog()
+                }
+              })
+            }else if(type == 'editSchool'){
+              this.$http('SchoolFellow/updateXueXiao',data).then(res=>{
+                let error = res.error == 0 ? 'success' : 'error'
+                _g.toastMsg(error,res.msg)
+                if(res.error == 0){
+                  this.hideDialog()
+                }
+              })
+            }else if(type == 'addRemark'){
+              this.$http('SchoolFellow/updateStudent_Remarks',data).then(res=>{
                 let error = res.error == 0 ? 'success' : 'error'
                 _g.toastMsg(error,res.msg)
                 if(res.error == 0){

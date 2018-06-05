@@ -40,7 +40,7 @@ const iconRootPath = '../../../static'
             name:'校友管理',
             subList:[],
             tips:0,
-            urlPath:'/firend',
+            urlPath:'/firend/firend',
             active:false,
             mouse:false,
           },              
@@ -70,7 +70,7 @@ const iconRootPath = '../../../static'
             subList:[
               {
                 name:'杰出校友名录',
-                urlPath:''
+                urlPath:'/firend/' + 'pages'
               },
               {
                 name:'校友会黄页',
