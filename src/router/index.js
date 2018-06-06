@@ -23,6 +23,10 @@ const ConcatDetail = resolve => require(['@/components/concatManage/detail'],res
 
 const DonateIndex = resolve => require(['@/components/donateManage/index'],resolve)
 
+const SchoolIndex = resolve => require(['@/components/SchoolManage/index'],resolve)
+
+const MessageIndex = resolve => require(['@/components/messageManage'],resolve)
+
 const SettingIndex = resolve => require(['@/components/settingManage/index'],resolve)
 const SettingYear = resolve => require(['@/components/settingManage/child/year'],resolve)
 const SettingConcat = resolve => require(['@/components/settingManage/child/concat'],resolve)
@@ -33,6 +37,7 @@ const SettingMajor = resolve => require(['@/components/settingManage/child/major
 const SettingKlass = resolve => require(['@/components/settingManage/child/klass'],resolve)
 const SettingType = resolve => require(['@/components/settingManage/child/type'],resolve)
 const SettingHelpType = resolve => require(['@/components/settingManage/child/helpType'],resolve)
+const SettingHelpList  = resolve => require(['@/components/settingManage/child/helpList'],resolve)
 Vue.use(Router)
 
 export default new Router({
@@ -155,6 +160,30 @@ export default new Router({
     },
     {
       path:'/',
+      name:'home',
+      component:Home,
+      children:[
+        {
+          path:'/school',
+          name:'school',
+          component:SchoolIndex,
+        }
+      ]
+    },
+    {
+      path:'/',
+      name:'home',
+      component:Home,
+      children:[
+        {
+          path:'/message',
+          name:'message',
+          component:MessageIndex,
+        }
+      ]
+    },    
+    {
+      path:'/',
       name:"home",
       component:Home,
       children:[
@@ -208,6 +237,11 @@ export default new Router({
               path:'/setting/helpType',
               name:'helpType',
               component:SettingHelpType
+            },
+            {
+              path:'/setting/helpList',
+              name:'helpList',
+              component:SettingHelpList
             }
           ]
         }

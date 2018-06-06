@@ -75,7 +75,8 @@ const state = {
         name:'填写反馈',
         value:'',
         prop:'feedback',
-        isInput:true,
+        isInput:false,
+        isTextarea:true,
         inputType:'textArea',
         row:2,
         rules:[
@@ -101,6 +102,7 @@ const state = {
         prop:'feedback',
         isInput:true,
         inputType:'textArea',
+        isTextarea:true,
         row:2,
         rules:[
           {
@@ -307,6 +309,122 @@ const state = {
     ],
     validForm:{
       name:'',
+      color:''
+    }
+  },
+
+  //设置--活动类型设置--添加活动类型
+  addActionType:{
+    info:[
+      {
+        name:'类型名称',
+        prop:'type_name',
+        isInput:true,
+        rules:[
+          {
+            required:true,
+            message:'请填写类型名称',
+            trigger:'blur'
+          }
+        ]
+      },
+      {
+        name:'展示',
+        isInput:false,
+        isSwitch:false,
+        isCheck:true,
+        checkList:[
+          {
+            name:'教师端',
+            prop:'faculty'
+          },
+          {
+            name:'学生端',
+            prop:'schoolfellow'
+          },
+          {
+            name:'校友端',
+            prop:'pupil'
+          }
+        ]
+      },
+      {
+        name:'自定义色彩',
+        prop:'color',
+        isColorPicker:true,
+        rules:[
+          {
+            required:true,
+            message:'请选择色彩',
+            trigger:'change'
+          }
+        ]
+      },
+      
+    ],
+    validForm:{
+      type_name:'',
+      faculty:'',
+      schoolfellow:'',
+      pupil:'',
+      id:'',
+      color:''
+    }
+  },
+  editActionType:{
+    info:[
+      {
+        name:'类型名称',
+        prop:'type_name',
+        isInput:true,
+        rules:[
+          {
+            required:true,
+            message:'请填写类型名称',
+            trigger:'blur'
+          }
+        ]
+      },
+      {
+        name:'展示',
+        isInput:false,
+        isSwitch:false,
+        isCheck:true,
+        checkList:[
+          {
+            name:'教师端',
+            prop:'faculty'
+          },
+          {
+            name:'学生端',
+            prop:'schoolfellow'
+          },
+          {
+            name:'校友端',
+            prop:'pupil'
+          }
+        ]
+      },
+      {
+        name:'自定义色彩',
+        prop:'color',
+        isColorPicker:true,
+        rules:[
+          {
+            required:true,
+            message:'请选择色彩',
+            trigger:'change'
+          }
+        ]
+      },
+      
+    ],
+    validForm:{
+      type_name:'',
+      faculty:'',
+      schoolfellow:'',
+      pupil:'',
+      id:'',
       color:''
     }
   }

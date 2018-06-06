@@ -2,6 +2,7 @@ const mutations = {
   showLoading(state,status){
     state.globlaLoading = status
   },
+  //打开dialog对话框
   changeDialogStatus(state,status){
     state.dialogTitle = status.title
     state.isShowDialog = status.status

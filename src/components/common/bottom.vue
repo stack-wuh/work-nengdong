@@ -25,6 +25,7 @@
     },
     methods:{
       handleClickPassOrNo(state){
+        console.log(this.$route)
         let url = ''
         url = state ? 'SchoolFellow/Activity_Manager_Pass' : 'SchoolFellow/Activity_Manager_NoPass'
         if(this.$route.name == 'pagesDetail'){

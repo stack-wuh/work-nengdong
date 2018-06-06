@@ -6,9 +6,9 @@
               <span></span>
               <h3>{{newList.title}}</h3>
               <p>
-                <img src="../../../static/img/icon-share.png" alt="icon-share">
-                <img src="../../../static/img/icon-edit.png" alt="icon-share">
-                <img src="../../../static/img/icon-delete.png" alt="icon-share">
+                <img @click="handleClickShare" src="../../../static/img/icon-share.png" alt="icon-share">
+                <img v-if="userId == newList.student_info_id"  src="../../../static/img/icon-edit.png" alt="icon-share">
+                <img @click="handleClickDel" src="../../../static/img/icon-delete.png" alt="icon-share">
               </p>
             </li>
             <li>
@@ -26,7 +26,7 @@
               <img src="../../../static/img/logo.png" alt="avatar">
               <img src="../../../static/img/logo.png" alt="avatar">
             </li>
-            <li><span>参与费用:</span>{{newList.money}}/元</li>
+            <li><span>参与费用:</span>{{newList.money}}</li>
             <li><span>参与要求:</span>{{newList.require_text}}</li>
             <li><span>活动介绍:</span>{{newList.activity_introduction }}</li>
             <li><span>负责人:</span>{{newList.leading_name}}</li>
@@ -101,6 +101,15 @@
           <p class="title">反馈意见</p>
           <p class="detail">{{newList.feedback || list.feedback}} </p>
         </section>
+        
+      <el-dialog title='分享' :visible.sync="dialogVisible">
+        <span>复制下面的地址就可以分享啦!</span><br>
+        <input class="input-text" type="text" id="aaa" v-model="Urlhref" readonly @click="copy">
+        <span slot="footer" class="dialog-footer">
+          <el-button @click="dialogVisible = false">取 消</el-button>
+          <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+        </span>
+      </el-dialog>
     </section>
 </template>
 
@@ -112,7 +121,9 @@
         user:{},
         type:'action',
         list:{},
-        address:[]
+        address:[],
+        dialogVisible:false,
+        Urlhref:''
       }
     },
     computed:{
@@ -135,9 +146,42 @@
 
       pageList(){
         
-      }
+      },
+
+      userId(){
+        return sessionStorage.getItem('userId')
+      },
     },
     methods:{
+      //单击删除按钮
+      handleClickDel(e){
+        let url = '' , data={}
+        switch(this.type){
+          case 'action' : url = 'SchoolFellow/delActivityDetails_Manager' ,
+                          data = {id:this.$route.params.id}
+                        break;
+        }
+        this.$http(url,data).then(res=>{
+          let error = res.error == 0 ? 'success' : 'error'
+          _g.toastMsg(error,res.msg)
+          if(res.error == 0){
+           setTimeout(()=>{
+              this.$router.go(-1)
+           },1000)
+          }
+        })
+      },
+      //单击分享按钮
+      handleClickShare(){
+        this.dialogVisible = true
+        this.Urlhref = window.location.href
+      },
+      copy(){
+        let elem = document.getElementById('aaa')
+        elem.select()
+        document.execCommand('Copy')
+        _g.toastMsg('success','链接已经复制到您的剪贴板了')
+      }, 
       //黄页
       fetchData(){
         this.$http('SchoolFellow/getAlumni_Pages').then(res=>{

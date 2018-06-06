@@ -1,9 +1,9 @@
 <template>
   <section class="dialog" v-show="isShowDialog">
-    <el-dialog class="el-dialog"  :title="title" :visible.sync="isShowDialog">
+    <el-dialog class="el-dialog" ref="my-dialog" @close="dialogClose" :title="title" :visible.sync="isShowDialog">
         <el-form :model="form.validForm" ref="myForm" class="my-form">
           <el-form-item class="my-form-item" :prop="item.prop" v-for="(item,index) in form.info" :key="index" :label="item.name" :rules="item.rules" label-width="100px">
-            <el-input v-if="item.isInput && !item.row" :type="item.type" v-model="form.validForm[item.prop]" ></el-input>
+            <el-input v-if="item.isInput" v-model="form.validForm[item.prop]" ></el-input>
             <el-upload v-else-if="item.isUpload" 
               class="avatar-uploader"
               :action="uploadUrl"
@@ -13,8 +13,9 @@
               <el-button>{{imgUrl ? '重新选择' : '选择文件'}}</el-button>
             </el-upload> 
             <el-color-picker v-else-if="item.isColorPicker" v-model="form.validForm[item.prop]"></el-color-picker>
-            <el-input v-else type="textarea" :row="item.row" v-model="form.validForm[item.prop]"></el-input>
+            <el-input v-else-if="item.isTextarea" type="textarea" :row="item.row" v-model="form.validForm[item.prop]"></el-input>
             <el-switch v-if="item.isSwitch" active-text="是" inactive-text="否" active-value='1' inactive-value="0" v-model="form.validForm[item.prop]"></el-switch>
+            <el-checkbox v-if="item.isCheck" v-for="(citem,cindex) in  item.checkList" :key="cindex" :label="citem.name" v-model="form.validForm[citem.prop]"></el-checkbox>
           </el-form-item>
         </el-form>
 
@@ -91,7 +92,7 @@
       form(){
         let form = {}
         switch(this.$store.state.formType){
-          case 'updatePwd' : form = this.$store.state.form.changePwd
+          case 'updatePwd' : form = this.$store.state.form.changePwd 
                             break;
           case 'feedback' : form = this.$store.state.form.addFeedback
                             break;
@@ -111,16 +112,24 @@
                             break;
           case 'addHelpType'  :form = this.$store.state.form.addHelpType
                             break;
+          case 'addActionType' : form = this.$store.state.form.addActionType //设置--活动类型设置--添加活动类型
+                            break;
+          case 'editActionType' : form = this.$store.state.form.editActionType //设置--活动类型设置--编辑活动类型
+                            break;
         }
         return form
       }
     },
     methods:{
+      dialogClose(){
+        this.$emit('dialogClose',true)
+      },
       handleAvatarSuccess(e){
         this.form.validForm.image = e
       },
       hideDialog(){
         this.$store.commit('changeDialogStatus',{status:false,formType:''})
+        this.$refs.myForm.resetFields()
       },
       handleClickSubmit(){
         let type = this.$store.state.formType
@@ -237,6 +246,14 @@
                   this.hideDialog()
                 }
               })
+            }else if(type == 'addActionType' || type == 'editActionType'){
+              this.$http('SchoolFellow/addActivity_Type',data).then(res=>{
+                let error = res.error == 0 ? 'success' : 'error'
+                _g.toastMsg(error,res.msg)
+                if(res.error == 0){
+                  this.hideDialog()
+                }
+              })
             }
           }
         })
@@ -252,7 +269,7 @@
     bottom:0;
     right:0;
     left:0;
-    z-index:100 !important;
+    z-index:10 !important;
     .el-dialog{
       width:100%;
       height:100%;

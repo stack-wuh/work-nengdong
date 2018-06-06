@@ -195,7 +195,6 @@ export default {
     getWhether(){
       this.$http('SchoolFellow/getActivity_Gf_Type').then(res=>{
         this.whetherList = res
-        console.log(this.whetherList)
       })
     },
     handleAvatarSuccess(e){
@@ -213,7 +212,11 @@ export default {
         if(valid){
           this.form.student_info_id = 2
           this.$http('SchoolFellow/addActivity_Manager',this.form).then(res=>{
-            
+            let error = res.error == 0 ? 'success' : 'error'
+            _g.toastMsg(error,res.msg)
+            if(res.error == 0){
+              this.$router.push('/action')
+            }
           })
         }
       })

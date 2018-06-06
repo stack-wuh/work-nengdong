@@ -31,7 +31,7 @@ const iconRootPath = '../../../static'
             name:'消息中心',
             subList:[],
             tips:0,
-            urlPath:'/firend',
+            urlPath:'/message',
             active:false,
             mouse:false
           },  
@@ -111,7 +111,7 @@ const iconRootPath = '../../../static'
             name:'联系学院',
             subList:[],
             tips:0,
-            urlPath:'/concat',
+            urlPath:'/school',
             active:false,
             mouse:false
           },            
@@ -158,7 +158,7 @@ const iconRootPath = '../../../static'
               },
               {
                 name:'互帮互助公告',
-                urlPath:'/setting/help'
+                urlPath:'/setting/helpList'
               },
               {
                 name:'互帮互助类型',

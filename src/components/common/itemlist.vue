@@ -33,6 +33,72 @@
                 </p>
         </div>
       </div> -->
+      <button-list type="action" v-show="isShow" @handleCancel="cancel" />
+
+      <!-- 活动模块-列表 -->
+      <div v-if="$route.path == '/action'" v-for="(item,index) in newList" :key="index" class="item-detail flex-box">
+          <img v-show="isShow && !item.isChoose" @click="handleClickChoose(item,index)" src="../../../static/img/icon-check-default.png" alt="icon-check">
+          <img v-show="isShow && item.isChoose" @click="handleClickChoose(item,index)" src="../../../static/img/icon-check-action.png" alt="icon-check">
+          <div class="img-box" @click="jumpToOther(item)">
+              <img v-if="!item.cover" src="../../../static/img/logo.png" alt="avatar">
+              <img v-else :src="item.cover" alt="avatar">
+          </div>
+          <div class="right-content flex-box flex-column">
+                <p class="flex-box">
+                  <span >类型：</span>{{item.type}}
+                  <span class="empty"></span>
+                  <span  :class="[item.check_text == '未通过' ? 'danger info' : 
+                            item.check_text == '待审核' ? 'info' : 
+                              item.check_text == '已完成' ? 'info gray' :
+                                 'info default']">{{item.check_text}}</span>
+                  <img @click="handleClickShare" class="img-btn" src="../../../static/img/icon-share.png" alt="icon-share">
+                  <img v-if="item.student_info_id == userId" class="img-btn" src="../../../static/img/icon-edit.png" alt="icon-edit">
+                  <img @click="handleClickDel(item)" class="img-btn" src="../../../static/img/icon-delete.png" alt="icon-delete">
+                </p>
+                <p >
+                  <span>标题: </span>{{item.title}}
+                </p>
+                <p >
+                  <span>组织者: </span>{{item.official ? item.official : item.organizer}}
+                </p>
+                <p>
+                  <span>时间：</span>{{item.starttime || item.time | format}}
+                  <span style="margin-left:10px;">地点：</span>{{item.place}}
+                  <small class="txt-active">{{item.number}}/</small><span v-if="url != 'pages'" v-show="path != '/pages'">{{item.participants}}</span>
+                </p>          
+          </div>
+      </div>
+
+      <!-- 黄页模块-列表 -->
+      <div v-if="$route.path == '/pages'" v-for="(item,index) in newList" :key="index" class="item-detail flex-box">
+          <img v-show="isShow && !item.isChoose" @click="handleClickChoose(item,index)" src="../../../static/img/icon-check-default.png" alt="icon-check">
+          <img v-show="isShow && item.isChoose" @click="handleClickChoose(item,index)" src="../../../static/img/icon-check-action.png" alt="icon-check">
+          <div class="img-box" @click="jumpToOther(item)">
+              <img v-if="!item.image" src="../../../static/img/logo.png" alt="avatar">
+              <img v-else :src="item.image" alt="avatar">
+          </div>
+          <div class="right-content flex-box flex-column">
+                <p class="flex-box">
+                  <span >类型：</span>{{item.type}}
+                  <span class="empty"></span>
+                  <span  :class="[item.check_text == '未通过' ? 'danger info' : 
+                            item.check_text == '待审核' ? 'info' : 
+                              item.check_text == '已完成' ? 'info gray' :
+                                 'info default']">{{item.check_text}}</span>
+                  <img @click="handleClickShare" class="img-btn" src="../../../static/img/icon-share.png" alt="icon-share">
+                  <img v-if="item.student_info_id == userId" class="img-btn" src="../../../static/img/icon-edit.png" alt="icon-edit">
+                  <img @click="handleClickDel(item)" class="img-btn" src="../../../static/img/icon-delete.png" alt="icon-delete">
+                </p>
+                <p >
+                  <span>标题: </span>{{item.title}}
+                </p>
+                <p>
+                  <span>时间：</span>{{item.starttime || item.time | format}}
+                </p>          
+          </div>
+      </div>
+
+
       <div v-if="$route.path == '/concat' || $route.path == '/action/list/concat'" v-for="(item,index) in newList" :key="index" class="item-detail flex-box">
         <div @click="jumpToOther(item)" class="img-box">
           <img v-if="!item.image" src="../../../static/img/logo.png" alt="avatar">
@@ -64,18 +130,62 @@
                   </span>
                 </p>
         </div>
-      </div>      
+      </div>   
+      <div v-if="$route.path == '/school'" v-for="(item,index) in newList" :key="index" class="school-content">
+          <p class="flex-box">
+            <span>问题类型:</span>
+            <small>{{item.question_type}}</small>
+            <span class="empty"></span>
+            <span @click="handleClickDel(item)" class="btn-del">删除</span>
+          </p>
+          <p>
+            <span>详细说明:</span><br>
+            <small>{{item.illustrate}}</small>
+          </p>
+          <p>
+            <span>图片证据:</span><br>
+            <span>
+              <img v-if="item.address" v-for="(img,iindex) in item.address" :key="iindex" :src="img" alt="avatar">
+              <img v-if="!item.address" src="../../../static/img/logo.png" alt="avatar">
+            </span>
+          </p>
+          <p class="flex-box">
+            <span>姓名：<small>{{item.name}}</small></span>
+            <span>手机号：<small>{{item.phone}}</small></span>
+            <span>邮箱：<small>{{item.email}}</small></span>
+            <span>身份证号：<small>{{item.no}}</small></span>
+            <span>入学年份：<small>{{item.year}}</small></span>
+            <span>专业班级：<small>{{item.classes}}</small></span>
+            <span>辅导员：<small>{{item.counsellor}}</small></span>
+            <span>学号：<small>{{item.number}}</small></span>
+          </p>
+      </div> 
+
+      <el-dialog title='分享' :visible.sync="dialogVisible">
+        <span>复制下面的地址就可以分享啦!</span><br>
+        <input class="input-text" type="text" id="aaa" v-model="Urlhref" readonly @click="copy">
+        <span slot="footer" class="dialog-footer">
+          <el-button @click="dialogVisible = false">取 消</el-button>
+          <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+        </span>
+      </el-dialog>
     </div>
   </section>  
 </template>
-
 <script>
+  import ButtonList from '@/components/common/button'
   export default{
-    props:['list','type'],
+    components:{
+      ButtonList
+    },
+    props:['list','type','isShow'],
     data(){
       return{
+        dialogVisible:false,
+        Urlhref:window.location.href,
       }
     },
+
     computed:{
       newList(){
         return this.list
@@ -85,9 +195,43 @@
       },
       path(){
         return this.$route.path
-      }
+      },
+      userId(){
+        return sessionStorage.getItem('userId')
+      }, 
     },
     methods:{
+      cancel(){
+        this.$emit('changeIsShow',false)
+        this.newList.map(item=>{
+          item.isChoose = false
+        })
+      },
+      //批量操作--单击图片选择元素
+      handleClickChoose(item,index){
+        let isChoose = ''
+        if(!item.isChoose){
+          isChoose = true
+        }else{
+          isChoose = false
+        }
+        this.$set(this.newList[index],'isChoose',isChoose)
+        let newArr = this.newList.filter(list=>{
+              return list.isChoose
+        })
+      },
+      copy(){
+        let elem = document.getElementById('aaa')
+        elem.select()
+        document.execCommand('Copy')
+        _g.toastMsg('success','链接已经复制到您的剪贴板了')
+      }, 
+
+      //单击分享按钮,弹出分享的链接
+      handleClickShare(){
+        this.dialogVisible = true
+      },
+
       jumpToOther(e){
         if(this.url == 'action' || this.path == '/action'){
           this.$router.push('/action/detail/'+e.id)
@@ -99,6 +243,7 @@
           this.$router.push('/concat/detail/'+e.id)
         }
       },
+
       handleClickDel(e){
         let url = ''
         if(this.url == 'action'){
@@ -109,6 +254,8 @@
           url = 'SchoolFellow/delAlumni'
         }else if(this.path == '/concat'){
           url = 'SchoolFellow/delMutual_Help'  
+        }else if(this.path == '/school'){
+          url = 'SchoolFellow/delContact_College'
         }
         this.$http(url,{id:e.id}).then(res=>{
           let error = res.error == 0 ? 'success' : 'error'
@@ -120,7 +267,7 @@
       },
     },
     created(){
-      console.log(this.list)
+      console.log(this.list,this.type)
     }
   }
 </script>
@@ -143,6 +290,7 @@
   .item-detail{
       padding:20px 0;
       border-bottom:1px solid #eee;
+      box-sizing: border-box;
   }
   .right-content{
     align-items: flex-start;
@@ -196,5 +344,51 @@
   .empty{
     flex:1;
   }
+}
+.school-content{
+  margin-top:10px;
+  padding:10px;
+  border:1px solid #eee;
+  
+  [alt='avatar']{
+    width:60px;
+    height:60px;
+  }
+  .btn-del{
+    padding:2px 10px;
+    font-size: 14px;
+    background-color: #FF6969;
+    color: #fff;
+    border-radius: 5px;
+    user-select:none;
+  }
+  .btn-del:hover{
+    cursor: pointer;
+  }
+  p{
+    margin-bottom:10px;
+  }
+  p:last-child{
+    flex-flow: wrap;
+    span{
+      display: inline-block;
+      width:30%;
+      margin-bottom:10px;
+    }
+  }
+
+}
+.school-content:hover{
+  border-color: #00998d;
+}
+.input-text{
+  width:100%;
+  font-size: 14px;
+  color: blue;
+  border:none;
+  outline:none;
+}
+[alt="icon-check"]{
+  margin-right:10px;
 }
 </style>

@@ -124,6 +124,30 @@ export default {
               click:''
             }
           ]
+        },
+        {
+          type:9,
+          subList:[
+            {
+              name:'发布公告',
+              click:this.jump2other
+            },
+            {
+              name:'返回上一级',
+              click:this.pageBack
+            }
+          ]
+        },
+        {
+          type:10,
+          subList:[
+            {
+              name:'批量操作'
+            },
+            {
+              name:'导出当前页'
+            }
+          ]
         }
       ],
       keywords:''
@@ -153,6 +177,8 @@ export default {
           params.type = 'addDonate'
         }else if(path == '/setting/helpType'){
           params.type = 'addHelpType'
+        }else if(path == '/setting/type'){
+          params.type = 'addActionType'
         }
         this.$store.commit('changeDialogStatus',params)
       }
@@ -178,7 +204,17 @@ export default {
     },
     //批量操作
     handleClickPick(){
-      console.log('批量操作')
+      this.$emit('PickAny',true)
+    },
+
+    //跳转路由
+    jump2other(){
+      let path = ''
+      switch(this.$route.path){
+        case '/setting/helpList' : path = '/setting/help'
+                                break;
+      }
+      this.$router.push(path)
     },
     //待审核
     handleClickPedding(e){

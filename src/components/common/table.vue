@@ -20,7 +20,7 @@
       </el-table-column>
       <el-table-column align="center" v-for="(item,index) in sublist.list" :key="index" v-if="item.isCheck" :label="item.name">
         <template slot-scope="scope">
-          <el-checkbox v-for="(subItem,subIndex) in item.checkList" :key="subIndex" v-model="scope.row[subItem.prop]" >{{subItem.name}}</el-checkbox>
+          <el-checkbox @change="subItem.click(scope)" v-for="(subItem,subIndex) in item.checkList" :key="subIndex" v-model="scope.row[subItem.prop]" >{{subItem.name}}</el-checkbox>
         </template>
       </el-table-column>      
       <el-table-column :width="item.width" :fixed="item.fixed" align="center" v-if="item.btnList" v-for="(item,index) in sublist.list" :key="index" :label="item.name" >
@@ -159,16 +159,28 @@ export default {
               prop: "name"
             },
             {
-              name: "身份",
-              prop: "identity"
+              name: "专业",
+              prop: "line"
             },
             {
-              name: "专业班级",
+              name: "班级",
               prop: "classes"
             },
             {
               name: "手机号",
-              prop: "phone"
+              prop: "phone_number"
+            },
+            {
+              name:'QQ',
+              prop:'qq'
+            },
+            {
+              name:'微信',
+              prop:'weixin'
+            },
+            {
+              name:'邮箱',
+              prop:'email'
             }
           ]
         },
@@ -410,15 +422,18 @@ export default {
               checkList:[
                 {
                   name:'教工端',
-                  prop:"faculty"
+                  prop:"faculty",
+                  click:this.handleClickCheckRow
                 },
                 {
                   name:'校友端',
-                  prop:'schoolfellow'
+                  prop:'schoolfellow',
+                  click:this.handleClickCheckRow
                 },
                 {
                   name:'学生端',
-                  prop:'pupil'
+                  prop:'pupil',
+                  click:this.handleClickCheckRow
                 }
               ]
             },
@@ -427,10 +442,12 @@ export default {
               child: [],
               btnList: [
                 {
-                  name: "编辑"
+                  name: "编辑",
+                  click:this.handleClickEdit
                 },
                 {
-                  name: "删除"
+                  name: "删除",
+                  click:this.handleClickDel
                 }
               ]
             }
@@ -512,6 +529,19 @@ export default {
               ]
             }
           ]
+        },
+        {
+          type:'helpList',
+          list:[
+            {
+              name:'公告',
+              prop:'name'
+            },
+            {
+              name:'内容',
+              prop:'text'
+            }
+          ]
         }
       ]
     };
@@ -530,6 +560,7 @@ export default {
     }
   },
   methods: {
+    //色彩选择--提交
     colorPickerChange(id,$event){
       let url = '' , data = {id:id,color:$event}
       switch(this.$route.path){
@@ -542,6 +573,7 @@ export default {
         _g.toastMsg(error,res.msg)
       })
     },
+    //单击删除按钮 -- 删除
     handleClickDel($event) {
       console.log(this.type)
       let url = "",data = {};
@@ -564,6 +596,8 @@ export default {
         case 'helpType' : 
           (url = 'SchoolFellow/delMutual_Help_Type'),(data.id = $event.row.id)
           break;
+        case 'actions' : 
+          (url = 'SchoolFellow/delActivity_Type'),(data.id = $event.row.id)
       }
       this.$http(url, data).then(res => {
         let error = res.error == 0 ? "success" : "error";
@@ -573,6 +607,7 @@ export default {
         }
       });
     },
+    //单击编辑按钮 -- 编辑
     handleClickEdit($event){
       if(this.$route.path == '/setting/year'){
           this.$store.commit('saveValue',{title:'编辑',status:true,name:'addNewYear',value:$event.row,type:'addYear',action:'edit',id:$event.row.id})
@@ -589,6 +624,9 @@ export default {
       if(this.type == 'helpType'){
         this.$store.commit('saveValue',{title:'编辑',status:true,name:'addHelpType',value:$event.row,type:'addHelpType',action:'edit',id:$event.row.id})
       }
+      if(this.type == 'actions'){ 
+        this.$store.commit('saveValue',{title:'编辑',status:true,name:'editActionType',value:$event.row,type:'editActionType',action:'edit',id:$event.row.id})
+      }
 },
     //单击改变状态
     handleClickChangeState($event){
@@ -599,6 +637,19 @@ export default {
       }
 
       this.$http(url,data).then(res=>{
+        let error = res.error == 0 ? 'success' : 'error'
+        _g.toastMsg(error,res.msg)
+      })
+    },
+
+    //复选框 -- 活动类型--设置同步展示
+    handleClickCheckRow($event){
+      let url = ''
+      switch (this.$route.path){
+        case '/setting/type' : url = 'SchoolFellow/XGActivity_Type'
+                              break; 
+      }
+      this.$http(url,$event.row).then(res=>{
         let error = res.error == 0 ? 'success' : 'error'
         _g.toastMsg(error,res.msg)
       })

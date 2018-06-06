@@ -1,7 +1,7 @@
 <template>
   <section class="wrapper">
     <search @propKey="propKey" @confirm="fetchData" type="7" />
-    <e-table type="actions" :info="info"  />
+    <e-table @getDelMsg="getDelMsg" type="actions" :info="info"  />
     <bottom type="pagination" :total="total" />
   </section>
 </template>
@@ -51,6 +51,9 @@
       }
     },
     methods:{
+      getDelMsg(e){
+        e && this.fetchData()
+      },
       propKey(e){
         this.fetchData(e)
       },
@@ -58,10 +61,12 @@
         this.$http('SchoolFellow/getActivity_Type',{pageNo:this.pageNo,type_name:name}).then(res=>{
           for(var k in res.data){
             for(var j in res.data[k]){
-              if(res.data[k][j] == '0'){
-                res.data[k][j] = false
-              }else if(res.data[k][j] == '1'){
-                res.data[k][j] = true
+              if(j !== 'id'){
+                if(res.data[k][j] == '0' || res.data[k][j] == 'false'){
+                  res.data[k][j] = false
+                }else if(res.data[k][j] == '1' || res.data[k][j] == 'true'){
+                  res.data[k][j] = true
+                }
               }
             }
           }

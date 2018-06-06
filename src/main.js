@@ -12,6 +12,8 @@ import '../static/css/font/iconfont.css'
 import store from './vuex/store'
 import _g from '../static/js/global'
 import apiMethods from '../static/js/http'
+import vueEventCalendar from 'vue-event-calendar'
+
 
 Vue.use(ElementUI)
 
@@ -49,3 +51,8 @@ Vue.filter('format',(value)=>{
   let year = date.getFullYear() , month = date.getMonth() , day = date.getDay() 
     return year +'-'+ month +'-'+ day 
 })
+Vue.filter('trueType',value=>{
+  return value == 1 ? true : false
+})
+
+Vue.use(vueEventCalendar, {locale: 'zh', color: '#00998D'})

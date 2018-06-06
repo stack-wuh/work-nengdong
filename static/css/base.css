@@ -49,3 +49,11 @@ ul,ol,li{
 .v-modal{
   display: none !important;
 }
+
+.input-text{
+  width:100%;
+  font-size: 14px;
+  color: blue;
+  border:none;
+  outline:none;
+}

@@ -4,13 +4,13 @@
       <section class="content">
         <p class="nav-title">当前位置：活动管理>活动列表>活动详情</p>
 
-        <action-info :info="info.list" />
+        <action-info :info="list" />
 
-        <p v-show="false" class="btn-list"><span>报名详情</span><span class="btn">导出报名表</span></p>
+        <p v-show="info.list.length > 0" class="btn-list"><span>报名详情</span><span class="btn">导出报名表</span></p>
 
-        <e-table v-show="false" class="el-table" type="action" :info="table"></e-table>
+        <e-table v-show="info.list.length > 0" class="el-table" type="action" :info="info"></e-table>
         
-        <bottom @getClickMsg="getClickMsg" type="btn" :data="{id:$route.params.id}" />
+        <bottom v-if="info.list.check_text == '待审核'" @getClickMsg="getClickMsg" type="btn" :data="{id:$route.params.id}" />
       </section>
     </section>
 </template>
@@ -47,16 +47,25 @@ import Bottom from '@/components/common/bottom'
           type:'action',
           list:list
         },
-        table:[]
+        table:[],
+        list:[]
       }
     },
     methods:{
+      //获取报名列表
+      getOrderList(){
+        this.$http('SchoolFellow/getActivityBy_BM',{id:this.$route.params.id}).then(res=>{
+          this.info.list = res.data.map(item=>{
+            return item = Object.assign(item,item.student_info)
+          })
+        })
+      },
       getClickMsg(e){
         e && this.fetchData()
       },
       fetchData(){
         this.$http('SchoolFellow/getActivity_Manager',{id:this.$route.params.id}).then(res=>{
-         this.info.list = res.data.find(item=>{
+         this.list = res.data.find(item=>{
               return item.id == this.$route.params.id
           })
         })
@@ -64,6 +73,7 @@ import Bottom from '@/components/common/bottom'
     },
     created(){
       this.fetchData()
+      this.getOrderList()
     }
   }
 </script>

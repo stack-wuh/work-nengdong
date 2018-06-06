@@ -1,6 +1,6 @@
 <template>
     <section class="wrapper">
-      <search @confirm="fetchData" type='3' />
+      <search @PickAny="pickAny" @confirm="fetchData" type='3' />
       <div class="content">
         <p class="nav-title">当前位置: 活动管理>活动列表</p>
         <ul class="item-list">
@@ -11,7 +11,7 @@
             </p>
           </li>
         </ul>
-        <item-list @getDelMsg="getDelMsg" :list="list" />
+        <item-list @changeIsShow="changeIsShow" @getDelMsg="getDelMsg" :list="list" :isShow="isShow" />
         <bottom :total="total" type="pagination" />
       </div>
     </section>
@@ -21,11 +21,13 @@
 import Search from "@/components/common/search";
 import ItemList from "@/components/common/itemList";
 import Bottom from "@/components/common/bottom";
+import ButtonList from '@/components/common/button';
 export default {
   components: {
     Search,
     ItemList,
-    Bottom
+    Bottom,
+    ButtonList
   },
   data() {
     return {
@@ -75,10 +77,18 @@ export default {
       list: [],
       page: 1,
       total: 0,
-      search:{}
+      search:{},
+      isShow:false,
     };
   },
   methods: {
+    changeIsShow(e){
+      this.isShow = e
+    },
+    pickAny(e){
+      this.isShow = e
+      console.log(e)
+    },
     getDelMsg(e){
       e && this.fetchData()
     },
@@ -100,6 +110,7 @@ export default {
       let data = Object.assign({title:e},this.search)
       this.$http("SchoolFellow/getActivity_Manager",data).then(res => {
         this.list = res.data;
+        console.log(this.list)
         this.total = Number.parseInt(res.total);
       });
     }
