@@ -13,6 +13,7 @@
         <span class="default">编辑</span>
         <span class="danger">删除</span>
       </nav>
+      
       <ul class="list-content">
         <li>
           <img src="../../../static/img/logo.png" alt="avatar">

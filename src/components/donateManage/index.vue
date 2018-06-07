@@ -1,9 +1,9 @@
 <template>
   <section class="wrapper">
-    <search @confirm="fetchData" @propKey="propKey" type="8" />
+    <search @PickAny="pickAny" @confirm="fetchData" @propKey="propKey" type="8" />
     <section class="content">
       <p class="nav-title">当前位置: 校友捐赠>列表</p>
-      <item-list :list="list" />
+      <item-list @getDelAnyMsg="getDelAnyMsg" @changeIsShow="changeIsShow" @getDelMsg="getDelMsg" :list="list" :isShow="isShow" />
       <bottom type="pagination" :total="total" />
     </section>
   </section>
@@ -23,10 +23,23 @@
       return{
         list:[],
         pageNo:1,
-        total:0
+        total:0,
+        isShow:false
       }
     },
     methods:{
+      getDelAnyMsg(e){
+        e && this.fetchData()
+      },
+      changeIsShow(e){
+        this.isShow = e
+      },
+      pickAny(e){
+        this.isShow = e
+      },
+      getDelMsg(e){
+        e && this.fetchData()
+      },
       propKey(e){
         this.fetchData(e)
       },

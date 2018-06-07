@@ -1,23 +1,14 @@
 <template>
   <section class="wrapper">
-    <search  type="7"/>
-    <e-table type="concat" :info="info" />
+    <search @propKey="propKey" @confirm="fetchData" type="7"/>
+    <e-table type="concat" @getDelMsg="getDelMsg" :info="info" />
   </section>  
 </template>
 
 <script>
   import ETable from '@/components/common/table'
   import Search from '@/components/common/search'
-  const list = [
-    {
-      type:'寻求帮助',
-      color:'#001122'
-    },
-    {
-      type:'寻求帮助',
-      color:'#002212'
-    }
-  ]
+  const list = []
   export default{
     components:{
       ETable,
@@ -30,6 +21,22 @@
           list:list
         }
       }
+    },
+    methods:{
+      propKey(e){
+        this.fetchData(e)
+      },
+      getDelMsg(e){
+        e && this.fetchData()
+      },
+      fetchData(title){
+        this.$http('SchoolFellow/getContact_College',{name:title}).then(res=>{
+          this.info.list = res.data
+        })
+      }
+    },
+    created(){
+      this.fetchData()
     }
   }
 </script>

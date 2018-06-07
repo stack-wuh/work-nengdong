@@ -1,6 +1,6 @@
 <template>
     <section class="wrapper">
-      <search type="10" @propKey="propKey" @confirm="fetchData" />
+      <search @PickAny="pickAny" type="10" @propKey="propKey" @confirm="fetchData" />
       <section class="content">
         <p class="nav-title">当前位置: 联系学院>列表</p>
         <nav class="nav">
@@ -10,7 +10,7 @@
           <span @click="handleClickChange(3)" :class="{'txt-active':current==3}">校友身份认证</span>
           <span @click="handleClickChange(4)" :class="{'txt-active':current==4}">其他</span>
         </nav>
-        <item-list @getDelMsg="getDelMsg" :list="list" />
+        <item-list @getDelAnyMsg="getDelAnyMsg" @changeIsShow="changeIsShow" @getDelMsg="getDelMsg" :list="list" :isShow="isShow" />
         <bottom :total="total" type="pagination" />
       </section>
     </section>
@@ -20,14 +20,7 @@
 import Search from '@/components/common/search'
 import Bottom from '@/components/common/bottom'
 import ItemList from '@/components/common/itemList'
-const list=[
-  {
-    name:'aaa'
-  },
-  {
-    name:'bbb'
-  }
-]
+const list=[]
   export default{
     components:{
       Search,
@@ -41,10 +34,20 @@ const list=[
         pageNo:1,
         list:list,
         key:'',
-        type:''
+        type:'',
+        isShow:false
       }
     },
     methods:{
+      getDelAnyMsg(e){
+        e && this.fetchData()
+      },
+      changeIsShow(e){
+        this.isShow = e
+      },
+      pickAny(e){
+        this.isShow = e
+      },
       propKey(e){
         this.fetchData(e)
       },
@@ -59,7 +62,8 @@ const list=[
       fetchData(name){
         this.$http('SchoolFellow/getContact_College',{type:this.type,pageNo:this.pageNo,name:name}).then(res=>{
          res.data &&  res.data.map(item=>{
-            item.address = item.address.split(',')
+            if(item.address)
+              item.address = item.address.split(',')
           })
           this.list = res.data
           this.total = res.total
