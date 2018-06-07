@@ -3,10 +3,10 @@
     <search type="2" />
     <section class="content">
         <p class="nav-title">当前位置：黄业管理>校友会黄页>校友会详情</p>
-        <action-info :info="info" />
+        <action-info :info="page" />
         <p class="el-title">活动</p>
         <e-table class="my-table" :info="info" type="pages" />
-        <bottom type="btn" :data="{id:$route.params.id}" />
+        <bottom v-if="page.list.check_text == '待审核'" type="btn" :data="{id:$route.params.id}" />
     </section>
   </section>
 </template>
@@ -35,8 +35,16 @@
     },
     data(){
       return{
-        info:info
+        info:info,
+        showButtom:false,
+        page:{
+          type:'pages',
+          list:[]
+        }
       }
+    },
+    computed:{
+
     },
     methods:{
       //获取发布者的历史消息
@@ -50,11 +58,17 @@
         })
       },
       fetchData(){
-        
+        this.$http('SchoolFellow/getAlumni_Pages').then(res=>{
+          this.page.list = res.data.find(item=>{ 
+            return item.id == this.$route.params.id
+          })
+          this.page.list.address = this.page.list.alumni_pages_album.address.split(',')
+        })
       },
     },
     created(){
       this.getList()
+      this.fetchData()
     },
     destroyed(){
       

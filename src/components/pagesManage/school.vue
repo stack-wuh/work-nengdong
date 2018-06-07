@@ -1,6 +1,6 @@
 <template>
   <section class="wrapper">
-    <search type="1" />
+    <search type="1" :school="type" />
     <div class="content">
       <p class="nav-title">当前位置: 校友管理>校友详情</p>
       <nav class="nav flex-box">
@@ -20,16 +20,7 @@
   import Search from '@/components/common/search'
   import ETable from '@/components/common/table'
   import Bottom from '@/components/common/bottom'
-  const list = [
-    {
-      name:'名称',
-      phone:'13123233232'
-    },
-    {
-      name:'电话',
-      phone:'14412331344'
-    }
-  ]
+  const list = []
   export default{
     components:{
       Search,
@@ -69,7 +60,7 @@
   }
 </script>
 
-<style lang="less" >
+<style lang="less" scoped >
   @base:#00998d;
   .content{
     .list-content{

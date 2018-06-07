@@ -1,6 +1,6 @@
 <template>
   <section class="wrapper">
-    <search @propKey="propKey" @confirm="fetchData" type="5" />
+    <search  @PickAny="PickAny" @propKey="propKey" @confirm="fetchData" type="5" />
     <section class="content">
       <p class="nav-title">当前位置: 黄页管理>校友会黄页</p>
       <nav class="nav">
@@ -10,7 +10,7 @@
         <span @click="handleClickChange(3)" :class="{'txt-active' : No == 3}">按地域分</span>
         <span @click="handleClickChange(4)" :class="{'txt-active' : No == 4}">按行业分</span>
       </nav>
-      <item-list @getDelMsg="getDelMsg" :list="list" type="pages" />
+      <item-list @getDelAnyMsg="getDelAnyMsg" @getDelMsg="getDelMsg"  @changeIsShow="changeIsShow" :list="list" type="pages" :isShow="isShow" />
       <bottom type="pagination" :total="total" />
     </section>
   </section>
@@ -32,10 +32,20 @@
         list:[],
         total:0,
         pageNo:1,
-        type:''
+        type:'',
+        isShow:false
       }
     },
     methods:{
+      getDelAnyMsg(e){
+        e && this.fetchData()
+      },
+      PickAny(e){
+        this.isShow = e
+      },
+      changeIsShow(e){
+        this.isShow = e
+      },
       getDelMsg(e){
         e && this.fetchData()
       },
