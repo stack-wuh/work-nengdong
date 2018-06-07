@@ -20,6 +20,7 @@ const PagesSchool = resolve => require(['@/components/pagesManage/school'],resol
 
 const ConcatIndex = resolve => require(['@/components/concatManage/index'],resolve)
 const ConcatDetail = resolve => require(['@/components/concatManage/detail'],resolve)
+const ConcatAction = resolve => require(['@/components/concatManage/action'],resolve)
 
 const DonateIndex = resolve => require(['@/components/donateManage/index'],resolve)
 
@@ -144,6 +145,11 @@ export default new Router({
           path:'/concat/detail/:id',
           name:'concatDetail',
           component:ConcatDetail
+        },
+        {
+          path:'/concat/action',
+          name:'concatAction',
+          component:ConcatAction
         }
       ]
     },

@@ -96,6 +96,7 @@ export default {
           subList:[
             {
               name:'发布',
+              click:this.jump2other
             },
             {
               name:'批量操作',
@@ -227,6 +228,8 @@ export default {
       switch(this.$route.path){
         case '/setting/helpList' : path = '/setting/help'
                                 break;
+        case '/concat' : path = '/concat/action'
+                        break; 
       }
       this.$router.push(path)
     },

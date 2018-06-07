@@ -4,10 +4,10 @@
       <button-list @getDelAnyMsg="getDelAnyMsg" type="action" v-show="isShow" @handleCancel="cancel" :chooseArr="chooseItemId" />
 
       <!-- 活动模块-列表 -->
-      <div v-if="$route.path == '/action' || $route.path == '/action/list/action'" v-for="(item,index) in newList" :key="index" class="item-detail flex-box">
+      <div @click="jumpToOther(item)" v-if="$route.path == '/action' || $route.path == '/action/list/action'" v-for="(item,index) in newList" :key="index" class="item-detail flex-box">
           <img v-show="isShow && !item.isChoose" @click="handleClickChoose(item,index)" src="../../../static/img/icon-check-default.png" alt="icon-check">
           <img v-show="isShow && item.isChoose" @click="handleClickChoose(item,index)" src="../../../static/img/icon-check-action.png" alt="icon-check">
-          <div class="img-box" @click="jumpToOther(item)">
+          <div class="img-box" >
               <img v-if="!item.cover" src="../../../static/img/logo.png" alt="avatar">
               <img v-else :src="item.cover" alt="avatar">
           </div>
@@ -38,10 +38,10 @@
       </div>
 
       <!-- 黄页模块-列表 -->
-      <div v-if="$route.path == '/pages' || $route.path == '/action/list/pages'" v-for="(item,index) in newList" :key="index" class="item-detail flex-box">
+      <div  @click="jumpToOther(item)" v-if="$route.path == '/pages' || $route.path == '/action/list/pages'" v-for="(item,index) in newList" :key="index" class="item-detail flex-box">
           <img v-show="isShow && !item.isChoose" @click="handleClickChoose(item,index)" src="../../../static/img/icon-check-default.png" alt="icon-check">
           <img v-show="isShow && item.isChoose" @click="handleClickChoose(item,index)" src="../../../static/img/icon-check-action.png" alt="icon-check">
-          <div class="img-box" @click="jumpToOther(item)">
+          <div class="img-box">
               <img v-if="!item.image" src="../../../static/img/logo.png" alt="avatar">
               <img v-else :src="item.image" alt="avatar">
           </div>
@@ -65,10 +65,10 @@
       </div>
 
       <!-- 互联互助模块-列表 -->
-      <div v-if="$route.path == '/concat' || $route.path == '/action/list/concat'" v-for="(item,index) in newList" :key="index" class="item-detail flex-box">
+      <div @click="jumpToOther(item)" v-if="$route.path == '/concat' || $route.path == '/action/list/concat'" v-for="(item,index) in newList" :key="index" class="item-detail flex-box">
         <img v-show="isShow && !item.isChoose" @click="handleClickChoose(item,index)" src="../../../static/img/icon-check-default.png" alt="icon-check">
         <img v-show="isShow && item.isChoose" @click="handleClickChoose(item,index)" src="../../../static/img/icon-check-action.png" alt="icon-check">
-        <div @click="jumpToOther(item)" class="img-box">
+        <div class="img-box">
           <img v-if="!item.image" src="../../../static/img/logo.png" alt="avatar">
           <img v-else :src="item.image" alt="avatar">
         </div>
@@ -140,7 +140,7 @@
         <div v-if="$route.path == '/donate'" v-for="(item,index) in newList" :key="index" class="item-detail flex-box">
           <img v-show="isShow && !item.isChoose" @click="handleClickChoose(item,index)" src="../../../static/img/icon-check-default.png" alt="icon-check">
           <img v-show="isShow && item.isChoose" @click="handleClickChoose(item,index)" src="../../../static/img/icon-check-action.png" alt="icon-check">
-          <div class="img-box" @click="jumpToOther(item)">
+          <div class="img-box">
               <img v-if="!item.image" src="../../../static/img/logo.png" alt="avatar">
               <img v-else :src="item.image" alt="avatar">
           </div>
@@ -286,6 +286,7 @@
   ::-webkit-scrollbar{
     display: none;
   }
+  
   .img-box img{
     width: 80px;
     height:80px;
@@ -334,6 +335,9 @@
   }
 
 }
+.item-content:hover{
+  cursor: pointer;
+}
 .item-detail:hover{
   border:1px solid #00998d;
 }
@@ -359,6 +363,12 @@
   padding:10px;
   border:1px solid #eee;
   
+  div{
+    width:100%;
+    p:first-of-type{
+      width:100%;
+    }
+  }
   [alt='avatar']{
     width:60px;
     height:60px;
