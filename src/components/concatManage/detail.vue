@@ -5,7 +5,7 @@
       <p class="nav-title">当前位置: 互联互助>详情</p>
 
       <action-info type="concat" :info="info" />
-      <bottom type="btn" :data="{id:$route.params.id}" />
+      <bottom v-if="info.list.check_text == '待审核'" type="btn" :data="{id:$route.params.id}" />
     </section>
   </section>
 </template>
@@ -22,13 +22,25 @@
     },
     data(){
       return{
-        info:{}
+        info:{
+          type:'',
+          list:[]
+        }
       }
     },
     methods:{
       fetchData(){
-
+        this.$http('SchoolFellow/getMutual_Help').then(res=>{
+          this.info.list = res.data.find(item=>{
+            return item.id == this.$route.params.id
+          })
+          this.info.list = Object.assign(this.info.list,this.info.list.student_info)
+          this.info.list.addressList = this.info.list.mutual_help_image.address.split(',')
+        })
       }
+    },
+    created(){
+      this.fetchData()
     }
   }
 </script>

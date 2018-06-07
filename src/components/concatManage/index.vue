@@ -1,6 +1,6 @@
 <template>
   <section class="wrapper">
-    <search @propKey="propKey" @confirm="fetchData" type='6' />
+    <search @PickAny="PickAny"  @propKey="propKey" @confirm="fetchData" type='6' />
     <section class="content">
       <p class="nav-title">当前位置: 互联互助>列表</p>
       <nav class="nav">
@@ -9,7 +9,7 @@
         <span @click="handleClickChange(2)" :class="{'txt-active':current==2}">寻求帮助</span>
         <span @click="handleClickChange(3)" :class="{'txt-active':current==3}">提供帮助</span>
       </nav>
-      <item-list @getDelMsg="getDelMsg" :list="list" />
+      <item-list @getDelAnyMsg="getDelAnyMsg" @changeIsShow="changeIsShow" @getDelMsg="getDelMsg" :list="list" :isShow="isShow" />
       <bottom :total="total" type="pagination" />
     </section>
   </section>
@@ -31,10 +31,20 @@
         total:0,
         pageNo:1,
         current:1,
-        type:''
+        type:'',
+        isShow:false
       }
     },
     methods:{
+      PickAny(e){
+        this.isShow = e
+      },
+      getDelAnyMsg(e){
+        e && this.fetchData()
+      },
+      changeIsShow(e){
+        this.isShow = e
+      },
       getDelMsg(e){
         e && this.fetchData()
       },
