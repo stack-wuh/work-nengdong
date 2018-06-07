@@ -9,8 +9,7 @@
         <p v-show="info.list.length > 0" class="btn-list"><span>报名详情</span><span @click="export2Excel" class="btn">导出报名表</span></p>
 
         <e-table v-show="info.list.length > 0" class="el-table" type="action" :info="info"></e-table>
-        
-        <bottom v-if="info.list.check_text == '待审核'" @getClickMsg="getClickMsg" type="btn" :data="{id:$route.params.id}" />
+        <bottom v-if="list.check_text == '待审核'" @getClickMsg="getClickMsg" type="btn" :data="{id:$route.params.id}" />
       </section>
     </section>
 </template>
@@ -20,20 +19,7 @@ import Search from '@/components/common/search'
 import ETable from '@/components/common/table'
 import ActionInfo from '@/components/common/actionInfo'
 import Bottom from '@/components/common/bottom'
-  const list = [
-    {
-      name:'张晓晓',
-      identity:'教职工',
-      classes:'能动10111',
-      phone:'13323233232'
-    },
-    {
-      name:'张晓晓',
-      identity:'教职工',
-      classes:'能动10111',
-      phone:'13323233232'
-    }
-  ]
+  const list = []
   export default{
     components:{
       Search,
@@ -74,6 +60,7 @@ import Bottom from '@/components/common/bottom'
          this.list = res.data.find(item=>{
               return item.id == this.$route.params.id
           })
+          console.log(this.list)
         })
       }
     },
