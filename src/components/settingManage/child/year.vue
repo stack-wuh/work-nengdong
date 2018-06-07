@@ -2,12 +2,14 @@
   <section class="wrapper">
     <search @confirm="confirm" @propKey="propKey" type="7" />
     <e-table @getDelMsg="getDelMsg" type="year" :info="info" />
+    <bottom type="pagination" :total="total" @getCurrentPage="getCurrentPage" />
   </section>
 </template>
 
 <script>
   import Search from '@/components/common/search'
   import ETable from '@/components/common/table'
+  import Bottom from '@/components/common/bottom'
   const list = [
     {
       year:'2010',
@@ -21,21 +23,29 @@
   export default{
     components:{
       ETable,
-      Search
+      Search,
+      Bottom
     },
     data(){
       return{
         info:{
           type:'year',
           list:list
-        }
+        },
+        total:0,
+        pageNo:1
       }
     },
     methods:{
+      getCurrentPage(e){
+        this.pageNo = e
+        this.fechData()
+      },
       //获取所有入学年份
       fechData(name){
-        this.$http('SchoolFellow/getYear',{name:name}).then(res=>{
+        this.$http('SchoolFellow/getYear',{pageNo:this.pageNo,name:name}).then(res=>{
           this.info.list = res.data
+          this.total = res.total
         })
       },
       confirm(e){
