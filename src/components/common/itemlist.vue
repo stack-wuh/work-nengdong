@@ -33,7 +33,7 @@
                 </p>
         </div>
       </div> -->
-      <button-list type="action" v-show="isShow" @handleCancel="cancel" />
+      <button-list @getDelAnyMsg="getDelAnyMsg" type="action" v-show="isShow" @handleCancel="cancel" :chooseArr="chooseItemId" />
 
       <!-- 活动模块-列表 -->
       <div v-if="$route.path == '/action' || $route.path == '/action/list/action'" v-for="(item,index) in newList" :key="index" class="item-detail flex-box">
@@ -70,7 +70,7 @@
       </div>
 
       <!-- 黄页模块-列表 -->
-      <div v-if="$route.path == '/pages'" v-for="(item,index) in newList" :key="index" class="item-detail flex-box">
+      <div v-if="$route.path == '/pages' || $route.path == '/action/list/pages'" v-for="(item,index) in newList" :key="index" class="item-detail flex-box">
           <img v-show="isShow && !item.isChoose" @click="handleClickChoose(item,index)" src="../../../static/img/icon-check-default.png" alt="icon-check">
           <img v-show="isShow && item.isChoose" @click="handleClickChoose(item,index)" src="../../../static/img/icon-check-action.png" alt="icon-check">
           <div class="img-box" @click="jumpToOther(item)">
@@ -81,10 +81,6 @@
                 <p class="flex-box">
                   <span >类型：</span>{{item.type}}
                   <span class="empty"></span>
-                  <span  :class="[item.check_text == '未通过' ? 'danger info' : 
-                            item.check_text == '待审核' ? 'info' : 
-                              item.check_text == '已完成' ? 'info gray' :
-                                 'info default']">{{item.check_text}}</span>
                   <img @click="handleClickShare" class="img-btn" src="../../../static/img/icon-share.png" alt="icon-share">
                   <img v-if="item.student_info_id == userId" class="img-btn" src="../../../static/img/icon-edit.png" alt="icon-edit">
                   <img @click="handleClickDel(item)" class="img-btn" src="../../../static/img/icon-delete.png" alt="icon-delete">
@@ -92,14 +88,18 @@
                 <p >
                   <span>标题: </span>{{item.title}}
                 </p>
-                <p>
+                <p class="flex-box">
                   <span>时间：</span>{{item.starttime || item.time | format}}
+                  <span class="empty"></span>
+                  <span class="parise-box">{{item.praise}} <img src="../../../static/img/icon-prise-active.png" class="icon-praise" /></span>
                 </p>          
           </div>
       </div>
 
-
+      <!-- 互联互助模块-列表 -->
       <div v-if="$route.path == '/concat' || $route.path == '/action/list/concat'" v-for="(item,index) in newList" :key="index" class="item-detail flex-box">
+        <img v-show="isShow && !item.isChoose" @click="handleClickChoose(item,index)" src="../../../static/img/icon-check-default.png" alt="icon-check">
+        <img v-show="isShow && item.isChoose" @click="handleClickChoose(item,index)" src="../../../static/img/icon-check-action.png" alt="icon-check">
         <div @click="jumpToOther(item)" class="img-box">
           <img v-if="!item.image" src="../../../static/img/logo.png" alt="avatar">
           <img v-else :src="item.image" alt="avatar">
@@ -109,8 +109,8 @@
                   <span >类型：</span>{{item.type}}
                   <span class="empty"></span>
                   <span class="info">{{item.type}}</span>
-                  <img class="img-btn" src="../../../static/img/icon-share.png" alt="icon-share">
-                  <img class="img-btn" src="../../../static/img/icon-edit.png" alt="icon-edit">
+                  <img @click="handleClickShare" class="img-btn" src="../../../static/img/icon-share.png" alt="icon-share">
+                  <img v-if="item.student_info_id == userId" class="img-btn" src="../../../static/img/icon-edit.png" alt="icon-edit">
                   <img @click="handleClickDel(item)" class="img-btn" src="../../../static/img/icon-delete.png" alt="icon-delete">
                 </p>
                 <p >
@@ -131,35 +131,66 @@
                 </p>
         </div>
       </div>   
+
+      <!-- 联系学院-列表 -->
       <div v-if="$route.path == '/school'" v-for="(item,index) in newList" :key="index" class="school-content">
-          <p class="flex-box">
-            <span>问题类型:</span>
-            <small>{{item.question_type}}</small>
-            <span class="empty"></span>
-            <span @click="handleClickDel(item)" class="btn-del">删除</span>
-          </p>
-          <p>
-            <span>详细说明:</span><br>
-            <small>{{item.illustrate}}</small>
-          </p>
-          <p>
-            <span>图片证据:</span><br>
-            <span>
-              <img v-if="item.address" v-for="(img,iindex) in item.address" :key="iindex" :src="img" alt="avatar">
-              <img v-if="!item.address" src="../../../static/img/logo.png" alt="avatar">
-            </span>
-          </p>
-          <p class="flex-box">
-            <span>姓名：<small>{{item.name}}</small></span>
-            <span>手机号：<small>{{item.phone}}</small></span>
-            <span>邮箱：<small>{{item.email}}</small></span>
-            <span>身份证号：<small>{{item.no}}</small></span>
-            <span>入学年份：<small>{{item.year}}</small></span>
-            <span>专业班级：<small>{{item.classes}}</small></span>
-            <span>辅导员：<small>{{item.counsellor}}</small></span>
-            <span>学号：<small>{{item.number}}</small></span>
-          </p>
+          <img v-show="isShow && !item.isChoose" @click="handleClickChoose(item,index)" src="../../../static/img/icon-check-default.png" alt="icon-check">
+          <img v-show="isShow && item.isChoose" @click="handleClickChoose(item,index)" src="../../../static/img/icon-check-action.png" alt="icon-check">
+          <div>
+            <p class="flex-box">
+              <span>问题类型:</span>
+              <small>{{item.question_type}}</small>
+              <span class="empty"></span>
+              <span @click="handleClickDel(item)" class="btn-del">删除</span>
+            </p>
+            <p>
+              <span>详细说明:</span><br>
+              <small>{{item.illustrate}}</small>
+            </p>
+            <p>
+              <span>图片证据:</span><br>
+              <span>
+                <!-- <img v-if="item.address" v-for="(img,iindex) in item.address" :key="iindex" :src="img" alt="avatar"> -->
+                <img v-if="item.file" :src="item.file" alt="avatar">
+                <img v-if="!item.file" src="../../../static/img/logo.png" alt="avatar">
+              </span>
+            </p>
+            <p class="flex-box">
+              <span>姓名：<small>{{item.name}}</small></span>
+              <span>手机号：<small>{{item.phone}}</small></span>
+              <span>邮箱：<small>{{item.email}}</small></span>
+              <span>身份证号：<small>{{item.no}}</small></span>
+              <span>入学年份：<small>{{item.year}}</small></span>
+              <span>专业班级：<small>{{item.classes}}</small></span>
+              <span>辅导员：<small>{{item.counsellor}}</small></span>
+              <span>学号：<small>{{item.number}}</small></span>
+            </p>
+          </div>
       </div> 
+
+      <!-- 校友捐赠-列表 -->
+        <div v-if="$route.path == '/donate'" v-for="(item,index) in newList" :key="index" class="item-detail flex-box">
+          <img v-show="isShow && !item.isChoose" @click="handleClickChoose(item,index)" src="../../../static/img/icon-check-default.png" alt="icon-check">
+          <img v-show="isShow && item.isChoose" @click="handleClickChoose(item,index)" src="../../../static/img/icon-check-action.png" alt="icon-check">
+          <div class="img-box" @click="jumpToOther(item)">
+              <img v-if="!item.image" src="../../../static/img/logo.png" alt="avatar">
+              <img v-else :src="item.image" alt="avatar">
+          </div>
+          <div class="right-content flex-box flex-column">
+                <p class="flex-box">
+                  <span >标题</span>{{item.title}}
+                  <span class="empty"></span>
+                  <img @click="handleClickShare" class="img-btn" src="../../../static/img/icon-share.png" alt="icon-share">
+                  <img @click="handleClickDel(item)" class="img-btn" src="../../../static/img/icon-delete.png" alt="icon-delete">
+                </p>
+                <p >
+                  <span>公告: </span>{{item.proclaim}}
+                </p>
+                <p>
+                  <span>时间：</span>{{item.starttime || item.time | format}}
+                </p>          
+          </div>
+      </div>
 
       <el-dialog title='分享' :visible.sync="dialogVisible">
         <span>复制下面的地址就可以分享啦!</span><br>
@@ -183,6 +214,7 @@
       return{
         dialogVisible:false,
         Urlhref:window.location.href,
+        chooseItemId:[],  //批量操作选中的ID数组
       }
     },
 
@@ -201,6 +233,9 @@
       }, 
     },
     methods:{
+      getDelAnyMsg(){
+        this.$emit('getDelAnyMsg',true)
+      },
       cancel(){
         this.$emit('changeIsShow',false)
         this.newList.map(item=>{
@@ -218,6 +253,9 @@
         this.$set(this.newList[index],'isChoose',isChoose)
         let newArr = this.newList.filter(list=>{
               return list.isChoose
+        })
+        this.chooseItemId = newArr.map(item=>{
+          return item.id
         })
       },
       copy(){
@@ -238,12 +276,13 @@
         } else if(this.url == 'pages' || this.path == '/pages'){
           this.$router.push('/pages/detail/'+e.id+'/'+e.student_info_id)
         } else if(this.path == '/donate'){
-
+          
         }else if(this.path == '/action/list/concat' || this.path == '/concat'){
           this.$router.push('/concat/detail/'+e.id)
         }
       },
 
+      //单击删除
       handleClickDel(e){
         let url = ''
         if(this.url == 'action'){
@@ -346,6 +385,8 @@
   }
 }
 .school-content{
+  display: flex;
+  align-items:flex-start;
   margin-top:10px;
   padding:10px;
   border:1px solid #eee;
@@ -390,5 +431,10 @@
 }
 [alt="icon-check"]{
   margin-right:10px;
+}
+.parise-box{
+  padding-right:10px;
+  text-align:right;
+  color: #666 !important;
 }
 </style>

@@ -40,66 +40,71 @@
           <ul v-if="type == 'pages'">
              <li>
               <span></span>
-              <h3>{{list.title}}</h3>
+              <h3>{{newPages.title}}</h3>
               <p>
-                <img src="../../../static/img/icon-share.png" alt="icon-share">
-                <img src="../../../static/img/icon-edit.png" alt="icon-share">
-                <img src="../../../static/img/icon-delete.png" alt="icon-share">
+                <img @click="handleClickShare" src="../../../static/img/icon-share.png" alt="icon-share">
+                <img v-if="list.student_info_id == userId" src="../../../static/img/icon-edit.png" alt="icon-share">
+                <img @click="handleClickDel" src="../../../static/img/icon-delete.png" alt="icon-share">
               </p>
             </li>
             <li>
-              <span>类型：</span>{{list.type}}
-              <span>组织者：</span>{{list.name}}
+              <span>类型：</span>{{newPages.type}}
+              <span>组织者：</span>{{newPages.name}}
             </li>
             <li>
-              <span>时间:</span>{{list.time | format}}
-              <span>点赞人数：</span>{{list.praise}} 人
+              <span>时间:</span>{{newPages.time | format}}
+              <span>点赞人数：</span>{{newPages.praise}} 人
             </li>
             <li>
-              <img v-for="(item,index) in  address" :key="index" :src="item" alt="avatar">
+              <img :src="newPages.image" alt="avatar">
+              <img v-if="newPages.address.toString().length > 0" v-for="(item,index) in  newPages.address" :key="index" :src="item" alt="avatar">
             </li>
-            <li><span>校友会介绍:</span>{{list.introduced}}</li>
-            <li><span>入会要求:</span>{{list.require_text}}</li>
-            <li><span>入会方式:</span>{{list.way}}</li>
-            <li><span>发起人:</span>{{list.name}}</li>
-            <li><span>手机号:</span>{{list.phone }}</li>
-            <li><span>邮箱:</span>{{list.email }}</li>
-            <li><span>QQ:</span>{{list.qq}} </li>
-            <li><span>QQ群:</span>{{list.group_text}}</li>
-            <li><span>微信:</span>{{list.weixin}}</li>
+            <li><span>校友会介绍:</span>{{newPages.introduced}}</li>
+            <li><span>入会要求:</span>{{newPages.require_text}}</li>
+            <li><span>入会方式:</span>{{newPages.way}}</li>
+            <li><span>发起人:</span>{{newPages.name}}</li>
+            <li><span>手机号:</span>{{newPages.phone }}</li>
+            <li><span>邮箱:</span>{{newPages.email }}</li>
+            <li><span>QQ:</span>{{newPages.qq}} </li>
+            <li><span>QQ群:</span>{{newPages.group_text}}</li>
+            <li><span>微信:</span>{{newPages.weixin}}</li>
           </ul>
           <ul v-if="type == 'concat'">
              <li>
               <span></span>
-              <h3>{{list.title}}</h3>
+              <h3>{{newConcat.title}}</h3>
               <p>
-                <img src="../../../static/img/icon-share.png" alt="icon-share">
+                <span :class="[newConcat.check_text == '未通过' ? 'danger' : newConcat.check_text == '进行中' ? 'info' : 'info']">{{newConcat.check_text}}</span>
+                <img @click="handleClickShare" src="../../../static/img/icon-share.png" alt="icon-share">
                 <img src="../../../static/img/icon-edit.png" alt="icon-share">
-                <img src="../../../static/img/icon-delete.png" alt="icon-share">
+                <img @click="handleClickDel" src="../../../static/img/icon-delete.png" alt="icon-share">
               </p>
             </li>
             <li>
-              <span>类型：</span>{{list.type}}
-              <span>组织者：</span>{{list.college}}
+              <span>类型：</span>{{newConcat.type}}
+              <span>组织者：</span>{{newConcat.college}}
             </li>
             <li>
-              <!-- <span>专业班级:</span>{{list.student_info.school}}{{list.student_info.line}}{{list.student_info.classes}} -->
-              <span>时间:</span>{{list.time | format}}
+              <span>专业班级:</span>{{newConcat.school}}{{newConcat.line}}{{newConcat.classes}}
+              <span>时间:</span>{{newConcat.time | format}}
             </li>
             <li>
-              <img v-for="(item,index) in  address" :key="index" :src="item" alt="avatar">
+              <img v-if="newConcat.image" :src="newConcat.image" alt="avatar">
+              <img v-if="newConcat.addressList" v-for="(item,index) in  newConcat.addressList" :key="index" :src="item" alt="avatar">
             </li>
-            <li><span>详细内容:</span>{{list.content}}</li>
-            <li><span>手机号:</span>{{list.phone }}</li>
-            <li><span>邮箱:</span>{{list.email }}</li>
-            <li><span>QQ:</span>{{list.qq}} </li>
-            <li><span>QQ群:</span>{{list.group_text}}</li>
-            <li><span>微信:</span>{{list.weixin}}</li>            
+            <li><span>详细内容:</span>{{newConcat.content}}</li>
+            <li><span>手机号:</span>{{newConcat.phone }}</li>
+            <li><span>邮箱:</span>{{newConcat.email }}</li>
+            <li><span>QQ:</span>{{newConcat.qq}} </li>
+            <li><span>QQ群:</span>{{newConcat.group_text}}</li>
+            <li><span>微信:</span>{{newConcat.weixin}}</li>            
           </ul>
         </section>
         <section class="nopass">
           <p class="title">反馈意见</p>
-          <p class="detail">{{newList.feedback || list.feedback}} </p>
+          <p class="detail" v-if="type == 'action'">{{newList.feedback}} </p>
+          <p class="detail" v-if="type == 'pages'">{{newPages.feedback}} </p>
+          <p class="detail" v-if="type == 'concat'">{{newConcat.feedback}}</p>
         </section>
         
       <el-dialog title='分享' :visible.sync="dialogVisible">
@@ -127,6 +132,7 @@
       }
     },
     computed:{
+      //活动详情
       newList(){ 
         for(var k in this.info){
           if(!this.info[k]){  
@@ -143,9 +149,14 @@
         } 
         return this.info
       },
+      //校友会详情
+      newPages(){
+        return this.info.list
+      },
 
-      pageList(){
-        
+      //互联互助详情
+      newConcat(){
+        return this.info.list
       },
 
       userId(){
@@ -158,6 +169,9 @@
         let url = '' , data={}
         switch(this.type){
           case 'action' : url = 'SchoolFellow/delActivityDetails_Manager' ,
+                          data = {id:this.$route.params.id}
+                        break;
+          case 'pages' :  url = 'SchoolFellow/delAlumni_Pages' ,
                           data = {id:this.$route.params.id}
                         break;
         }
@@ -202,15 +216,16 @@
       }
     },
     created(){
+      console.log(this.info)
       let path = this.$route.path
       if(path.search('pages')>0){
         this.type = 'pages'
-        this.fetchData()
+        // this.fetchData()
       }else if(path.search('action')>0){
         this.type = 'action'
       }else if (path.search('concat')>0){
         this.type = 'concat'
-        this.getConcatList()
+        // this.getConcatList()
       }
     }
   }
@@ -299,5 +314,20 @@
         font-size: 14px;
         color: #666;
       }
+    }
+    span.danger{
+      vertical-align: top;
+      color: #FF6969 !important;
+      background-color: #fff;
+    }
+    span.default{
+      vertical-align: top;
+      color: #6192F6;
+      background-color: #fff;
+    }
+    span.info{
+      vertical-align: top;
+      color: #F88E1D;
+      background-color: #fff;
     }
 </style>

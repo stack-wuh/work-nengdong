@@ -14,7 +14,7 @@
 
 <script>
 export default {
-  props: ["type"],
+  props: ["type",'school'],
   data() {
     return {
       list: [
@@ -85,7 +85,8 @@ export default {
               click:this.handleClickFirends
             },
             {
-              name:'批量操作'
+              name:'批量操作',
+              click:this.handleClickPick
             }
           ],
           showInput:true
@@ -97,7 +98,8 @@ export default {
               name:'发布',
             },
             {
-              name:'批量操作'
+              name:'批量操作',
+              click:this.handleClickPick
             }
           ],
           showInput:true
@@ -121,7 +123,7 @@ export default {
             },
             {
               name:'批量操作',
-              click:''
+              click:this.handleClickPick
             }
           ]
         },
@@ -142,7 +144,8 @@ export default {
           type:10,
           subList:[
             {
-              name:'批量操作'
+              name:'批量操作',
+              click:this.handleClickPick
             },
             {
               name:'导出当前页'
@@ -164,6 +167,7 @@ export default {
     // console.log(this.format)
   },
   methods:{
+    //添加事件
     handleClickAdd(data){
       this.$store.commit('changeDialogStatus',{title:'修改密码',status:true})
       if(data){
@@ -171,14 +175,24 @@ export default {
         let params = {title:data.name,status:true}
         if(path == '/setting/year'){
           params.type = 'addYear'
-        }else if(path == '/setting/concat'){
-          params.type = 'addYear'
         }else if(path == '/donate'){
           params.type = 'addDonate'
         }else if(path == '/setting/helpType'){
           params.type = 'addHelpType'
         }else if(path == '/setting/type'){
           params.type = 'addActionType'
+        }else if(path == '/pages/school' && this.school == 1){
+          params.type = 'addPagesSchool'
+        }else if(path == '/pages/school' && this.school == 2){
+          params.type = 'addPagesCollege'
+        }else if(path == '/setting/major'){
+          params.type = 'addSettingMajor'
+        }else if(path == '/setting/klass'){
+          params.type = 'addSettingKlass'
+        }else if(path == '/setting/official'){
+          params.type = 'addSettingOfficial'
+        }else if(path == '/setting/concat'){
+          params.type = 'addConcatSchool'
         }
         this.$store.commit('changeDialogStatus',params)
       }

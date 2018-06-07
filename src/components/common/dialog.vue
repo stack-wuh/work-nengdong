@@ -3,6 +3,9 @@
     <el-dialog class="el-dialog" ref="my-dialog" @close="dialogClose" :title="title" :visible.sync="isShowDialog">
         <el-form :model="form.validForm" ref="myForm" class="my-form">
           <el-form-item class="my-form-item" :prop="item.prop" v-for="(item,index) in form.info" :key="index" :label="item.name" :rules="item.rules" label-width="100px">
+            <el-select v-if="item.isSelect" v-model="form.validForm[item.prop]">
+              <el-option v-for="(sItem,sIndex) in item.list" :key="sIndex" :label="sItem.name" :value="sItem.value"></el-option>
+            </el-select>
             <el-input v-if="item.isInput" v-model="form.validForm[item.prop]" ></el-input>
             <el-upload v-else-if="item.isUpload" 
               class="avatar-uploader"
@@ -10,6 +13,7 @@
               :show-file-list='false'
               :on-success="handleAvatarSuccess">
               <img v-if="form.validForm.image" :src="form.validForm.image" alt="avatar">
+              <img v-if="form.validForm.file" :src="form.validForm.file" alt="avatar">
               <el-button>{{imgUrl ? '重新选择' : '选择文件'}}</el-button>
             </el-upload> 
             <el-color-picker v-else-if="item.isColorPicker" v-model="form.validForm[item.prop]"></el-color-picker>
@@ -116,6 +120,26 @@
                             break;
           case 'editActionType' : form = this.$store.state.form.editActionType //设置--活动类型设置--编辑活动类型
                             break;
+          case 'addPagesSchool' : form  = this.$store.state.form.addPagesSchool   //添加-黄页管理-添加学院
+                            break;
+          case 'addPagesCollege' : form = this.$store.state.form.addPagesCollege //添加 -黄页管理 -添加学校
+                            break;
+          case 'addSettingMajor' : form = this.$store.state.form.addSettingMajor //设置--添加--专业
+                            break;
+          case 'editSettingMajor' : form = this.$store.state.form.editSettingMajor //设置--编辑--专业
+                            break;
+          case 'addSettingKlass' : form = this.$store.state.form.addSettingKlass // 设置-添加-班级
+                            break;
+          case 'editSettingKlass' : form = this.$store.state.form.editSettingKlass //设置-编辑-班级
+                            break;
+          case 'addSettingOfficial' : form = this.$store.state.form.addSettingOfficial //设置-添加-官方组织
+                            break;
+          case 'editSettingOfficial' : form = this.$store.state.form.editSettingOfficial //设置-编辑 -官方组织
+                            break;
+          case 'addConcatSchool' : form = this.$store.state.form.addConcatSchool //设置-添加-联系学院
+                            break;
+          case 'editSettingConcat' : form = this.$store.state.form.editSettingConcat //设置-编辑-联系学院
+                            break;
         }
         return form
       }
@@ -125,18 +149,33 @@
         this.$emit('dialogClose',true)
       },
       handleAvatarSuccess(e){
-        this.form.validForm.image = e
+        for(var k in this.form.validForm){
+          if(k == 'image'){
+            this.form.validForm.image = e
+          }else if(k == 'file'){
+            this.form.validForm.file = e
+          }
+        }
+        // if(this.form.validForm.image == ''){
+        //   this.form.validForm.image = e
+        // }
+        // if(this.form.validForm.file == ''){
+        //   this.form.validForm.file = e
+        // }
+        console.log(e,this.form.validForm)
       },
       hideDialog(){
         this.$store.commit('changeDialogStatus',{status:false,formType:''})
         this.$refs.myForm.resetFields()
       },
       handleClickSubmit(){
+        console.log(this.form.validForm)
         let type = this.$store.state.formType
         let action = this.$store.state.action
         let id = this.$store.state.id
+        let student_info_id = sessionStorage.getItem('userId')
         let data = {}
-        data = Object.assign(this.form.validForm,{id,id})
+        data = Object.assign(this.form.validForm,{id:id,student_info_id:student_info_id})
         this.$refs['myForm'].validate((valid)=>{
           if(valid){
             if(type == 'updatePwd'){
@@ -206,7 +245,7 @@
                   this.hideDialog()
                 }
               })
-            }else if(type == 'editCollege'){
+            }else if(type == 'editCollege' || type == 'addPagesSchool'){
               this.$http('SchoolFellow/updateSchool_Info_School',data).then(res=>{
                 let error = res.error == 0 ? 'success' : 'error'
                 _g.toastMsg(error,res.msg)
@@ -214,7 +253,7 @@
                   this.hideDialog()
                 }
               })
-            }else if(type == 'editSchool'){
+            }else if(type == 'editSchool' || type == 'addPagesCollege'){
               this.$http('SchoolFellow/updateXueXiao',data).then(res=>{
                 let error = res.error == 0 ? 'success' : 'error'
                 _g.toastMsg(error,res.msg)
@@ -254,11 +293,46 @@
                   this.hideDialog()
                 }
               })
+            }else if(type == 'addSettingMajor' || type == 'editSettingMajor'){
+              this.$http('SchoolFellow/addStudent_info_Line',data).then(res=>{
+                let error = res.error == 0 ? 'success' : 'error'
+                _g.toastMsg(error,res.msg)
+                if(res.error == 0){
+                  this.hideDialog()
+                }
+              })
+            }else if(type == 'addSettingKlass' || type == 'editSettingKlass'){
+              this.$http('SchoolFellow/addStudent_Info_Class',data).then(res=>{
+                let error = res.error == 0 ? 'success' : 'error'
+                _g.toastMsg(error,res.msg)
+                if(res.error == 0){
+                  this.hideDialog()
+                }
+              })
+            }else if(type == 'addSettingOfficial' || type == 'editSettingOfficial'){
+              this.$http('SchoolFellow/addActivity_Official',data).then(res=>{
+                let  error = res.error == 0 ? 'success' : 'error'
+                _g.toastMsg(error,res.msg)
+                if(res.error == 0){
+                  this.hideDialog()
+                }
+              })
+            }else if(type == 'addConcatSchool' || type == 'editSettingConcat'){
+              this.$http('SchoolFellow/addContact_College',data).then(res=>{
+              let error = res.error == 0 ? 'success' : 'error'
+                _g.toastMsg(error,res.msg)
+                if(res.error == 0){
+                  this.hideDialog()
+                  setTimeout(()=>{
+                    this.$router.push('/school')
+                  },1000)
+                }
+              })
             }
           }
         })
       }
-    }
+    },
   }
 </script>
 
@@ -306,5 +380,9 @@
     width: 178px;
     height: 178px;
     display: block;
+  }
+  img[alt="avatar"]{
+    width:300px;
+    height:200px;
   }
 </style>

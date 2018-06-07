@@ -2,8 +2,13 @@
   <section class="father">
     <el-table v-on:row-click="$emit('handleRowClick')" class="my-table" :data="newList" border stripe  >
       <el-table-column width="80px" fixed align="center" label="序号" type="index"></el-table-column>
-      <el-table-column :width="item.width" fixed="left" align="center" v-for="(item,index) in sublist.list" :key="index" v-if="!item.child && !item.isSwitch && !item.isColorPicker && !item.isCheck" :label="item.name" :prop="item.prop">
+      <el-table-column :width="item.width" fixed="left" align="center" v-for="(item,index) in sublist.list" :key="index" v-if="!item.child && !item.isSwitch && !item.isColorPicker && !item.isCheck && !item.isImage" :label="item.name" :prop="item.prop">
       </el-table-column>
+      <el-table-column :width="item.width" fixed="left" align="center" v-for="(item,index) in sublist.list" :key="index" v-if="!item.child && !item.isSwitch && !item.isColorPicker && !item.isCheck && item.isImage" :label="item.name" :prop="item.prop">
+        <template slot-scope="scope">
+          <img :src="scope.row[item.prop]" alt="avatar">
+        </template>
+      </el-table-column>      
       <el-table-column :width="item.width" fixed="left" align="center" v-for="(item,index) in sublist.list" :key="index" v-if="!item.child && item.isSwitch" :label="item.name" :prop="item.prop">
         <template slot-scope="scope">
           <el-switch @change="handleClickChangeState(scope)" active-text="是" inactive-text="否" v-model="scope.row.age_or" active-value="1" ianctive-value="0" ></el-switch>
@@ -387,22 +392,55 @@ export default {
           type: "concat",
           list: [
             {
-              name: "帮助类型",
-              prop: "type"
+              name:'验证图片',
+              isImage:true,
+              prop:'file'
             },
             {
-              name: "自定义颜色",
-              prop: "color"
+              name: "问题类型",
+              prop: "question_type"
+            },
+            {
+              name: "姓名",
+              prop: "name"
+            },
+            {
+              name:'手机',
+              prop:'phone'
+            },
+            {
+              name:'邮箱',
+              prop:'email'
+            },
+            {
+              name:'入学年份',
+              prop:'year'
+            },
+            {
+              name:'学号',
+              prop:'number'
+            },
+            {
+              name:'专业班级',
+              prop:'classes'
+            },
+            {
+              name:'详情',
+              prop:'illustrate'
             },
             {
               name: "操作",
               child: [],
+              fixed:'right',
+              width:'150',
               btnList: [
                 {
-                  name: "编辑"
+                  name: "编辑",
+                  click:this.handleClickEdit
                 },
                 {
-                  name: "删除"
+                  name: "删除",
+                  click:this.handleClickDel
                 }
               ]
             }
@@ -462,23 +500,21 @@ export default {
           list: [
             {
               name: "专业名称",
-              prop: "name",
+              prop: "line_name",
               isColorPicker:false,
-            },
-            {
-              name:'自定义色彩',
-              prop:'color',
-              isColorPicker:true
             },
             {
               name: "操作",
               child: [],
+              width:'150',
               btnList: [
                 {
-                  name: "编辑"
+                  name: "编辑",
+                  click:this.handleClickEdit
                 },
                 {
-                  name: "删除"
+                  name: "删除",
+                  click:this.handleClickDel
                 }
               ]
             }
@@ -489,7 +525,7 @@ export default {
           list: [
             {
               name: "班级名称",
-              prop: "name"
+              prop: "class_name"
             },
             {
               name: "操作",
@@ -497,10 +533,12 @@ export default {
               width: 200,
               btnList: [
                 {
-                  name: "编辑"
+                  name: "编辑",
+                  click:this.handleClickEdit
                 },
                 {
-                  name: "删除"
+                  name: "删除",
+                  click:this.handleClickDel
                 }
               ]
             }
@@ -546,6 +584,29 @@ export default {
               prop:'text'
             }
           ]
+        },
+        {
+          type:'official',
+          list:[
+            {
+              name:'官方组织',
+              prop:'official_name'
+            },
+            {
+              name:'操作',
+              child:[],
+              btnList:[
+                {
+                  name:'编辑',
+                  click:this.handleClickEdit
+                },
+                {
+                  name:'删除',
+                  click:this.handleClickDel
+                }
+              ]
+            }
+          ]
         }
       ]
     };
@@ -570,7 +631,8 @@ export default {
       switch(this.$route.path){
         case '/setting/helpType' : url = 'SchoolFellow/addMutual_Help_Type' 
                     break;
-
+        case '/setting/type' : url = 'SchoolFellow/addActivity_Type'
+                    break; 
       }
       this.$http(url,data).then(res=>{
         let error = res.error == 0 ? 'success' : 'error'
@@ -602,6 +664,19 @@ export default {
           break;
         case 'actions' : 
           (url = 'SchoolFellow/delActivity_Type'),(data.id = $event.row.id)
+          break;
+        case 'major' : 
+          (url = 'SchoolFellow/delStudent_info_Line'),(data.id = $event.row.id)
+          break;
+        case 'klass' : 
+          (url = 'SchoolFellow/delStudent_Info_Class'),(data.id = $event.row.id)
+          break;
+        case 'official' : 
+          (url = 'SchoolFellow/delActivity_Official'),(data.id = $event.row.id)
+          break;
+        case 'concat' : 
+          (url = 'SchoolFellow/delContact_College') ,(data.id = $event.row.id)
+          break;
       }
       this.$http(url, data).then(res => {
         let error = res.error == 0 ? "success" : "error";
@@ -616,7 +691,7 @@ export default {
       if(this.$route.path == '/setting/year'){
           this.$store.commit('saveValue',{title:'编辑',status:true,name:'addNewYear',value:$event.row,type:'addYear',action:'edit',id:$event.row.id})
       }
-      if(this.$route.path == '/pages/school' && this.type=='scholl'){
+      if(this.$route.path == '/pages/school' && this.type=='school'){
          this.$store.commit('saveValue',{title:'编辑',status:true,name:'editCollege',value:$event.row,type:'editCollege',action:'edit',id:$event.row.id})
       }
       if(this.$route.path == '/pages/school' && this.type == 'college'){
@@ -631,7 +706,20 @@ export default {
       if(this.type == 'actions'){ 
         this.$store.commit('saveValue',{title:'编辑',status:true,name:'editActionType',value:$event.row,type:'editActionType',action:'edit',id:$event.row.id})
       }
-},
+      if(this.type == 'major'){
+         this.$store.commit('saveValue',{title:'编辑',status:true,name:'editSettingMajor',value:$event.row,type:'editSettingMajor',action:'edit',id:$event.row.id})
+      }
+      if(this.type == 'klass'){
+        this.$store.commit('saveValue',{title:'编辑',status:true,name:'editSettingKlass',value:$event.row,type:'editSettingKlass',action:'edit',id:$event.row.id})
+      }
+      if(this.type == 'official'){
+        this.$store.commit('saveValue',{title:'编辑',status:true,name:'editSettingOfficial',value:$event.row,type:'editSettingOfficial',action:'edit',id:$event.row.id})
+      }
+      if(this.type == 'concat'){
+        console.log($event.row)
+        this.$store.commit('saveValue',{title:'编辑',status:true,name:'editSettingConcat',value:$event.row,type:'editSettingConcat',action:'edit',id:$event.row.id})
+      }
+    },
     //单击查看按钮
     handleClickShowMsg($event){
       this.$alert($event.row.student_remarks ? $event.row.student_remarks : '他还没有备注哦,快点添加一条吧','备注',{
@@ -682,5 +770,9 @@ export default {
   .my-table {
     max-width: calc(1200px - 140px);
   }
+}
+img[alt="avatar"]{
+  width:60px;
+  height:60px;
 }
 </style>

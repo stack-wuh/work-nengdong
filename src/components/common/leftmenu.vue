@@ -146,7 +146,7 @@ const iconRootPath = '../../../static'
               },
               {
                 name:'官方组织',
-                urlPath:''
+                urlPath:'/setting/official'
               },
               {
                 name:'联系学院',

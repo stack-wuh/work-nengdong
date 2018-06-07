@@ -9,7 +9,7 @@
 
 <script>
   export default{
-    props:['type'],
+    props:['type','chooseArr'],
     data(){
       return{
         list:[
@@ -37,8 +37,29 @@
       }
     },
     methods:{
-      //单击删除
-      handleClickDel(){},
+      //单击批量删除
+      handleClickDel($event){
+        let url = ''
+        switch(this.$route.path){
+          case 'action' : url = 'SchoolFellow/delActivityDetails_Manager'
+                        break;
+          case '/pages' : url = 'SchoolFellow/delAlumni_Pages'
+                        break;
+          case '/concat' : url = 'SchoolFellow/delMutual_Help'
+                        break;
+        }
+        if(this.chooseArr.length == 0){
+          _g.toastMsg('error','请先选择操作对象')
+          return
+        }
+        this.$http(url,{id:this.chooseArr}).then(res=>{
+          let error = res.error == 0 ? 'success' : 'error'
+          _g.toastMsg(error,res.msg)
+          if(res.error == 0){
+            this.$emit('getDelAnyMsg',true)
+          }
+        })
+      },
       //单击取消
       handleClickCancel(){
         this.$emit('handleCancel',true)
