@@ -11,7 +11,7 @@
             </p>
           </li>
         </ul>
-        <item-list @changeIsShow="changeIsShow" @getDelMsg="getDelMsg" :list="list" :isShow="isShow" />
+        <item-list @getDelAnyMsg="getDelAnyMsg" @changeIsShow="changeIsShow" @getDelMsg="getDelMsg" :list="list" :isShow="isShow" />
         <bottom :total="total" type="pagination" />
       </div>
     </section>
@@ -87,9 +87,11 @@ export default {
     },
     pickAny(e){
       this.isShow = e
-      console.log(e)
     },
     getDelMsg(e){
+      e && this.fetchData()
+    },
+    getDelAnyMsg(e){
       e && this.fetchData()
     },
     handleClickChange(item,subIndex,subItem) {

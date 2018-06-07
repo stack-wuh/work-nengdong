@@ -6,7 +6,7 @@
 
         <action-info :info="list" />
 
-        <p v-show="info.list.length > 0" class="btn-list"><span>报名详情</span><span class="btn">导出报名表</span></p>
+        <p v-show="info.list.length > 0" class="btn-list"><span>报名详情</span><span @click="export2Excel" class="btn">导出报名表</span></p>
 
         <e-table v-show="info.list.length > 0" class="el-table" type="action" :info="info"></e-table>
         
@@ -52,6 +52,12 @@ import Bottom from '@/components/common/bottom'
       }
     },
     methods:{
+      //导出报名表
+      export2Excel(){
+        this.$http('SchoolFellow/getActivity_Excel',{id:this.$route.params.id}).then(res=>{
+          
+        })
+      },
       //获取报名列表
       getOrderList(){
         this.$http('SchoolFellow/getActivityBy_BM',{id:this.$route.params.id}).then(res=>{
