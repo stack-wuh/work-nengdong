@@ -242,6 +242,7 @@ const state = {
         name:'备注信息',
         prop:'student_remarks',
         isInput:false,
+        isTextarea:true,
         rules:[
           {
             required:true,

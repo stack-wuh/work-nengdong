@@ -74,7 +74,7 @@ const iconRootPath = '../../../static'
               },
               {
                 name:'校友会黄页',
-                urlPath:''
+                urlPath:'/pages'
               },
               {
                 name:'院校黄页',

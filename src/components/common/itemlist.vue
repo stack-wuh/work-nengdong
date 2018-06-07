@@ -36,7 +36,7 @@
       <button-list type="action" v-show="isShow" @handleCancel="cancel" />
 
       <!-- 活动模块-列表 -->
-      <div v-if="$route.path == '/action'" v-for="(item,index) in newList" :key="index" class="item-detail flex-box">
+      <div v-if="$route.path == '/action' || $route.path == '/action/list/action'" v-for="(item,index) in newList" :key="index" class="item-detail flex-box">
           <img v-show="isShow && !item.isChoose" @click="handleClickChoose(item,index)" src="../../../static/img/icon-check-default.png" alt="icon-check">
           <img v-show="isShow && item.isChoose" @click="handleClickChoose(item,index)" src="../../../static/img/icon-check-action.png" alt="icon-check">
           <div class="img-box" @click="jumpToOther(item)">

@@ -345,6 +345,10 @@ export default {
                 {
                   name: "备注",
                   click:this.handleClickEdit
+                },
+                {
+                  name:'查看',
+                  click:this.handleClickShowMsg
                 }
               ]
             }
@@ -628,6 +632,13 @@ export default {
         this.$store.commit('saveValue',{title:'编辑',status:true,name:'editActionType',value:$event.row,type:'editActionType',action:'edit',id:$event.row.id})
       }
 },
+    //单击查看按钮
+    handleClickShowMsg($event){
+      this.$alert($event.row.student_remarks ? $event.row.student_remarks : '他还没有备注哦,快点添加一条吧','备注',{
+        confirmButtonText:'确定',
+      })
+    },
+    
     //单击改变状态
     handleClickChangeState($event){
       let url = '' , data = {}

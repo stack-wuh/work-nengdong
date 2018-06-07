@@ -106,7 +106,7 @@
                             break;
           case 'editSchool' : form = this.$store.state.form.editSchool
                             break;
-          case 'addRemark' : form = this.$store.state.form.addRemark
+          case 'addRemark' : form = this.$store.state.form.addRemark //黄页--杰出校友管理--添加备注
                             break;
           case 'concatFeedback' :form = this.$store.state.form.addConcatFeed
                             break;

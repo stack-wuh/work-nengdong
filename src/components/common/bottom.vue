@@ -5,7 +5,8 @@
       @current-change="handleCurrentChange"
       :current-page="currentPage"
       layout="total, prev, pager, next, jumper"
-      :total="total">
+      :total="total"
+      :page-size="10">
     </el-pagination>
 
     <div class="btn-list" v-show="type== 'btn'">

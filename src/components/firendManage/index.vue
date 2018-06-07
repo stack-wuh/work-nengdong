@@ -15,6 +15,7 @@
               </p>
             </li>
           </ul>
+          
           <e-table v-show="$route.params.type == 'firend'"  @getDelMsg="getDelMsg" class="el-table" type="firend" :info="info" />
           <e-table v-show="$route.params.type == 'pages'" @getDelMsg='getDelMsg' class="el-table" type="firends" :info="info" />
           <bottom @getCurrentPage="getCurrentPage" :total="total" type="pagination" />
