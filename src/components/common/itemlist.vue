@@ -1,38 +1,6 @@
 <template>
   <section class="wrapper">
     <div class="item-content">
-      <!-- <div v-if="$route.path != '/concat'" v-for="(item,index) in newList" :key="index" class="item-detail flex-box">
-        <div v-if="path != '/donate'" @click="jumpToOther(item)" class="img-box">
-          <img v-if="!item.cover" src="../../../static/img/logo.png" alt="avatar">
-          <img v-else :src="item.cover" alt="avatar">
-        </div>
-        <div v-if="path == '/donate'" @click="jumpToOther(item)" class="img-box">
-          <img v-if="!item.image" src="../../../static/img/logo.png" alt="avatar">
-          <img v-else :src="item.image" alt="avatar">
-        </div>
-        <div class="right-content flex-box flex-column">
-                <p class="flex-box">
-                  <span v-if="path == '/donate'" >类型：</span>{{item.title}}
-                  <span v-if="path != '/donate'">类型：</span>{{item.type}}
-                  <span class="empty"></span>
-                  <span v-if="path != '/donate'" class="info">{{item.check_text}}</span>
-                  <img class="img-btn" src="../../../static/img/icon-share.png" alt="icon-share">
-                  <img class="img-btn" src="../../../static/img/icon-edit.png" alt="icon-edit">
-                  <img @click="handleClickDel(item)" class="img-btn" src="../../../static/img/icon-delete.png" alt="icon-delete">
-                </p>
-                <p v-if="path != '/donate'">
-                  <span>标题: </span>{{item.title}}
-                </p>
-                <p v-if="url != 'pages'" v-show="path != '/pages' && path != '/donate'">
-                  <span>组织者: </span>{{item.organizer}}
-                </p>
-                <p>
-                  <span>时间：</span>{{item.starttime || item.time | format}}
-                  <span v-if="url != 'pages'" v-show="path != '/pages' && path !='/donate'">地点：</span>{{item.place}}
-                  <small v-if="url != 'pages'" v-show="path != '/pages' && path != '/donate'" class="txt-active">{{item.number}}/</small><span v-if="url != 'pages'" v-show="path != '/pages'">{{item.participants}}</span>
-                </p>
-        </div>
-      </div> -->
       <button-list @getDelAnyMsg="getDelAnyMsg" type="action" v-show="isShow" @handleCancel="cancel" :chooseArr="chooseItemId" />
 
       <!-- 活动模块-列表 -->
@@ -51,7 +19,7 @@
                             item.check_text == '待审核' ? 'info' : 
                               item.check_text == '已完成' ? 'info gray' :
                                  'info default']">{{item.check_text}}</span>
-                  <img @click="handleClickShare" class="img-btn" src="../../../static/img/icon-share.png" alt="icon-share">
+                  <!-- <img @click="handleClickShare" class="img-btn" src="../../../static/img/icon-share.png" alt="icon-share"> -->
                   <img v-if="item.student_info_id == userId" class="img-btn" src="../../../static/img/icon-edit.png" alt="icon-edit">
                   <img @click="handleClickDel(item)" class="img-btn" src="../../../static/img/icon-delete.png" alt="icon-delete">
                 </p>
@@ -81,7 +49,7 @@
                 <p class="flex-box">
                   <span >类型：</span>{{item.type}}
                   <span class="empty"></span>
-                  <img @click="handleClickShare" class="img-btn" src="../../../static/img/icon-share.png" alt="icon-share">
+                  <!-- <img @click="handleClickShare" class="img-btn" src="../../../static/img/icon-share.png" alt="icon-share"> -->
                   <img v-if="item.student_info_id == userId" class="img-btn" src="../../../static/img/icon-edit.png" alt="icon-edit">
                   <img @click="handleClickDel(item)" class="img-btn" src="../../../static/img/icon-delete.png" alt="icon-delete">
                 </p>
@@ -109,7 +77,7 @@
                   <span >类型：</span>{{item.type}}
                   <span class="empty"></span>
                   <span class="info">{{item.type}}</span>
-                  <img @click="handleClickShare" class="img-btn" src="../../../static/img/icon-share.png" alt="icon-share">
+                  <!-- <img @click="handleClickShare" class="img-btn" src="../../../static/img/icon-share.png" alt="icon-share"> -->
                   <img v-if="item.student_info_id == userId" class="img-btn" src="../../../static/img/icon-edit.png" alt="icon-edit">
                   <img @click="handleClickDel(item)" class="img-btn" src="../../../static/img/icon-delete.png" alt="icon-delete">
                 </p>
@@ -180,7 +148,7 @@
                 <p class="flex-box">
                   <span >标题</span>{{item.title}}
                   <span class="empty"></span>
-                  <img @click="handleClickShare" class="img-btn" src="../../../static/img/icon-share.png" alt="icon-share">
+                  <!-- <img @click="handleClickShare" class="img-btn" src="../../../static/img/icon-share.png" alt="icon-share"> -->
                   <img @click="handleClickDel(item)" class="img-btn" src="../../../static/img/icon-delete.png" alt="icon-delete">
                 </p>
                 <p >

@@ -6,7 +6,7 @@
               <span></span>
               <h3>{{newList.title}}</h3>
               <p>
-                <img @click="handleClickShare" src="../../../static/img/icon-share.png" alt="icon-share">
+                <!-- <img @click="handleClickShare" src="../../../static/img/icon-share.png" alt="icon-share"> -->
                 <img v-if="userId == newList.student_info_id"  src="../../../static/img/icon-edit.png" alt="icon-share">
                 <img @click="handleClickDel" src="../../../static/img/icon-delete.png" alt="icon-share">
               </p>
@@ -42,7 +42,7 @@
               <span></span>
               <h3>{{newPages.title}}</h3>
               <p>
-                <img @click="handleClickShare" src="../../../static/img/icon-share.png" alt="icon-share">
+                <!-- <img @click="handleClickShare" src="../../../static/img/icon-share.png" alt="icon-share"> -->
                 <img v-if="list.student_info_id == userId" src="../../../static/img/icon-edit.png" alt="icon-share">
                 <img @click="handleClickDel" src="../../../static/img/icon-delete.png" alt="icon-share">
               </p>
@@ -75,7 +75,7 @@
               <h3>{{newConcat.title}}</h3>
               <p>
                 <span :class="[newConcat.check_text == '未通过' ? 'danger' : newConcat.check_text == '进行中' ? 'info' : 'info']">{{newConcat.check_text}}</span>
-                <img @click="handleClickShare" src="../../../static/img/icon-share.png" alt="icon-share">
+                <!-- <img @click="handleClickShare" src="../../../static/img/icon-share.png" alt="icon-share"> -->
                 <img src="../../../static/img/icon-edit.png" alt="icon-share">
                 <img @click="handleClickDel" src="../../../static/img/icon-delete.png" alt="icon-share">
               </p>
