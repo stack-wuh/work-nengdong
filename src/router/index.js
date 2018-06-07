@@ -38,6 +38,7 @@ const SettingKlass = resolve => require(['@/components/settingManage/child/klass
 const SettingType = resolve => require(['@/components/settingManage/child/type'],resolve)
 const SettingHelpType = resolve => require(['@/components/settingManage/child/helpType'],resolve)
 const SettingHelpList  = resolve => require(['@/components/settingManage/child/helpList'],resolve)
+const SettingOfficial = resolve => require(['@/components/settingManage/child/official'],resolve)
 Vue.use(Router)
 
 export default new Router({
@@ -242,6 +243,11 @@ export default new Router({
               path:'/setting/helpList',
               name:'helpList',
               component:SettingHelpList
+            },
+            {
+              path:'/setting/official',
+              name:'official',
+              component:SettingOfficial
             }
           ]
         }
