@@ -23,6 +23,7 @@ const ConcatDetail = resolve => require(['@/components/concatManage/detail'],res
 const ConcatAction = resolve => require(['@/components/concatManage/action'],resolve)
 
 const DonateIndex = resolve => require(['@/components/donateManage/index'],resolve)
+const DonatePublish = resolve => require(['@/components/donateManage/publish'],resolve)
 
 const SchoolIndex = resolve => require(['@/components/SchoolManage/index'],resolve)
 
@@ -162,6 +163,11 @@ export default new Router({
           path:'/donate',
           name:'donate',
           component:DonateIndex,
+        },
+        {
+          path:'/donate/publish',
+          name:'donatePublish',
+          component:DonatePublish
         }
       ]
     },

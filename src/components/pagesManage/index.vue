@@ -73,7 +73,8 @@
         let data = {
           title:title,
           type:this.type,
-          pageNo:this.pageNo
+          pageNo:this.pageNo,
+          aid:sessionStorage.getItem('userId')
         }
         this.$http('SchoolFellow/getAlumni_Pages',data).then(res=>{
           this.list = res.data

@@ -18,16 +18,7 @@
   import Bottom from '@/components/common/bottom'
   const info = {
     type:'pages',
-    list:[
-      {
-        title:'活动标题',
-        time:'2018-01-01'
-      },
-      {
-        title:'活动标题1',
-        time:'2018-02-02'
-      }
-    ]
+    list:[]
   }
   export default{
     components:{
@@ -58,7 +49,12 @@
         })
       },
       fetchData(){
-        this.$http('SchoolFellow/getAlumni_Pages').then(res=>{
+        this.$http('SchoolFellow/GWAlumni_Pages',{id:this.$route.params.id}).then(res=>{
+          this.page.list = res.data[0]
+          this.page.list.address = this.page.list.alumni_pages_album.address.split(',')
+        })
+        return
+        this.$http('SchoolFellow/getAlumni_Pages',{aid:sessionStorage.getItem('userId')}).then(res=>{
           this.page.list = res.data.find(item=>{ 
             return item.id == this.$route.params.id
           })

@@ -13,7 +13,7 @@ import store from './vuex/store'
 import _g from '../static/js/global'
 import apiMethods from '../static/js/http'
 import vueEventCalendar from 'vue-event-calendar'
-
+import E from 'wangeditor'
 
 Vue.use(ElementUI)
 
@@ -63,7 +63,7 @@ new Vue({
 
 Vue.filter('format',(value)=>{
   let date = new Date(value)
-  let year = date.getFullYear() , month = date.getMonth() , day = date.getDay() 
+  let year = date.getFullYear() , month = date.getMonth() + 1 , day = date.getDate()
     return year +'-'+ month +'-'+ day 
 })
 Vue.filter('trueType',value=>{

@@ -78,7 +78,7 @@
                   <span class="empty"></span>
                   <span class="info">{{item.type}}</span>
                   <!-- <img @click="handleClickShare" class="img-btn" src="../../../static/img/icon-share.png" alt="icon-share"> -->
-                  <img v-if="item.student_info_id == userId" class="img-btn" src="../../../static/img/icon-edit.png" alt="icon-edit">
+                  <img @click.prevent.stop="jumpToEdit(item)" v-if="item.student_info_id == userId" class="img-btn" src="../../../static/img/icon-edit.png" alt="icon-edit">
                   <img @click.prevent.stop="handleClickDel(item)" class="img-btn" src="../../../static/img/icon-delete.png" alt="icon-delete">
                 </p>
                 <p >
@@ -177,7 +177,7 @@
     components:{
       ButtonList
     },
-    props:['list','type','isShow'],
+    props:['list','type','isShow','check'],
     data(){
       return{
         dialogVisible:false,
@@ -207,6 +207,8 @@
           case '/action' : name = 'actionItem'
                         break;
           case '/pages' : name = 'pagesNew'
+                        break;
+          case '/concat' : name = 'concatAction'
                         break;
         }
         this.$router.push({name:name,params:{data:data}})
@@ -249,8 +251,9 @@
       },
 
       jumpToOther(e){
+        let check = this.check ? this.check : ' '
         if(this.url == 'action' || this.path == '/action'){
-          this.$router.push('/action/detail/'+e.id)
+          this.$router.push({path:'/action/detail/'+e.id})
         } else if(this.url == 'pages' || this.path == '/pages'){
           this.$router.push('/pages/detail/'+e.id+'/'+e.student_info_id)
         } else if(this.path == '/donate'){
@@ -269,7 +272,7 @@
           url = 'SchoolFellow/delAlumni_Pages'
         }else if(this.path == '/donate'){
           url = 'SchoolFellow/delAlumni'
-        }else if(this.path == '/concat'){
+        }else if(this.path == '/concat' || this.path == '/action/list/concat'){
           url = 'SchoolFellow/delMutual_Help'  
         }else if(this.path == '/school'){
           url = 'SchoolFellow/delContact_College'
@@ -284,7 +287,7 @@
       },
     },
     created(){
-      console.log(this.list,this.type)
+      // console.log(this.list,this.type)
     }
   }
 </script>

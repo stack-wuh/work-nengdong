@@ -20,6 +20,7 @@
             <el-input v-else-if="item.isTextarea" type="textarea" :row="item.row" v-model="form.validForm[item.prop]"></el-input>
             <el-switch v-if="item.isSwitch" active-text="是" inactive-text="否" active-value='1' inactive-value="0" v-model="form.validForm[item.prop]"></el-switch>
             <el-checkbox v-if="item.isCheck" v-for="(citem,cindex) in  item.checkList" :key="cindex" :label="citem.name" v-model="form.validForm[citem.prop]"></el-checkbox>
+            <div v-if="item.isEditor" id="editor"></div>
           </el-form-item>
         </el-form>
 
@@ -32,6 +33,7 @@
 </template>
 
 <script>
+import E from 'wangeditor'
   export default{
     props:['title','isShowDialog','id'],
     data(){
@@ -156,13 +158,6 @@
             this.form.validForm.file = e
           }
         }
-        // if(this.form.validForm.image == ''){
-        //   this.form.validForm.image = e
-        // }
-        // if(this.form.validForm.file == ''){
-        //   this.form.validForm.file = e
-        // }
-        console.log(e,this.form.validForm)
       },
       hideDialog(){
         this.$store.commit('changeDialogStatus',{status:false,formType:''})
@@ -352,9 +347,14 @@
     .my-form{
       margin:0 auto;
       .my-form-item{
-        width:70%;
+        width:90%;
         margin:0 auto;
         margin-bottom:20px;
+      }
+      #editor{
+        width:100%;
+        height:400px;
+        border:1px solid red;
       }
     }
   }

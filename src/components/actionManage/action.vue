@@ -227,6 +227,8 @@ export default {
     this.$nextTick(()=>{
       if(this.$route.params.data){
         this.form = this.$route.params.data
+        this.form.address = this.$route.params.data.activity_image.address
+        console.log(this.form)
       }
     })
   }

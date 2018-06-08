@@ -30,10 +30,8 @@
     },
     methods:{
       fetchData(){
-        this.$http('SchoolFellow/getMutual_Help',{student_info_id:sessionStorage.getItem('userId')}).then(res=>{
-          this.info.list = res.data.find(item=>{
-            return item.id == this.$route.params.id
-          })
+        this.$http('SchoolFellow/GWMutual_Help',{id:this.$route.params.id}).then(res=>{
+          this.info.list = res.data[0]
           this.info.list.addressList = this.info.list.mutual_help_image.address.split(',')
         })
       }

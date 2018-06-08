@@ -152,6 +152,19 @@ export default {
               name:'导出当前页'
             }
           ]
+        },
+        {
+          type:11,
+          subList:[
+            {
+              name:'添加',
+              click:this.jump2other
+            },
+            {
+              name:'批量操作'
+            }
+          ],
+          showInput:true,
         }
       ],
       keywords:''
@@ -230,6 +243,8 @@ export default {
                                 break;
         case '/concat' : path = '/concat/action'
                         break; 
+        case '/donate' : path = '/donate/publish'
+                        break;
       }
       this.$router.push(path)
     },

@@ -4,7 +4,7 @@
         <section class="content">
           <p class="nav-title">当前位置：{{$route.params.type == 'action' ? '活动管理' : $route.params.type == 'pages' ? '校友会管理' : '互助列表'}}>{{msg.name ? msg.name : '待审核'}}</p>
           
-          <item-list @getDelMsg="getDelMsg" :list="list" />
+          <item-list @getDelMsg="getDelMsg" :list="list" :check="msg.name" />
           
           <bottom @getCurrentPage="getCurrentPage" type="pagination" :total="total" />
         </section>
@@ -27,7 +27,9 @@
         subList:[],
         page:1,
         total:0,
-        msg:{}
+        msg:{
+          name:'待审核'
+        }
       }
     },
     computed:{
@@ -48,12 +50,9 @@
       },
       getList(e){
         this.msg = e 
-        this.list = this.subList.filter(item=>{
-          return item.check_text == e.name
-        })
-        this.total  = this.list.length
+        this.fetchData(e.name)
       },
-      fetchData(title){
+      fetchData(title='待审核'){
         let url = ''
         if(this.$route.params.type == 'action'){
           url = 'SchoolFellow/getActivity_Manager'
@@ -62,12 +61,10 @@
         }else if(this.$route.params.type == 'concat'){
           url = 'SchoolFellow/getMutual_Help'
         }
-        this.$http(url,{title:title,pageNo:this.page}).then(res=>{
-          this.list = res.data.filter(item=>{
-            return item.check_text == '待审核'
-          })
-          this.subList = res.data
-          this.total = Number.parseInt(res.total)
+
+        this.$http(url,{check_text:title,pageNo:this.page,student_info_id:sessionStorage.getItem('userId')}).then(res=>{
+          this.list = res.data
+          this.total = res.total
         })
       }
     },

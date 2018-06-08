@@ -1,6 +1,6 @@
 <template>
   <section class="wrapper">
-    <search @PickAny="pickAny" @confirm="fetchData" @propKey="propKey" type="8" />
+    <search @PickAny="pickAny" @confirm="fetchData" @propKey="propKey" type="11" />
     <section class="content">
       <p class="nav-title">当前位置: 校友捐赠>列表</p>
       <item-list @getDelAnyMsg="getDelAnyMsg" @changeIsShow="changeIsShow" @getDelMsg="getDelMsg" :list="list" :isShow="isShow" />
@@ -13,6 +13,7 @@
   import Search from '@/components/common/search'
   import ItemList from '@/components/common/itemList'
   import Bottom from '@/components/common/bottom'
+  import E from 'wangeditor'
   export default{
     components:{
       Search,
@@ -56,6 +57,10 @@
     },
     created(){
       this.fetchData()
+      this.$nextTick(()=>{
+        var editor = new E('#editor')
+        editor.create()
+      })
     }
   }
 </script>

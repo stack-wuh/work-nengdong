@@ -74,7 +74,7 @@
               <p>
                 <span :class="[newConcat.check_text == '未通过' ? 'danger' : newConcat.check_text == '进行中' ? 'info' : 'info']">{{newConcat.check_text}}</span>
                 <!-- <img @click="handleClickShare" src="../../../static/img/icon-share.png" alt="icon-share"> -->
-                <img @click="jumptoOther(newConcat)" src="../../../static/img/icon-edit.png" alt="icon-share">
+                <img v-if="newConcat.student_info_id == userId" @click="jumptoOther(newConcat)" src="../../../static/img/icon-edit.png" alt="icon-share">
                 <img @click.prevent.stop="handleClickDel(newConcat)" src="../../../static/img/icon-delete.png" alt="icon-share">
               </p>
             </li>
@@ -151,7 +151,7 @@
     methods:{
       //单击编辑跳转
       jumptoOther(data){
-        let name = this.$route.name , rename = ''
+        let name = this.$route.name , rename = '' , path = this.$route.path
         switch(name){
           case 'actionDetail' : rename = 'actionItem' 
                             break;
@@ -217,7 +217,7 @@
       }
     },
     created(){
-      console.log(this.info)
+      console.log(this.info,'aaa')
       let path = this.$route.path
       if(path.search('pages')>0){
         this.type = 'pages'
