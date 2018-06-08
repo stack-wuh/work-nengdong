@@ -8,54 +8,54 @@
         <span class="btn active">毕业档案</span>
         <span class="btn">在校档案</span>
         <span class="empty"></span>
-        <span class="info">移出杰出校友名录</span>
-        <span class="success">导出个人信息</span>
-        <span class="default">编辑</span>
-        <span class="danger">删除</span>
+        <span @click="handleClickRemove" class="info">移出杰出校友名录</span>
+        <span @click="export2excel" class="success">导出个人信息</span>
+        <span @click="handleClickEdit" class="default">编辑</span>
+        <span @click="handleClickDel" class="danger">删除</span>
       </nav>
       
       <ul class="list-content">
         <li>
           <img src="../../../static/img/logo.png" alt="avatar">
           <div>
-            <h3>张晓晓</h3>
+            <h3>{{info.name}}</h3>
             <div>
-              <span>入学年份:<span>2013级</span></span>
-              <span>专业班级:<span>能动</span></span>
-              <span>学号:<span>20180001</span></span>
-              <span>身份证号:<span>42282319911026382</span></span>
+              <span>入学年份:<span>{{info.school_age}}级</span></span>
+              <span>专业班级:<span>{{info.line}}{{info.classes}}</span></span>
+              <span>学号:<span>{{info.number}}</span></span>
+              <span>身份证号:<span>{{info.no}}</span></span>
             </div>
           </div>
         </li>
         <li>
           <h3>基础信息</h3>
           <div>
-            <span>手机号：<span>1111111</span></span>
-            <span>邮箱：<span>1111111</span></span>
-            <span>QQ：<span>1111111</span></span>
-            <span>微信：<span>1111111</span></span>
-            <span>所在地：<span>1111111</span></span>
-            <span>具体地址：<span>1111111</span></span>
+            <span>手机号：<span>{{info.phone_number}}</span></span>
+            <span>邮箱：<span>{{info.email}}</span></span>
+            <span>QQ：<span>{{info.qq}}</span></span>
+            <span>微信：<span>{{info.weixin}}</span></span>
+            <span>所在地：<span>{{info.site_areas}}{{info.site_cities}}{{info.site_provinces}}</span></span>
+            <span>具体地址：<span>{{info.address}}</span></span>
           </div>
         </li>
         <li>
           <h3>就业单位</h3>
           <div>
-            <span>用人单位名称:<span>武汉市刷卡机有限公司</span></span>
-            <span>单位性质:<span>民营</span></span>
-            <span>单位所在行业:<span>武汉市刷卡机有限公司</span></span>
-            <span>工作职位类别:<span>武汉市刷卡机有限公司</span></span>
-            <span>岗位名称:<span>武汉市刷卡机有限公司</span></span>
-            <span>起薪:<span>武汉市刷卡机有限公司</span></span>
+            <span>用人单位名称:<span>{{info.unit_name}}</span></span>
+            <span>单位性质:<span>{{info.unit_property}}</span></span>
+            <span>单位所在行业:<span>{{info.unit_way}}</span></span>
+            <span>工作职位类别:<span>{{info.place_class}}</span></span>
+            <span>岗位名称:<span>{{info.post_name}}</span></span>
+            <span>起薪:<span>{{info.money}}</span></span>
           </div>
         </li>
         <li>
           <h3>升学档案</h3>
           <div>
-            <span>层次:<span>硕士</span></span>
-            <span>学校:<span>武汉理工学院</span></span>
-            <span>院系:<span>能动学院</span></span>
-            <span>专业:<span>20110</span></span>
+            <span>层次:<span>{{info.advance_archives.level}}</span></span>
+            <span>学校:<span>{{info.advance_archives.schools}}</span></span>
+            <span>院系:<span>{{info.advance_archives.faculty}}</span></span>
+            <span>专业:<span>{{info.advance_archives.lines}}</span></span>
           </div>
         </li>
       </ul>
@@ -73,8 +73,41 @@
     },
     data(){
       return{
-
+        info:[]
       }
+    },
+    methods:{
+      //单击导出个人信息
+      export2excel(){
+
+      },
+      //单击移除杰出校友
+      handleClickRemove(){
+        this.$http('SchoolFellow/del_outstandin',{id:this.info.id}).then(res=>{
+          let error = res.error == 0 ? 'success' : 'error'
+          _g.toastMsg(error,res.msg)
+        })
+      },
+      //单击编辑
+      handleClickEdit(){
+
+      },
+      //单击删除
+      handleClickDel(){
+        this.$http('SchoolFellow/delStudent_Info',{id:this.info.id}).then(res=>{
+          let error = res.error == 0 ? 'success' : 'error'
+          _g.toastMsg(error,res.msg)
+          if(res.error == 0){
+            setTimeout(()=>{
+              this.$router.go(-1)
+            },1000)   
+          }
+        })
+      }
+    },
+    created(){
+      this.info = this.$route.params.data
+      console.log(this.info)
     }
   }
 </script>
@@ -135,6 +168,9 @@
       border-bottom:1px solid @base;
       span{
         color: #fff;
+      }
+      span:hover{
+        cursor: pointer;
       }
       span.btn{
         margin:0;

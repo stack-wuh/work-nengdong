@@ -104,7 +104,13 @@ export default {
     }
   },
   watch:{
-    $router:'fetchData'
+    $route(to,from){
+      if(to.path == '/firend/pages'){
+        this.fetchData()
+      }else{
+        this.fetchData()
+      }
+    }
   },
   methods:{
     //获取子组件出来的页码
@@ -129,7 +135,6 @@ export default {
         }else{
           this.info.list = []
         }
-  
         this.total = Number.parseInt(res.total)
       })
     },

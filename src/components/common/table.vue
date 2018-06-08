@@ -1,6 +1,6 @@
 <template>
   <section class="father">
-    <el-table v-on:row-click="$emit('handleRowClick')" class="my-table" :data="newList" border stripe  >
+    <el-table v-on:row-click="handleClickRow" class="my-table" :data="newList" border stripe  >
       <el-table-column width="80px" fixed align="center" label="序号" type="index"></el-table-column>
       <el-table-column :width="item.width" fixed="left" align="center" v-for="(item,index) in sublist.list" :key="index" v-if="!item.child && !item.isSwitch && !item.isColorPicker && !item.isCheck && !item.isImage" :label="item.name" :prop="item.prop">
       </el-table-column>
@@ -625,6 +625,13 @@ export default {
     }
   },
   methods: {
+    //单击表格一行跳转
+    handleClickRow(e){
+      let path = this.$route.path
+      if(path == '/firend/firend'){
+        this.$router.push({name:'firendDetail',params:{data:e}})
+      }
+    },
     //色彩选择--提交
     colorPickerChange(id,$event){
       let url = '' , data = {id:id,color:$event}

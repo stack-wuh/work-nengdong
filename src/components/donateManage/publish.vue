@@ -75,8 +75,16 @@
       submit(){
         this.$refs.myForm.validate(valid=>{
           if(valid){
-            
-            console.log(this.form)
+            this.$http('SchoolFellow/addAlumni',this.form).then(res=>{
+              let error = res.error == 0 ? 'success' : 'error'
+              _g.toastMsg(error,res.msg)
+              if(res.error == 0){
+                setTimeout(()=>{
+                  this.$refs.myForm.resetFields()
+                  this.$router.push('/donate')
+                },1000)
+              }
+            })
           }
         })
       }
@@ -84,7 +92,7 @@
     created(){
       this.$nextTick(()=>{
         var editor = new E('#editor')
-        editor.customConfig.uploadImgServer = rootPath + 'SchoolFellow/addImages' //上传服务器地址
+        editor.customConfig.uploadImgServer = rootPath + 'SchoolFellow/InsertImages' //上传服务器地址
         editor.customConfig.uploadFileName = 'file'
         editor.customConfig.customAlert = function(info){
           _g.toastMsg('warning',info)
