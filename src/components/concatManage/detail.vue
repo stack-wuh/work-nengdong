@@ -34,7 +34,6 @@
           this.info.list = res.data.find(item=>{
             return item.id == this.$route.params.id
           })
-          this.info.list = Object.assign(this.info.list,this.info.list.student_info)
           this.info.list.addressList = this.info.list.mutual_help_image.address.split(',')
         })
       }

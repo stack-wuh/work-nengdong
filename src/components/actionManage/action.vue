@@ -126,7 +126,7 @@ export default {
         cover:'',
         remark:'',
         address:[],
-        student_info_id:''
+        student_info_id:sessionStorage.getItem('userId')
       },
       rules:{
         type:[

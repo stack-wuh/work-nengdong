@@ -39,13 +39,15 @@
     methods:{
       //单击批量删除
       handleClickDel($event){
-        let url = ''
+        let url = '' , data = {id:this.chooseArr}
         switch(this.$route.path){
-          case 'action' : url = 'SchoolFellow/delActivityDetails_Manager'
+          case '/action' : url = 'SchoolFellow/delActivityDetails_Manager'
                         break;
           case '/pages' : url = 'SchoolFellow/delAlumni_Pages'
                         break;
           case '/concat' : url = 'SchoolFellow/delMutual_Help'
+                        break;
+          case '/donate' : url = 'SchoolFellow/delAlumni'
                         break;
         }
         if(this.chooseArr.length == 0){
