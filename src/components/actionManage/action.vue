@@ -90,7 +90,6 @@
               <span @click="handleClickSubmit" class="btn base">提交</span>
             </div>
           </div>
-
         </section>
     </section>
 </template>
@@ -210,11 +209,11 @@ export default {
     handleClickSubmit(e){
       this.$refs['addForm'].validate(valid=>{
         if(valid){
-          this.form.student_info_id = 2
           this.$http('SchoolFellow/addActivity_Manager',this.form).then(res=>{
             let error = res.error == 0 ? 'success' : 'error'
             _g.toastMsg(error,res.msg)
             if(res.error == 0){
+              return
               this.$router.push('/action')
             }
           })
@@ -225,6 +224,11 @@ export default {
   created(){
     this.getActionType()
     this.getWhether()
+    this.$nextTick(()=>{
+      if(this.$route.params.data){
+        this.form = this.$route.params.data
+      }
+    })
   }
 };
 </script>

@@ -41,6 +41,7 @@ const list = []
       fetchData(title){
         this.$http('SchoolFellow/ShowStudent_Info_Line',{line_name:title}).then(res=>{
           this.info.list = res.data
+          this.total = res.total
         })
       }
     },

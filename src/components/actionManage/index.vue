@@ -12,7 +12,7 @@
           </li>
         </ul>
         <item-list @getDelAnyMsg="getDelAnyMsg" @changeIsShow="changeIsShow" @getDelMsg="getDelMsg" :list="list" :isShow="isShow" />
-        <bottom :total="total" type="pagination" />
+        <bottom @getCurrentPage="getCurrentPage" :total="total" type="pagination" />
       </div>
     </section>
 </template>
@@ -82,6 +82,10 @@ export default {
     };
   },
   methods: {
+    getCurrentPage(e){
+      this.page = e 
+      this.fetchData()
+    },
     changeIsShow(e){
       this.isShow = e
     },
@@ -109,7 +113,7 @@ export default {
       this.fetchData()
     },
     fetchData(e) {
-      let data = Object.assign({title:e},this.search)
+      let data = Object.assign({title:e,pageNo:this.page},this.search)
       this.$http("SchoolFellow/getActivity_Manager",data).then(res => {
         this.list = res.data;
         console.log(this.list)

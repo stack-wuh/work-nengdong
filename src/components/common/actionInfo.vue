@@ -7,35 +7,33 @@
               <h3>{{newList.title}}</h3>
               <p>
                 <!-- <img @click="handleClickShare" src="../../../static/img/icon-share.png" alt="icon-share"> -->
-                <img v-if="userId == newList.student_info_id"  src="../../../static/img/icon-edit.png" alt="icon-share">
+                <img @click="jumptoOther(newList)" v-if="userId == newList.student_info_id"  src="../../../static/img/icon-edit.png" alt="icon-share">
                 <img @click="handleClickDel" src="../../../static/img/icon-delete.png" alt="icon-share">
               </p>
             </li>
             <li>
-              <span>类型：</span>{{newList.type}}
-              <span>组织者：</span>{{newList.organizer}}
-              <span>人数：</span>{{newList.number}}/{{newList.participants}}
+              <span>类型 ：</span>{{newList.type}}
+              <span>组织者 ：</span>{{newList.organizer ||newList.official}}
+              <span>人数 ：</span>{{newList.number}}/{{newList.participants}}
             </li>
             <li>
-              <span>时间:</span>{{newList.starttime | format}} 至 {{newList.endtime | format}}
-              <span>地点:</span>{{newList.place}}
+              <span>发起时间 :</span>{{newList.starttime | format}}
+              <span>地点 :</span>{{newList.place}}
             </li>
             <li>
-              <img src="../../../static/img/logo.png" alt="avatar">
-              <img src="../../../static/img/logo.png" alt="avatar">
-              <img src="../../../static/img/logo.png" alt="avatar">
-              <img src="../../../static/img/logo.png" alt="avatar">
+              <img :src="newList.cover" alt="avatar">
+
             </li>
-            <li><span>参与费用:</span>{{newList.money}}</li>
-            <li><span>参与要求:</span>{{newList.require_text}}</li>
-            <li><span>活动介绍:</span>{{newList.activity_introduction }}</li>
-            <li><span>负责人:</span>{{newList.leading_name}}</li>
-            <li><span>手机号:</span>{{newList.phone }}</li>
-            <li><span>邮箱:</span>{{newList.email }}</li>
-            <li><span>QQ:</span>{{newList.qq}} </li>
-            <li><span>QQ群:</span>{{newList.group_text}}</li>
-            <li><span>微信:</span>{{newList.weixin}}</li>
-            <li><span>备注:</span>{{newList.remark}}</li>
+            <li><span>参与费用 :</span>{{newList.money}}</li>
+            <li><span>参与要求 :</span>{{newList.require_text}}</li>
+            <li><span>活动介绍 :</span>{{newList.activity_introduction }}</li>
+            <li><span>负责人 :</span>{{newList.leading_name}}</li>
+            <li><span>手机号 :</span>{{newList.phone }}</li>
+            <li><span>邮箱 :</span>{{newList.email }}</li>
+            <li><span>QQ :</span>{{newList.qq}} </li>
+            <li><span>QQ群 :</span>{{newList.group_text}}</li>
+            <li><span>微信 :</span>{{newList.weixin}}</li>
+            <li><span>备注 :</span>{{newList.remark}}</li>
           </ul>
           <ul v-if="type == 'pages'">
              <li>
@@ -43,8 +41,8 @@
               <h3>{{newPages.title}}</h3>
               <p>
                 <!-- <img @click="handleClickShare" src="../../../static/img/icon-share.png" alt="icon-share"> -->
-                <img v-if="list.student_info_id == userId" src="../../../static/img/icon-edit.png" alt="icon-share">
-                <img @click="handleClickDel" src="../../../static/img/icon-delete.png" alt="icon-share">
+                <img @click="jumptoOther(newPages)" v-if="newPages.student_info_id == userId" src="../../../static/img/icon-edit.png" alt="icon-share">
+                <img @click="handleClickDel(newPages)" src="../../../static/img/icon-delete.png" alt="icon-share">
               </p>
             </li>
             <li>
@@ -76,8 +74,8 @@
               <p>
                 <span :class="[newConcat.check_text == '未通过' ? 'danger' : newConcat.check_text == '进行中' ? 'info' : 'info']">{{newConcat.check_text}}</span>
                 <!-- <img @click="handleClickShare" src="../../../static/img/icon-share.png" alt="icon-share"> -->
-                <img src="../../../static/img/icon-edit.png" alt="icon-share">
-                <img @click.prevent.stop="handleClickDel" src="../../../static/img/icon-delete.png" alt="icon-share">
+                <img @click="jumptoOther(newConcat)" src="../../../static/img/icon-edit.png" alt="icon-share">
+                <img @click.prevent.stop="handleClickDel(newConcat)" src="../../../static/img/icon-delete.png" alt="icon-share">
               </p>
             </li>
             <li>
@@ -134,19 +132,6 @@
     computed:{
       //活动详情
       newList(){ 
-        for(var k in this.info){
-          if(!this.info[k]){  
-            this.info[k] = '暂无'
-          }
-          if(k == 'student_info'){
-            this.user = this.info[k]
-            for(var j in this.user){
-              if(!this.user[j]){
-                this.user[j] = '暂无'
-              }
-            }
-          }
-        } 
         return this.info
       },
       //校友会详情
@@ -164,6 +149,19 @@
       },
     },
     methods:{
+      //单击编辑跳转
+      jumptoOther(data){
+        let name = this.$route.name , rename = ''
+        switch(name){
+          case 'actionDetail' : rename = 'actionItem' 
+                            break;
+          case 'pagesDetail' : rename = 'pagesNew'
+                            break;
+          case 'concatDetail' : rename = 'concatAction'
+                            break;
+        }
+        this.$router.push({name:rename,params:{data:data}})
+      },
       //单击删除按钮
       handleClickDel(e){
         let url = '' , data={}
@@ -172,6 +170,9 @@
                           data = {id:this.$route.params.id}
                         break;
           case 'pages' :  url = 'SchoolFellow/delAlumni_Pages' ,
+                          data = {id:this.$route.params.id}
+                        break;
+          case 'concat' : url = 'SchoolFellow/delMutual_Help' ,
                           data = {id:this.$route.params.id}
                         break;
         }

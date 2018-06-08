@@ -3,7 +3,6 @@
     <search type=2 />
     <section class="content">
       <p class="nav-title">当前位置：黄业管理>校友会黄页>创建校友会</p>
-
       <el-form :model="form" ref="addform" :rules="rules" label-width="100px">
         <el-form-item label="活动类型" prop="type">
           <el-select v-model="form.type">
@@ -91,6 +90,7 @@ import Search from '@/components/common/search'
       return{
         uploadImg:rootPath + 'SchoolFellow/addImages',
         form:{
+          id:'',
           type:'',
           title:'',
           introduced:'',
@@ -107,8 +107,8 @@ import Search from '@/components/common/search'
           weixin:'',
           weixin_hide:'',
           image:'',
-          address:'',
-
+          address:[],
+          student_info_id:sessionStorage.getItem('userId')
         },
         rules:{
           type:[
@@ -180,9 +180,15 @@ import Search from '@/components/common/search'
       handleClickSubmit(){
         this.$refs['addform'].validate(valid=>{
           if(valid){
-            let data = {}
-            data = Object.assign(this.form,{student_info_id:2})
-            this.$http('SchoolFellow/addAlumni_Pages',data).then(res=>{
+            if(!this.form.phone && !this.form.email && !this.form.qq && !this.form.weixin){
+              _g.toastMsg('error','至少填写一项联系方式')
+              return
+            }
+            if(!this.form.phone_hide && !this.form.email_hide && !this.form.email_hide && !this.form.weixin_hide){
+              _g.toastMsg('error','至少勾选一项联系人可见')
+              return
+            }
+            this.$http('SchoolFellow/addAlumni_Pages',this.form).then(res=>{
               let error = res.error == 0 ? 'success' : 'error'
               _g.toastMsg(error,res.msg)
               if(res.error == 0){
@@ -207,6 +213,12 @@ import Search from '@/components/common/search'
     },
     created(){
       this.getTypeList()
+      this.$nextTick(()=>{
+        if(this.$route.params.data){
+          this.form = this.$route.params.data
+          console.log(this.$route.params.data)
+        }
+      })
     },
   }
 </script>

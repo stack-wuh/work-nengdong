@@ -11,7 +11,7 @@
         <span @click="handleClickChange(4)" :class="{'txt-active' : No == 4}">按行业分</span>
       </nav>
       <item-list @getDelAnyMsg="getDelAnyMsg" @getDelMsg="getDelMsg"  @changeIsShow="changeIsShow" :list="list" type="pages" :isShow="isShow" />
-      <bottom type="pagination" :total="total" />
+      <bottom @getCurrentPage="getCurrentPage" type="pagination" :total="total" />
     </section>
   </section>
 </template>
@@ -37,6 +37,10 @@
       }
     },
     methods:{
+      getCurrentPage(e){
+        this.pageNo = e
+        this.fetchData()
+      },
       getDelAnyMsg(e){
         e && this.fetchData()
       },

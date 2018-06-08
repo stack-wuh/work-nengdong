@@ -10,16 +10,7 @@
   import Bottom from '@/components/common/bottom'
   import Search from '@/components/common/search'
   import ETable from '@/components/common/table'
-  const list = [
-    {
-      name:'aaa',
-      color:'#333'
-    },
-    {
-      name:'222',
-      color:"#333"
-    }
-  ]
+  const list = []
   export default{
     components:{
       Bottom,

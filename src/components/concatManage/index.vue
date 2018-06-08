@@ -61,7 +61,7 @@
         this.fetchData(e)  
       },
       fetchData(title){
-        this.$http('SchoolFellow/getMutual_Help',{title:title,type:this.type,pageNo:this.pageNo}).then(res=>{
+        this.$http('SchoolFellow/getMutual_Help',{title:title,type:this.type,pageNo:this.pageNo,student_info_id:sessionStorage.getItem('userId')}).then(res=>{
           this.list = res.data
           this.total = res.total
         })

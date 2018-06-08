@@ -4,7 +4,7 @@
     <section class="content">
       <p class="nav-title">当前位置: 校友捐赠>列表</p>
       <item-list @getDelAnyMsg="getDelAnyMsg" @changeIsShow="changeIsShow" @getDelMsg="getDelMsg" :list="list" :isShow="isShow" />
-      <bottom type="pagination" :total="total" />
+      <bottom @getCurrentPage="getCurrentPage" type="pagination" :total="total" />
     </section>
   </section>
 </template>
@@ -28,6 +28,10 @@
       }
     },
     methods:{
+      getCurrentPage(e){
+        this.pageNo = e
+        this.fetchData()
+      },
       getDelAnyMsg(e){
         e && this.fetchData()
       },

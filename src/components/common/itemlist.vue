@@ -20,7 +20,7 @@
                               item.check_text == '已完成' ? 'info gray' :
                                  'info default']">{{item.check_text}}</span>
                   <!-- <img @click="handleClickShare" class="img-btn" src="../../../static/img/icon-share.png" alt="icon-share"> -->
-                  <img v-if="item.student_info_id == userId" class="img-btn" src="../../../static/img/icon-edit.png" alt="icon-edit">
+                  <img @click.prevent.stop="jumpToEdit(item)" v-if="item.student_info_id == userId" class="img-btn" src="../../../static/img/icon-edit.png" alt="icon-edit">
                   <img @click.prevent.stop="handleClickDel(item)" class="img-btn" src="../../../static/img/icon-delete.png" alt="icon-delete">
                 </p>
                 <p >
@@ -50,7 +50,7 @@
                   <span >类型：</span>{{item.type}}
                   <span class="empty"></span>
                   <!-- <img @click="handleClickShare" class="img-btn" src="../../../static/img/icon-share.png" alt="icon-share"> -->
-                  <img v-if="item.student_info_id == userId" class="img-btn" src="../../../static/img/icon-edit.png" alt="icon-edit">
+                  <img @click.prevent.stop="jumpToEdit(item)" v-if="item.student_info_id == userId" class="img-btn" src="../../../static/img/icon-edit.png" alt="icon-edit">
                   <img @click.prevent.stop="handleClickDel(item)" class="img-btn" src="../../../static/img/icon-delete.png" alt="icon-delete">
                 </p>
                 <p >
@@ -88,7 +88,7 @@
                   <span>发布者: </span>{{item.college}}
                 </p>
                 <p>
-                  <span>专业班级:</span>{{item.student_info.school}}{{item.student_info.line}}{{item.student_info.classes}}
+                  <!-- <span>专业班级:</span>{{item.student_info.school}}{{item.student_info.line}}{{item.student_info.classes}} -->
                 </p>
                 <p class="last-flex">
                   <span>时间：</span>{{item.starttime || item.time | format}}
@@ -201,6 +201,16 @@
       }, 
     },
     methods:{
+      jumpToEdit(data){
+        let path = this.$route.path , name = ''
+        switch(path){
+          case '/action' : name = 'actionItem'
+                        break;
+          case '/pages' : name = 'pagesNew'
+                        break;
+        }
+        this.$router.push({name:name,params:{data:data}})
+      },
       getDelAnyMsg(){
         this.$emit('getDelAnyMsg',true)
       },

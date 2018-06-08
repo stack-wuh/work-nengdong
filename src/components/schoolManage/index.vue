@@ -11,7 +11,7 @@
           <span @click="handleClickChange(4)" :class="{'txt-active':current==4}">其他</span>
         </nav>
         <item-list @getDelAnyMsg="getDelAnyMsg" @changeIsShow="changeIsShow" @getDelMsg="getDelMsg" :list="list" :isShow="isShow" />
-        <bottom :total="total" type="pagination" />
+        <bottom @getCurrentPage="getCurrentPage" :total="total" type="pagination" />
       </section>
     </section>
 </template>
@@ -39,6 +39,10 @@ const list=[]
       }
     },
     methods:{
+      getCurrentPage(e){
+        this.pageNo = e
+        this.fetchData()
+      },
       getDelAnyMsg(e){
         e && this.fetchData()
       },

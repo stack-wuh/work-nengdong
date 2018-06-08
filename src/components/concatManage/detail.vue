@@ -30,7 +30,7 @@
     },
     methods:{
       fetchData(){
-        this.$http('SchoolFellow/getMutual_Help').then(res=>{
+        this.$http('SchoolFellow/getMutual_Help',{student_info_id:sessionStorage.getItem('userId')}).then(res=>{
           this.info.list = res.data.find(item=>{
             return item.id == this.$route.params.id
           })

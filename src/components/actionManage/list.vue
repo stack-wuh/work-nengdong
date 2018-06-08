@@ -6,7 +6,7 @@
           
           <item-list @getDelMsg="getDelMsg" :list="list" />
           
-          <bottom type="pagination" :total="total" />
+          <bottom @getCurrentPage="getCurrentPage" type="pagination" :total="total" />
         </section>
     </section>
 </template>
@@ -36,6 +36,10 @@
       $router:'fetchData'
     },
     methods:{
+      getCurrentPage(e){
+        this.page = e
+        this.fetchData()
+      },
       propKey(e){
         this.fetchData(e)
       },
@@ -58,7 +62,7 @@
         }else if(this.$route.params.type == 'concat'){
           url = 'SchoolFellow/getMutual_Help'
         }
-        this.$http(url,{title:title}).then(res=>{
+        this.$http(url,{title:title,pageNo:this.page}).then(res=>{
           this.list = res.data.filter(item=>{
             return item.check_text == '待审核'
           })
