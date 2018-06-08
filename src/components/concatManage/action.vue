@@ -3,7 +3,7 @@
         <search type="2" />
         <section class="content">
           <p class="nav-title">当前位置:互联互助>列表>发布</p>
-          <el-form class="el-form" :model="form" ref="myForm" :rules="rules" label-width="150px;">
+          <el-form class="el-form" :model="form" ref="myForm" :rules="rules" label-width="150px">
             <el-form-item label="帮助类型" prop="type">
               <el-select v-model="form.type">
                 <el-option v-for="(item,index) in  typeList" :key="index" :label="item.name" :value="item.name"></el-option>
@@ -21,7 +21,7 @@
                 :action="uploadImg"
                 :show-file-list="false"
                 :on-success="handleAvatarSuccess">
-                <img v-if="imageUrl" :src="imageUrl" class="avatar">
+                <img v-if="form.image" :src="form.image" class="avatar">
                 <i v-else class="el-icon-plus avatar-uploader-icon"></i>
               </el-upload>
             </el-form-item>
@@ -36,23 +36,26 @@
               </el-upload>
             </el-form-item>
             <el-form-item label="联系人" prop="college">
-              <el-input v-model="form.college"></el-input>
+              <el-input class="my-input" v-model="form.college"></el-input>
             </el-form-item>
             <el-form-item label="手机号">
-              <el-checkbox v-model="form.phone_hide"></el-checkbox>
-              <el-input v-model="form.phone" placeholder="请输入手机号"></el-input>
+              <el-input class="my-input" v-model="form.phone" placeholder="请输入手机号"></el-input>
+              <el-checkbox  v-model="form.phone_hide"></el-checkbox>
             </el-form-item>
             <el-form-item label="邮箱">
+              <el-input class="my-input" v-model="form.email" placeholder="请输入邮箱地址"></el-input>              
               <el-checkbox v-model="form.email_hide"></el-checkbox>
-              <el-input v-model="form.email" placeholder="请输入邮箱地址"></el-input>              
             </el-form-item>
             <el-form-item label="QQ">
+              <el-input class="my-input" v-model="form.qq" placeholder="请输入QQ"></el-input>              
               <el-checkbox v-model="form.qq_hide"></el-checkbox>
-              <el-input v-model="form.qq" placeholder="请输入QQ"></el-input>              
             </el-form-item>
             <el-form-item label="微信">
+               <el-input class="my-input" v-model="form.weixin" placeholder="请输入微信号"></el-input>             
                <el-checkbox v-model="form.weixin_hide"></el-checkbox>
-               <el-input v-model="form.weixin" placeholder="请输入微信号"></el-input>             
+            </el-form-item>
+            <el-form-item>
+              <span class="form-msg">联系方式对管理员全部可见,勾选项对全部客户可见,至少勾选一项</span>
             </el-form-item>
           </el-form>
           <div class="btn-father">
@@ -130,14 +133,38 @@
     },
     methods:{
       handleAvatarSuccess(e){
-
+        this.form.image = e
       },
       fetchData(){
         this.$http('SchoolFellow/getMutual_Help_Type').then(res=>{
           this.typeList = res.data
         })
       },
-      handleClickSubmit(){}
+      handleClickSubmit(){
+        this.$refs.myForm.validate(valid=>{
+          if(valid){
+            let data = {}
+            data = Object.assign(this.form,{student_info_id:sessionStorage.getItem('userId')})
+            if(!data.phone && !data.qq && !data.email && !data.weixin){
+              _g.toastMsg('error','至少填写一项联系方式')
+              return
+            }
+            if(!data.phone_hide && !data.qq_hide && !data.weixin_hide && !data.email_hide){
+              _g.toastMsg('error','至少勾选一项可见')
+              return
+            }
+            this.$http('SchoolFellow/addMutual_Help',data).then(res=>{
+              let error = res.error == 0 ? 'success' : 'error'
+              _g.toastMsg(error,res.msg)
+              if(res.error == 0){
+                setTimeout(()=>{
+                  this.$router.go(-1)
+                },1000)
+              }
+            })
+          }
+        })
+      }
     },
     created(){
       this.fetchData()
@@ -173,10 +200,10 @@
     height: 178px;
     display: block;
   }
-  // .el-form{
-  //   .el-form-item{
-  //     display: flex;
-  //     width:100%;
-  //   }
-  // }
+  .my-input{
+    width:300px;
+  }
+  .form-msg{
+    color: #999;
+  }
 </style>
