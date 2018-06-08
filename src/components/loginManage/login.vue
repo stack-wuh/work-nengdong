@@ -46,8 +46,8 @@ export default{
       this.$http('SchoolFellow/LoginAdministrators',this.user).then(res=>{
         let error = res.error == 0 ? 'success' : 'error'
         _g.toastMsg(error,res.msg)
-        window.sessionStorage.setItem('userId',res.id)
         if(res.error == 0){
+           window.sessionStorage.setItem('userId',res.id)
            setTimeout(()=>{
              this.$router.push('/')
            },1000)

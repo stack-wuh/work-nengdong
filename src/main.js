@@ -26,6 +26,21 @@ window._g = _g
 window.store = store
 window.$bus = new Vue()
 
+router.beforeEach((to,from,next)=>{
+  let userId = sessionStorage.getItem('userId')
+
+  if(to.name === 'login'){
+    if(userId){
+      router.push({name:'firendIndex'})
+    }
+  }else{
+    if(userId == undefined || userId == null){
+      router.push({name:'login'})
+    }
+  }
+  next()
+})
+
 axios.interceptors.request.use((config)=>{
   store.commit('changeLoading',{state:true})
   return config
