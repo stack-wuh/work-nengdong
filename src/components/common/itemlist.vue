@@ -5,8 +5,8 @@
 
       <!-- 活动模块-列表 -->
       <div @click="jumpToOther(item)" v-if="$route.path == '/action' || $route.path == '/action/list/action'" v-for="(item,index) in newList" :key="index" class="item-detail flex-box">
-          <img v-show="isShow && !item.isChoose" @click="handleClickChoose(item,index)" src="../../../static/img/icon-check-default.png" alt="icon-check">
-          <img v-show="isShow && item.isChoose" @click="handleClickChoose(item,index)" src="../../../static/img/icon-check-action.png" alt="icon-check">
+          <img v-show="isShow && !item.isChoose" @click.prevent.stop="handleClickChoose(item,index)" src="../../../static/img/icon-check-default.png" alt="icon-check">
+          <img v-show="isShow && item.isChoose" @click.prevent.stop="handleClickChoose(item,index)" src="../../../static/img/icon-check-action.png" alt="icon-check">
           <div class="img-box" >
               <img v-if="!item.cover" src="../../../static/img/logo.png" alt="avatar">
               <img v-else :src="item.cover" alt="avatar">
@@ -21,7 +21,7 @@
                                  'info default']">{{item.check_text}}</span>
                   <!-- <img @click="handleClickShare" class="img-btn" src="../../../static/img/icon-share.png" alt="icon-share"> -->
                   <img v-if="item.student_info_id == userId" class="img-btn" src="../../../static/img/icon-edit.png" alt="icon-edit">
-                  <img @click="handleClickDel(item)" class="img-btn" src="../../../static/img/icon-delete.png" alt="icon-delete">
+                  <img @click.prevent.stop="handleClickDel(item)" class="img-btn" src="../../../static/img/icon-delete.png" alt="icon-delete">
                 </p>
                 <p >
                   <span>标题: </span>{{item.title}}
@@ -39,8 +39,8 @@
 
       <!-- 黄页模块-列表 -->
       <div  @click="jumpToOther(item)" v-if="$route.path == '/pages' || $route.path == '/action/list/pages'" v-for="(item,index) in newList" :key="index" class="item-detail flex-box">
-          <img v-show="isShow && !item.isChoose" @click="handleClickChoose(item,index)" src="../../../static/img/icon-check-default.png" alt="icon-check">
-          <img v-show="isShow && item.isChoose" @click="handleClickChoose(item,index)" src="../../../static/img/icon-check-action.png" alt="icon-check">
+          <img v-show="isShow && !item.isChoose" @click.prevent.stop="handleClickChoose(item,index)" src="../../../static/img/icon-check-default.png" alt="icon-check">
+          <img v-show="isShow && item.isChoose" @click.prevent.stop="handleClickChoose(item,index)" src="../../../static/img/icon-check-action.png" alt="icon-check">
           <div class="img-box">
               <img v-if="!item.image" src="../../../static/img/logo.png" alt="avatar">
               <img v-else :src="item.image" alt="avatar">
@@ -51,7 +51,7 @@
                   <span class="empty"></span>
                   <!-- <img @click="handleClickShare" class="img-btn" src="../../../static/img/icon-share.png" alt="icon-share"> -->
                   <img v-if="item.student_info_id == userId" class="img-btn" src="../../../static/img/icon-edit.png" alt="icon-edit">
-                  <img @click="handleClickDel(item)" class="img-btn" src="../../../static/img/icon-delete.png" alt="icon-delete">
+                  <img @click.prevent.stop="handleClickDel(item)" class="img-btn" src="../../../static/img/icon-delete.png" alt="icon-delete">
                 </p>
                 <p >
                   <span>标题: </span>{{item.title}}
@@ -66,8 +66,8 @@
 
       <!-- 互联互助模块-列表 -->
       <div @click="jumpToOther(item)" v-if="$route.path == '/concat' || $route.path == '/action/list/concat'" v-for="(item,index) in newList" :key="index" class="item-detail flex-box">
-        <img v-show="isShow && !item.isChoose" @click="handleClickChoose(item,index)" src="../../../static/img/icon-check-default.png" alt="icon-check">
-        <img v-show="isShow && item.isChoose" @click="handleClickChoose(item,index)" src="../../../static/img/icon-check-action.png" alt="icon-check">
+        <img v-show="isShow && !item.isChoose" @click.prevent.stop="handleClickChoose(item,index)" src="../../../static/img/icon-check-default.png" alt="icon-check">
+        <img v-show="isShow && item.isChoose" @click.prevent.stop="handleClickChoose(item,index)" src="../../../static/img/icon-check-action.png" alt="icon-check">
         <div class="img-box">
           <img v-if="!item.image" src="../../../static/img/logo.png" alt="avatar">
           <img v-else :src="item.image" alt="avatar">
@@ -79,7 +79,7 @@
                   <span class="info">{{item.type}}</span>
                   <!-- <img @click="handleClickShare" class="img-btn" src="../../../static/img/icon-share.png" alt="icon-share"> -->
                   <img v-if="item.student_info_id == userId" class="img-btn" src="../../../static/img/icon-edit.png" alt="icon-edit">
-                  <img @click="handleClickDel(item)" class="img-btn" src="../../../static/img/icon-delete.png" alt="icon-delete">
+                  <img @click.prevent.stop="handleClickDel(item)" class="img-btn" src="../../../static/img/icon-delete.png" alt="icon-delete">
                 </p>
                 <p >
                   <span>标题: </span>{{item.title}}
@@ -102,14 +102,14 @@
 
       <!-- 联系学院-列表 -->
       <div v-if="$route.path == '/school'" v-for="(item,index) in newList" :key="index" class="school-content">
-          <img v-show="isShow && !item.isChoose" @click="handleClickChoose(item,index)" src="../../../static/img/icon-check-default.png" alt="icon-check">
-          <img v-show="isShow && item.isChoose" @click="handleClickChoose(item,index)" src="../../../static/img/icon-check-action.png" alt="icon-check">
+          <img v-show="isShow && !item.isChoose" @click.prevent.stop="handleClickChoose(item,index)" src="../../../static/img/icon-check-default.png" alt="icon-check">
+          <img v-show="isShow && item.isChoose" @click.prevent.stop="handleClickChoose(item,index)" src="../../../static/img/icon-check-action.png" alt="icon-check">
           <div>
             <p class="flex-box">
               <span>问题类型:</span>
               <small>{{item.question_type}}</small>
               <span class="empty"></span>
-              <span @click="handleClickDel(item)" class="btn-del">删除</span>
+              <span @click.prevent.stop="handleClickDel(item)" class="btn-del">删除</span>
             </p>
             <p>
               <span>详细说明:</span><br>
@@ -253,8 +253,8 @@
       //单击删除
       handleClickDel(e){
         let url = ''
-        if(this.url == 'action'){
-          url = 'SchoolFwllow/delActivityDetails_Manager'
+        if(this.$route.path == '/action'){
+          url = 'SchoolFellow/delActivityDetails_Manager'
         }else if (this.url == 'pages' || this.path == '/pages'){
           url = 'SchoolFellow/delAlumni_Pages'
         }else if(this.path == '/donate'){

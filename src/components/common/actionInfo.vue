@@ -77,7 +77,7 @@
                 <span :class="[newConcat.check_text == '未通过' ? 'danger' : newConcat.check_text == '进行中' ? 'info' : 'info']">{{newConcat.check_text}}</span>
                 <!-- <img @click="handleClickShare" src="../../../static/img/icon-share.png" alt="icon-share"> -->
                 <img src="../../../static/img/icon-edit.png" alt="icon-share">
-                <img @click="handleClickDel" src="../../../static/img/icon-delete.png" alt="icon-share">
+                <img @click.prevent.stop="handleClickDel" src="../../../static/img/icon-delete.png" alt="icon-share">
               </p>
             </li>
             <li>
@@ -90,7 +90,7 @@
             </li>
             <li>
               <img v-if="newConcat.image" :src="newConcat.image" alt="avatar">
-              <img v-if="newConcat.addressList" v-for="(item,index) in  newConcat.addressList" :key="index" :src="item" alt="avatar">
+              <img v-if="newConcat.addressList.toString().length > 0" v-for="(item,index) in  newConcat.addressList" :key="index" :src="item" alt="avatar">
             </li>
             <li><span>详细内容:</span>{{newConcat.content}}</li>
             <li><span>手机号:</span>{{newConcat.phone }}</li>
