@@ -10,7 +10,7 @@
         <span @click="handleClickChange(3)" :class="{'txt-active':current==3}">提供帮助</span>
       </nav>
       <item-list @getDelAnyMsg="getDelAnyMsg" @changeIsShow="changeIsShow" @getDelMsg="getDelMsg" :list="list" :isShow="isShow" />
-      <bottom :total="total" type="pagination" />
+      <bottom @getCurrentPage="getCurrentPage" :total="total" type="pagination" />
     </section>
   </section>
 </template>
@@ -36,6 +36,10 @@
       }
     },
     methods:{
+      getCurrentPage(e){
+        this.pageNo = e
+        this.fetchData()
+      },
       PickAny(e){
         this.isShow = e
       },
