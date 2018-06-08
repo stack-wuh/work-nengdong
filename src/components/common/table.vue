@@ -631,7 +631,7 @@ export default {
       switch(this.$route.path){
         case '/setting/helpType' : url = 'SchoolFellow/addMutual_Help_Type' 
                     break;
-        case '/setting/type' : url = 'SchoolFellow/addActivity_Type'
+        case '/setting/type' : url = 'SchoolFellow/updateActivity_Color'
                     break; 
       }
       this.$http(url,data).then(res=>{
