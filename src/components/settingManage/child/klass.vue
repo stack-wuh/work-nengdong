@@ -34,7 +34,6 @@
     },
     watch:{
       submitState:function(e){
-        console.log(e)
         e && this.fetchData()
       }
     },

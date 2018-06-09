@@ -377,13 +377,13 @@ export default {
               child: [],
               btnList: [
                 {
+                  name: "编辑",
+                  click:this.handleClickEdit
+                },
+                {
                   name: "删除",
                   click:this.handleClickDel
                 },
-                {
-                  name: "编辑",
-                  click:this.handleClickEdit
-                }
               ]
             }
           ]

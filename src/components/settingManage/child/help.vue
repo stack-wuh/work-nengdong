@@ -1,5 +1,6 @@
 <template>
   <section class="wrapper">
+    <search type="2" />
     <el-input v-model="text" :rows="15" class="my-input" type="textarea" placeholder="请输入公告内容"></el-input>
     <div class="btn-area">
       <span @click="submit" class="btn base">提交</span>
@@ -8,7 +9,11 @@
 </template>
 
 <script>
+import Search from '@/components/common/search'
   export default{
+    components:{
+      Search
+    },
     data(){
       return{
         text:''

@@ -22,6 +22,16 @@
         }
       }
     },
+    computed:{
+      submitState(){
+        return this.$store.state.submitState
+      }
+    },
+    watch:{
+      submitState(e){
+        e && this.fetchData()
+      }
+    },
     methods:{
       propKey(e){
         this.fetchData(e)

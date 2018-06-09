@@ -26,6 +26,16 @@ import Bottom from '@/components/common/bottom'
         page:1
       }
     },
+    computed:{
+      submitState(){
+        return this.$store.state.submitState
+      }
+    },
+    watch:{
+      submitState(e){
+        e && this.fetchData()
+      }
+    },
     methods:{
       getCurrentPage(e){
         this.page = e

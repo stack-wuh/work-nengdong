@@ -27,6 +27,16 @@ const list = []
         pageNo:1
       }
     },
+    computed:{
+      submitState(){
+        return this.$store.state.submitState
+      }
+    },
+    watch:{
+      submitState:function(e){
+        e && this.fetchData()
+      }
+    },
     methods:{
       getCurrentPage(e){
         this.pageNo = e

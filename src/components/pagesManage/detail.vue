@@ -35,14 +35,21 @@
       }
     },
     computed:{
-
+      submitState(){
+        return this.$store.state.submitState
+      }
+    },
+    watch:{
+      submitState(e){
+        e && this.fetchData()
+      }
     },
     methods:{
       //获取发布者的历史消息
       getList(){
         this.$http('SchoolFellow/getAlumni_PagesByME',{student_info_id:this.$route.params.sid}).then(res=>{
           this.info.list = res.data.map(item=>{
-            return item = {title:item.title,time:new Date(item.time).getFullYear()+'-'+new Date(item.time).getMonth()+'-'+new Date(item.time).getDay() 
+            return item = {title:item.title,time:new Date(item.time).getFullYear()+'-'+(new Date(item.time).getMonth()+1)+'-'+new Date(item.time).getDay() 
                   + ' '+ new Date(item.time).getHours() + ":"+new Date(item.time).getMinutes()}
           })
           

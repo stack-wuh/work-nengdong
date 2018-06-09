@@ -67,7 +67,7 @@ const state = {
     validForm:{
       age_name:'',
       age_or:1,
-    }
+    },
   },
 
   //活动 -- 添加反馈
@@ -332,8 +332,7 @@ const state = {
       {
         name:'反馈信息',
         prop:'feedback',
-        isInput:false,
-        inputType:'textarea',
+        isTextarea:true,
         row:2,
         rules:[
           {

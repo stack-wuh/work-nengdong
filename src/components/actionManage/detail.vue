@@ -37,6 +37,16 @@ import Bottom from '@/components/common/bottom'
         list:[]
       }
     },
+    computed:{
+      submitState(){
+        return this.$store.state.submitState
+      }
+    },
+    watch:{
+      submitState(e){
+        e && this.fetchData()
+      }
+    },
     methods:{
       //导出报名表
       export2Excel(){

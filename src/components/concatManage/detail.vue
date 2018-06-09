@@ -3,7 +3,6 @@
     <search type=2 />
     <section class="content">
       <p class="nav-title">当前位置: 互联互助>详情</p>
-
       <action-info type="concat" :info="info" />
       <bottom v-if="info.list.check_text == '待审核'" type="btn" :data="{id:$route.params.id}" />
     </section>
@@ -26,6 +25,16 @@
           type:'',
           list:[]
         }
+      }
+    },
+    computed:{
+      submitState(){
+        return this.$store.state.submitState
+      }
+    },
+    watch:{
+      submitState(e){
+        e && this.fetchData()
       }
     },
     methods:{

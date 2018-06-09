@@ -100,7 +100,7 @@ import E from 'wangeditor'
         switch(this.$store.state.formType){
           case 'updatePwd' : form = this.$store.state.form.changePwd 
                             break;
-          case 'feedback' : form = this.$store.state.form.addFeedback
+          case 'feedback' : form = this.$store.state.form.addFeedback // 活动--添加反馈信息 
                             break;
           case 'addYear' : form = this.$store.state.form.addNewYear
                             break;
@@ -160,12 +160,17 @@ import E from 'wangeditor'
         }
       },
       hideDialog(){
-        this.$store.commit('changeDialogStatus',{status:false,formType:''})
         this.$refs.myForm.resetFields()
+        this.$store.commit('changeDialogStatus',{status:false,formType:''})
+        setTimeout(()=>{
+          this.$store.commit('changeRefresh',{state:false})
+        },1000)
       },
       handleClickSubmit(){
-        console.log(this.form.validForm)
-        // this.$emit('getSubMsg',true)
+        // this.$emit('getSubMsg',{state:true})
+        // setTimeout(()=>{
+        //   this.hideDialog()
+        // },1000)
         // return
         let type = this.$store.state.formType
         let action = this.$store.state.action
@@ -190,20 +195,18 @@ import E from 'wangeditor'
                   }
                 })
               }
-            }else if(type == 'feedback'){
+            }else if(type == 'feedback'){           // 活动--添加反馈
               let data = {}
               data = Object.assign(this.form.validForm,{id:id})
               this.$http('SchoolFellow/Activity_Manager_NoPass',data).then(res=>{
                 let error = res.error == 0 ? 'success' : 'error'
                 _g.toastMsg(error,res.msg)
                 if(res.error == 0){
+                  this.$emit('getSubMsg',{state:true})
                   this.hideDialog()
-                  setTimeout(()=>{
-                    this.$router.go(0)
-                  },1000)
                 }
               })
-            }else if(type == 'addYear'){
+            }else if(type == 'addYear'){ // 设置-- 添加/编辑学年
               let url = '' , data = {}
               if(action == 'add'){
                   url = 'SchoolFellow/addStudent_Info_Age'
@@ -218,21 +221,19 @@ import E from 'wangeditor'
                 this.error = res.error
                 this.$store.commit('handleClickStatus',{state:res.error})
                 if(res.error == 0){
+                  this.$emit('getSubMsg',{state:true})                  
                   this.hideDialog()
-                  this.$emit('getSubMsg',true)
                 }
               })
-            }else if (type == 'addHelp'){
+            }else if (type == 'addHelp'){  
               
             }else if(type=='pagesFeedback'){
               this.$http('SchoolFellow/updateAlumni_Pages_no',data).then(res=>{
                 let error = res.error == 0 ? 'success' : 'error'
                 _g.toastMsg(error,res.msg)
                 if(res.error == 0){
+                  this.$emit('getSubMsg',{state:true})
                   this.hideDialog()
-                  setTimeout(()=>{
-                    this.$router.go(0)
-                  },1000)
                 }
               })
             }else if(type == 'addDonate'){
@@ -264,6 +265,7 @@ import E from 'wangeditor'
                 let error = res.error == 0 ? 'success' : 'error'
                 _g.toastMsg(error,res.msg)
                 if(res.error == 0){
+                  this.$emit('getSubMsg',{state:true})
                   this.hideDialog()
                 }
               })
@@ -272,6 +274,7 @@ import E from 'wangeditor'
                 let error = res.error == 0 ? 'success' : 'error'
                 _g.toastMsg(error,res.msg)
                 if(res.error == 0){
+                  this.$emit('getSubMsg',{state:true})
                   this.hideDialog()
                 }
               })
@@ -280,6 +283,7 @@ import E from 'wangeditor'
                 let error = res.error == 0 ? 'success' : 'error'
                 _g.toastMsg(error,res.msg)
                 if(res.error == 0){
+                  this.$emit('getSubMsg',{state:true})
                   this.hideDialog()
                 }
               })
@@ -288,6 +292,7 @@ import E from 'wangeditor'
                 let error = res.error == 0 ? 'success' : 'error'
                 _g.toastMsg(error,res.msg)
                 if(res.error == 0){
+                  this.$emit('getSubMsg',{state:true})
                   this.hideDialog()
                 }
               })
@@ -296,9 +301,8 @@ import E from 'wangeditor'
                 let error = res.error == 0 ? 'success' : 'error'
                 _g.toastMsg(error,res.msg)
                 if(res.error == 0){
+                  this.$emit('getSubMsg',{state:true})
                   this.hideDialog()
-                  console.log('is ok')
-                  this.$emit('getSubMsg',true)
                 }
               })
             }else if(type == 'addSettingKlass' || type == 'editSettingKlass'){
@@ -306,9 +310,8 @@ import E from 'wangeditor'
                 let error = res.error == 0 ? 'success' : 'error'
                 _g.toastMsg(error,res.msg)
                 if(res.error == 0){
+                  this.$emit('getSubMsg',{state:true})
                   this.hideDialog()
-                  console.log('is ok')
-                  this.$emit('getSubMsg',true)
                 }
               })
             }else if(type == 'addSettingOfficial' || type == 'editSettingOfficial'){
@@ -316,8 +319,8 @@ import E from 'wangeditor'
                 let  error = res.error == 0 ? 'success' : 'error'
                 _g.toastMsg(error,res.msg)
                 if(res.error == 0){
+                  this.$emit('getSubMsg',{state:true})
                   this.hideDialog()
-                  this.$emit('getSubMsg',true)
                 }
               })
             }else if(type == 'addConcatSchool' || type == 'editSettingConcat'){
@@ -325,6 +328,7 @@ import E from 'wangeditor'
               let error = res.error == 0 ? 'success' : 'error'
                 _g.toastMsg(error,res.msg)
                 if(res.error == 0){
+                  this.$emit('getSubMsg',{state:true})
                   this.hideDialog()
                   setTimeout(()=>{
                     this.$router.push('/school')

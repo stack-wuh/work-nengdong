@@ -49,7 +49,7 @@
     methods:{
       getCurrentPage(e){
         this.pageNo = e
-        this.fechData()
+        this.fetchData()
       },
       //获取所有入学年份
       fetchData(name){

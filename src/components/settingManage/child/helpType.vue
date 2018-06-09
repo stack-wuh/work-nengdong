@@ -27,6 +27,16 @@
         total:0
       } 
     },
+    computed:{
+      submitState(){
+        return this.$store.state.submitState
+      }
+    },
+    watch:{
+      submitState(e){
+        e && this.fetchData()
+      }
+    },
     methods:{
       getDelMsg(e){
         e && this.fetchData()

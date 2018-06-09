@@ -29,6 +29,7 @@ const mutations = {
   //dialog框提交成功之后，页面刷新
   changeRefresh(state,status){
     state.submitState = status.state
+    console.log(state,status,'state is change')
   }
 }
 
