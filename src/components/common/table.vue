@@ -30,7 +30,7 @@
       </el-table-column>      
       <el-table-column :width="item.width" :fixed="item.fixed" align="center" v-if="item.btnList" v-for="(item,index) in sublist.list" :key="index" :label="item.name" >
         <template slot-scope="scope">
-          <el-button size="mini" type="text"  v-for="(btn,btnIndex) in item.btnList" @click="btn.click(scope)" :key="btnIndex">{{btn.name}}</el-button>
+          <el-button size="mini" type="text"  v-for="(btn,btnIndex) in item.btnList" @click.prevent.stop="btn.click(scope)" :key="btnIndex">{{btn.name}}</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -648,7 +648,6 @@ export default {
     },
     //单击删除按钮 -- 删除
     handleClickDel($event) {
-      console.log(this.type)
       let url = "",data = {};
       switch (this.type) {
         case "firend":
@@ -723,7 +722,6 @@ export default {
         this.$store.commit('saveValue',{title:'编辑',status:true,name:'editSettingOfficial',value:$event.row,type:'editSettingOfficial',action:'edit',id:$event.row.id})
       }
       if(this.type == 'concat'){
-        console.log($event.row)
         this.$store.commit('saveValue',{title:'编辑',status:true,name:'editSettingConcat',value:$event.row,type:'editSettingConcat',action:'edit',id:$event.row.id})
       }
     },
@@ -734,7 +732,7 @@ export default {
       })
     },
     
-    //单击改变状态
+    //单击改变状态 --是否开放档案
     handleClickChangeState($event){
       let url = '' , data = {}
       if(this.type == 'year'){

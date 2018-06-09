@@ -197,36 +197,15 @@
         document.execCommand('Copy')
         _g.toastMsg('success','链接已经复制到您的剪贴板了')
       }, 
-      //黄页
-      fetchData(){
-        this.$http('SchoolFellow/getAlumni_Pages').then(res=>{
-          this.list = res.data.find(item=>{ 
-            return item.id == this.$route.params.id
-          })
-          this.address = this.list.alumni_pages_album.address.split(',')
-        })
-      },
-      //互联互助详情
-      getConcatList(){
-        this.$http('SchoolFellow/getMutual_Help').then(res=>{
-          this.list = res.data.find(item=>{
-            return item.id == this.$route.params.id
-          })
-          this.address = this.list.mutual_help_image.address.split(',')
-        })
-      }
     },
     created(){
-      console.log(this.info,'aaa')
       let path = this.$route.path
       if(path.search('pages')>0){
         this.type = 'pages'
-        // this.fetchData()
       }else if(path.search('action')>0){
         this.type = 'action'
       }else if (path.search('concat')>0){
         this.type = 'concat'
-        // this.getConcatList()
       }
     }
   }

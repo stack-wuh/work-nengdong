@@ -51,10 +51,10 @@
         <li>
           <h3>升学档案</h3>
           <div>
-            <span>层次: <span>{{info.advance_archives.levels}}</span></span>
-            <span>学校: <span>{{info.advance_archives.schools}}</span></span>
-            <span>院系: <span>{{info.advance_archives.faculty}}</span></span>
-            <span>专业: <span>{{info.advance_archives.line_text}}</span></span>
+            <span>层次: <span>{{advance.levels}}</span></span>
+            <span>学校: <span>{{advance.schools}}</span></span>
+            <span>院系: <span>{{advance.faculty}}</span></span>
+            <span>专业: <span>{{advance.line_text}}</span></span>
           </div>
         </li>
       </ul>
@@ -72,10 +72,18 @@
     },
     data(){
       return{
-        info:[]
+        info:[],
+        advance:[]
       }
     },
     methods:{
+      fetchData(){
+        this.$http('SchoolFellow/showStudent_Info',{id:this.$route.params.data.id}).then(res=>{
+          this.info = res.data[0]
+          this.advance = res.data[0].advance_archives
+          console.log(this.info)
+        })  
+      },
       //单击导出个人信息
       export2excel(){
 
@@ -105,8 +113,7 @@
       }
     },
     created(){
-      this.info = this.$route.params.data
-      console.log(this.info)
+      this.fetchData()
     }
   }
 </script>

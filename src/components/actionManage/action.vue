@@ -75,10 +75,10 @@
                     :on-success="handleListSuccess">
                     <i class="el-icon-plus avatar-uploader-icon avatar"></i>
                   </el-upload>
-                     <div class="img-list">
+                    <div class="img-list">
                       <span v-for="(item,index) in form.address" :key="index" >
                         <img @click="handleRemove(index)" class="icon-close" src="../../../static/img/icon-close.png" alt="close">
-                        <img :src="item" class="avatar">
+                        <img :src="item" alt="avatar">
                       </span>
                     </div>
               </el-form-item>
@@ -197,10 +197,11 @@ export default {
       })
     },
     handleAvatarSuccess(e){
-      this.form.cover = e.replace('\"','')
+      this.form.cover = e[0]
     },
     handleListSuccess(e){
-      this.form.address.push(e)
+      this.form.address.push(e[0])
+      console.log(this.form.address,'address')
     },
     handleRemove(index){
       this.form.address.splice(index,1)
@@ -226,7 +227,10 @@ export default {
     this.$nextTick(()=>{
       if(this.$route.params.data){
         this.form = this.$route.params.data
-        this.form.address = this.$route.params.data.activity_image.address
+        if(this.$route.params.data.activity_image.address){
+          this.form.address = this.$route.params.data.activity_image.address ? 
+                                  this.$route.params.data.activity_image.address : []
+        }
         console.log(this.form)
       }
     })
@@ -263,7 +267,10 @@ export default {
     height: 178px;
     border:1px dashed #eee;
     display: block;
-
+  }
+  img[alt="avatar"]{
+    width:180px;
+    height:180px;
   }
   .img-list{
     display: flex;
@@ -280,5 +287,9 @@ export default {
       top:-15px;
       z-index:1000 !important;
     }
+  }
+  .imgs-list{ 
+    width:100%;
+    height:200px;
   }
 </style>

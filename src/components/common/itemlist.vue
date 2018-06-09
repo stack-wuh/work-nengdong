@@ -137,7 +137,7 @@
       </div> 
 
       <!-- 校友捐赠-列表 -->
-        <div @click="jumpToOther(item)" v-if="$route.path == '/donate'" v-for="(item,index) in newList" :key="index" class="item-detail flex-box">
+      <div @click="jumpToOther(item)" v-if="$route.path == '/donate'" v-for="(item,index) in newList" :key="index" class="item-detail flex-box">
           <img v-show="isShow && !item.isChoose" @click.prevent.stop="handleClickChoose(item,index)" src="../../../static/img/icon-check-default.png" alt="icon-check">
           <img v-show="isShow && item.isChoose" @click.prevent.stop="handleClickChoose(item,index)" src="../../../static/img/icon-check-action.png" alt="icon-check">
           <div class="img-box">
@@ -151,9 +151,9 @@
                   <!-- <img @click="handleClickShare" class="img-btn" src="../../../static/img/icon-share.png" alt="icon-share"> -->
                   <img @click.prevent.stop="handleClickDel(item)" class="img-btn" src="../../../static/img/icon-delete.png" alt="icon-delete">
                 </p>
-                <p class="text-overflow">
+                <!-- <p class="text-overflow">
                   <span>详情: </span>{{item.details}}
-                </p>
+                </p> -->
                 <p>
                   <span>时间：</span>{{item.starttime || item.time | format}}
                 </p>          

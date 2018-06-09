@@ -147,6 +147,7 @@ import E from 'wangeditor'
       }
     },
     methods:{
+      //对话框关闭
       dialogClose(){
         this.$emit('dialogClose',true)
       },

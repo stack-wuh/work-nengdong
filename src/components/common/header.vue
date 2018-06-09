@@ -31,7 +31,7 @@ export default {
       this.$store.commit('changeDialogStatus',{title:'修改密码',status:true,type:'updatePwd'})
     },
     logout(){
-      this.$http('SchoolFellow/removeCookie',{id:2}).then(res=>{
+      this.$http('SchoolFellow/removeCookie',{id:sessionStorage.getItem('userId')}).then(res=>{
         let error = res.error == 0 ? 'success' : 'error'
         _g.toastMsg(error,res.msg)
         if(res.error == 0){

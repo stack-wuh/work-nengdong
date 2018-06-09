@@ -7,9 +7,9 @@
           <el-form-item label="标题" prop="title">
             <el-input v-model="form.title"  placeholder="请输入标题"></el-input>
           </el-form-item>
-          <el-form-item label="详情" prop="details" >
+          <!-- <el-form-item label="详情" prop="details" >
             <el-input type="textarea" :row="2" placeholder="请输入详情" v-model="form.details"></el-input>
-          </el-form-item>
+          </el-form-item> -->
           <el-form-item label="封面" prop="image">
             <el-upload
               class="avatar-uploader"

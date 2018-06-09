@@ -68,7 +68,7 @@ export default new Router({
           component:FirendIndex
         },
         {
-          path:'/firends/detail',
+          path:'/firends/detail/:id',
           name:'firendDetail',
           component:FirendDetail
         },

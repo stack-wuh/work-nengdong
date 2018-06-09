@@ -178,6 +178,8 @@ import Search from '@/components/common/search'
         })
       },
       handleClickSubmit(){
+        console.log(this.form)
+        // return
         this.$refs['addform'].validate(valid=>{
           if(valid){
             if(!this.form.phone && !this.form.email && !this.form.qq && !this.form.weixin){

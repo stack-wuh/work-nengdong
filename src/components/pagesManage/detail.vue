@@ -52,7 +52,6 @@
             return item = {title:item.title,time:new Date(item.time).getFullYear()+'-'+(new Date(item.time).getMonth()+1)+'-'+new Date(item.time).getDay() 
                   + ' '+ new Date(item.time).getHours() + ":"+new Date(item.time).getMinutes()}
           })
-          
         })
       },
       fetchData(){

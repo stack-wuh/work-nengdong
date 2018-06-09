@@ -1,6 +1,5 @@
 <template>
   <section class="wrapper bottom">
-
     <el-pagination v-show="type == 'pagination'" class="my-nav"
       @current-change="handleCurrentChange"
       :current-page="currentPage"
@@ -60,6 +59,9 @@
       handleCurrentChange(e){
         this.$emit('getCurrentPage',e)
       },
+    },
+    created(){
+      console.log(this.data)
     }
   }
 </script>
