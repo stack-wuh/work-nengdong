@@ -1,14 +1,13 @@
 <template>
   <section class="wrapper">
     <search type='2' />
-
     <div class="content">
       <p class="nav-title">当前位置: 校友管理>校友详情</p>
       <nav class="nav flex-box">
         <span class="btn active">毕业档案</span>
         <span class="btn">在校档案</span>
         <span class="empty"></span>
-        <span @click="handleClickRemove" class="info">移出杰出校友名录</span>
+        <span @click="handleClickRemove" class="info" v-show="info.outstandin == true">移出杰出校友名录</span>
         <span @click="export2excel" class="success">导出个人信息</span>
         <span @click="handleClickEdit" class="default">编辑</span>
         <span @click="handleClickDel" class="danger">删除</span>
@@ -41,21 +40,21 @@
         <li>
           <h3>就业单位</h3>
           <div>
-            <span>用人单位名称:<span>{{info.unit_name}}</span></span>
-            <span>单位性质:<span>{{info.unit_property}}</span></span>
-            <span>单位所在行业:<span>{{info.unit_way}}</span></span>
-            <span>工作职位类别:<span>{{info.place_class}}</span></span>
-            <span>岗位名称:<span>{{info.post_name}}</span></span>
-            <span>起薪:<span>{{info.money}}</span></span>
+            <span>用人单位名称: <span>{{info.unit_name}}</span></span>
+            <span>单位性质: <span>{{info.unit_property}}</span></span>
+            <span>单位所在行业: <span>{{info.unit_way}}</span></span>
+            <span>工作职位类别: <span>{{info.place_class}}</span></span>
+            <span>岗位名称: <span>{{info.post_name}}</span></span>
+            <span>起薪: <span>{{info.money}}</span></span>
           </div>
         </li>
         <li>
           <h3>升学档案</h3>
           <div>
-            <span>层次:<span>{{info.advance_archives.level}}</span></span>
-            <span>学校:<span>{{info.advance_archives.schools}}</span></span>
-            <span>院系:<span>{{info.advance_archives.faculty}}</span></span>
-            <span>专业:<span>{{info.advance_archives.lines}}</span></span>
+            <span>层次: <span>{{info.advance_archives.levels}}</span></span>
+            <span>学校: <span>{{info.advance_archives.schools}}</span></span>
+            <span>院系: <span>{{info.advance_archives.faculty}}</span></span>
+            <span>专业: <span>{{info.advance_archives.line_text}}</span></span>
           </div>
         </li>
       </ul>
@@ -81,7 +80,7 @@
       export2excel(){
 
       },
-      //单击移除杰出校友
+      //单击加入/移除杰出校友
       handleClickRemove(){
         this.$http('SchoolFellow/del_outstandin',{id:this.info.id}).then(res=>{
           let error = res.error == 0 ? 'success' : 'error'

@@ -137,9 +137,9 @@
       </div> 
 
       <!-- 校友捐赠-列表 -->
-        <div v-if="$route.path == '/donate'" v-for="(item,index) in newList" :key="index" class="item-detail flex-box">
-          <img v-show="isShow && !item.isChoose" @click="handleClickChoose(item,index)" src="../../../static/img/icon-check-default.png" alt="icon-check">
-          <img v-show="isShow && item.isChoose" @click="handleClickChoose(item,index)" src="../../../static/img/icon-check-action.png" alt="icon-check">
+        <div @click="jumpToOther(item)" v-if="$route.path == '/donate'" v-for="(item,index) in newList" :key="index" class="item-detail flex-box">
+          <img v-show="isShow && !item.isChoose" @click.prevent.stop="handleClickChoose(item,index)" src="../../../static/img/icon-check-default.png" alt="icon-check">
+          <img v-show="isShow && item.isChoose" @click.prevent.stop="handleClickChoose(item,index)" src="../../../static/img/icon-check-action.png" alt="icon-check">
           <div class="img-box">
               <img v-if="!item.image" src="../../../static/img/logo.png" alt="avatar">
               <img v-else :src="item.image" alt="avatar">
@@ -149,10 +149,10 @@
                   <span >标题</span>{{item.title}}
                   <span class="empty"></span>
                   <!-- <img @click="handleClickShare" class="img-btn" src="../../../static/img/icon-share.png" alt="icon-share"> -->
-                  <img @click="handleClickDel(item)" class="img-btn" src="../../../static/img/icon-delete.png" alt="icon-delete">
+                  <img @click.prevent.stop="handleClickDel(item)" class="img-btn" src="../../../static/img/icon-delete.png" alt="icon-delete">
                 </p>
-                <p >
-                  <span>公告: </span>{{item.proclaim}}
+                <p class="text-overflow">
+                  <span>详情: </span>{{item.details}}
                 </p>
                 <p>
                   <span>时间：</span>{{item.starttime || item.time | format}}
@@ -218,6 +218,7 @@
       },
       cancel(){
         this.$emit('changeIsShow',false)
+        this.newList && 
         this.newList.map(item=>{
           item.isChoose = false
         })
@@ -257,7 +258,7 @@
         } else if(this.url == 'pages' || this.path == '/pages'){
           this.$router.push('/pages/detail/'+e.id+'/'+e.student_info_id)
         } else if(this.path == '/donate'){
-          
+          this.$router.push('/donate/detail/'+e.id)
         }else if(this.path == '/action/list/concat' || this.path == '/concat'){
           this.$router.push('/concat/detail/'+e.id)
         }
@@ -427,5 +428,11 @@
   padding-right:10px;
   text-align:right;
   color: #666 !important;
+}
+.text-overflow{
+  width:90%;
+  white-space:nowrap;
+  overflow: hidden;
+  text-overflow:ellipsis;
 }
 </style>

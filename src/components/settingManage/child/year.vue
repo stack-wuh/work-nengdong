@@ -33,7 +33,17 @@
           list:list
         },
         total:0,
-        pageNo:1
+        pageNo:1,
+      }
+    },
+    computed:{
+      submitState(){
+        return this.$store.state.submitState
+      }
+    },
+    watch:{
+      submitState:function(e){
+        e && this.fetchData()
       }
     },
     methods:{
@@ -42,25 +52,25 @@
         this.fechData()
       },
       //获取所有入学年份
-      fechData(name){
+      fetchData(name){
         this.$http('SchoolFellow/getYear',{pageNo:this.pageNo,name:name}).then(res=>{
           this.info.list = res.data
           this.total = res.total
         })
       },
       confirm(e){
-        this.fechData(e)
+        this.fetchData(e)
       },
       propKey(e){
-        this.fechData(e)
+        this.fetchData(e)
       },
       //获取子组件删除操作的返回消息
       getDelMsg(e){
-        e && this.fechData()
+        e && this.fetchData()
       }
     },
     created(){
-      this.fechData()
+      this.fetchData()
     }
   }
 </script>

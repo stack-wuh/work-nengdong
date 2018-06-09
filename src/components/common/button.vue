@@ -54,7 +54,7 @@
           _g.toastMsg('error','请先选择操作对象')
           return
         }
-        this.$http(url,{id:this.chooseArr}).then(res=>{
+        this.$http(url,{id:this.chooseArr.toString()}).then(res=>{
           let error = res.error == 0 ? 'success' : 'error'
           _g.toastMsg(error,res.msg)
           if(res.error == 0){

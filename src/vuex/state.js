@@ -6,7 +6,8 @@ const state = {
   formType:'',
   addState:false,
   action:'add',
-  id:''
+  id:'',
+  submitState:'false'
 }
 
 export default state

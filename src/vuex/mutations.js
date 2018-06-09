@@ -24,6 +24,11 @@ const mutations = {
     state.form[status.name].validForm = status.value
     state.action = status.action
     state.id = status.id
+  },
+
+  //dialog框提交成功之后，页面刷新
+  changeRefresh(state,status){
+    state.submitState = status.state
   }
 }
 

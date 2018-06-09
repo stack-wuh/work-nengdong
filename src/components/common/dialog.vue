@@ -165,6 +165,8 @@ import E from 'wangeditor'
       },
       handleClickSubmit(){
         console.log(this.form.validForm)
+        // this.$emit('getSubMsg',true)
+        // return
         let type = this.$store.state.formType
         let action = this.$store.state.action
         let id = this.$store.state.id
@@ -217,6 +219,7 @@ import E from 'wangeditor'
                 this.$store.commit('handleClickStatus',{state:res.error})
                 if(res.error == 0){
                   this.hideDialog()
+                  this.$emit('getSubMsg',true)
                 }
               })
             }else if (type == 'addHelp'){
@@ -294,6 +297,8 @@ import E from 'wangeditor'
                 _g.toastMsg(error,res.msg)
                 if(res.error == 0){
                   this.hideDialog()
+                  console.log('is ok')
+                  this.$emit('getSubMsg',true)
                 }
               })
             }else if(type == 'addSettingKlass' || type == 'editSettingKlass'){
@@ -302,6 +307,8 @@ import E from 'wangeditor'
                 _g.toastMsg(error,res.msg)
                 if(res.error == 0){
                   this.hideDialog()
+                  console.log('is ok')
+                  this.$emit('getSubMsg',true)
                 }
               })
             }else if(type == 'addSettingOfficial' || type == 'editSettingOfficial'){
@@ -310,6 +317,7 @@ import E from 'wangeditor'
                 _g.toastMsg(error,res.msg)
                 if(res.error == 0){
                   this.hideDialog()
+                  this.$emit('getSubMsg',true)
                 }
               })
             }else if(type == 'addConcatSchool' || type == 'editSettingConcat'){

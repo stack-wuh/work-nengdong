@@ -161,7 +161,8 @@ export default {
               click:this.jump2other
             },
             {
-              name:'批量操作'
+              name:'批量操作',
+              click:this.handleClickPick
             }
           ],
           showInput:true,

@@ -2,9 +2,13 @@
   <section class="wrapper">
       <search type="2" />
       <section class="content">
+        <p class="nav-title">当前页面: 校友捐赠>添加</p>
         <el-form :model="form" ref="myForm" :rules="rules" label-width="100px" >
           <el-form-item label="标题" prop="title">
             <el-input v-model="form.title"  placeholder="请输入标题"></el-input>
+          </el-form-item>
+          <el-form-item label="详情" prop="details" >
+            <el-input type="textarea" :row="2" placeholder="请输入详情" v-model="form.details"></el-input>
           </el-form-item>
           <el-form-item label="封面" prop="image">
             <el-upload
@@ -16,7 +20,7 @@
               <i v-else class="el-icon-plus avatar-uploader-icon"></i>
             </el-upload>            
           </el-form-item>
-          <el-form-item label="公告" prop="propclaim">
+          <el-form-item label="公告" prop="proclaim">
             <div id="editor"></div>
           </el-form-item>
           <div class="btn-list">
@@ -41,7 +45,8 @@
         form:{
           title:'',
           image:'',
-          proclaim:''
+          proclaim:'',
+          details:''
         },
         rules:{
           title:[
@@ -58,14 +63,21 @@
               trigger:'blur'
             }
           ],
-          propclaim:[
+          proclaim:[
             {
               required:true,
               message:'请填写公告内容',
               trigger:'blur'
             }
+          ],
+          details:[
+            {
+              required:true,
+              message:'请填写公告详情',
+              trigger:'blur'
+            }
           ]
-        }
+        },
       } 
     },
     methods:{
@@ -97,8 +109,10 @@
         editor.customConfig.customAlert = function(info){
           _g.toastMsg('warning',info)
         }
+        editor.customConfig.onchange = html => {
+          this.form.proclaim = html
+        }
         editor.create()
-        this.form.propclaim = editor.txt.html()
       })
     }
   }

@@ -27,6 +27,17 @@
         total:0
       }
     },
+    computed:{
+      submitState(){
+        return this.$store.state.submitState
+      }
+    },
+    watch:{
+      submitState:function(e){
+        console.log(e)
+        e && this.fetchData()
+      }
+    },
     methods:{
       propKey(e){
         this.fetchData(e)

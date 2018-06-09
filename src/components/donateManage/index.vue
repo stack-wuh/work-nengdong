@@ -35,6 +35,7 @@
       },
       getDelAnyMsg(e){
         e && this.fetchData()
+        this.isShow = false
       },
       changeIsShow(e){
         this.isShow = e
