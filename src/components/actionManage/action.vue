@@ -15,11 +15,11 @@
               </el-form-item>
               <el-form-item label="组织者" prop="whether">
                 <el-radio v-model="form.whether" label="官方">官方</el-radio>
-                <el-radio v-model="form.whether" label="非官方">非官方</el-radio>
                 <el-select v-if="form.whether == '官方'" v-model="form.official">
                   <el-option v-for="(item,index) in whetherList" :key="index" :label="item.name" :value="item.name"></el-option>
-                </el-select>
-                <el-input v-model="form.text" v-else placeholder="请输入组织者姓名"></el-input>
+                </el-select>                
+                <el-radio v-model="form.whether" label="非官方">非官方</el-radio>
+                <el-input v-model="form.text" v-if="form.whether == '非官方'" class="my-input" placeholder="请输入组织者姓名"></el-input>
               </el-form-item>
               <el-form-item label="是否借用学校场地" prop="site">
                 <el-switch v-model="form.site" active-value="1" inactive-value="0" active-text="是" inactive-text="否"></el-switch>
@@ -201,7 +201,6 @@ export default {
     },
     handleListSuccess(e){
       this.form.address.push(e[0])
-      console.log(this.form.address,'address')
     },
     handleRemove(index){
       this.form.address.splice(index,1)
@@ -231,7 +230,6 @@ export default {
           this.form.address = this.$route.params.data.activity_image.address ? 
                                   this.$route.params.data.activity_image.address : []
         }
-        console.log(this.form)
       }
     })
   }
@@ -291,5 +289,8 @@ export default {
   .imgs-list{ 
     width:100%;
     height:200px;
+  }
+  .my-input{
+    width:300px;
   }
 </style>

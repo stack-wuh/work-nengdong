@@ -172,7 +172,7 @@ const state = {
   addPagesSchool:{
     info:[
       {
-        name:'学院名称',
+        name:'单位名称',
         prop:'school_name',
         isInput:true,
         rules:[
@@ -184,7 +184,7 @@ const state = {
         ]
       },
       {
-        name:'学院电话',
+        name:'单位电话',
         prop:'phone',
         isInput:true,
         rules:[
@@ -206,7 +206,7 @@ const state = {
   editCollege:{
     info:[
       {
-        name:'学院名称',
+        name:'单位名称',
         prop:'school_name',
         isInput:true,
         rules:[
@@ -218,7 +218,7 @@ const state = {
         ]
       },
       {
-        name:'学院电话',
+        name:'单位电话',
         prop:'phone',
         isInput:true,
         rules:[
@@ -241,7 +241,7 @@ const state = {
   addPagesCollege:{
     info:[
       {
-        name:'学校名称',
+        name:'单位名称',
         isInput:true,
         prop:'name',
         rules:[
@@ -253,7 +253,7 @@ const state = {
         ]
       },
       {
-        name:'学校电话',
+        name:'单位电话',
         isInput:true,
         prop:'phone',
         rules:[

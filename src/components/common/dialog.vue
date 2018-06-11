@@ -242,6 +242,7 @@ import E from 'wangeditor'
                 let error = res.error == 0 ? 'success' : 'error'
                 _g.toastMsg(error,res.msg)
                 if(res.error == 0){
+                  this.$emit('getSubMsg',{state:true})
                   this.hideDialog()
                 }
               })
@@ -250,6 +251,7 @@ import E from 'wangeditor'
                 let error = res.error == 0 ? 'success' : 'error'
                 _g.toastMsg(error,res.msg)
                 if(res.error == 0){
+                  this.$emit('getSubMsg',{state:true})
                   this.hideDialog()
                 }
               })
@@ -258,6 +260,7 @@ import E from 'wangeditor'
                 let error = res.error == 0 ? 'success' : 'error'
                 _g.toastMsg(error,res.msg)
                 if(res.error == 0){
+                  this.$emit('getSubMsg',{state:true})
                   this.hideDialog()
                 }
               })
