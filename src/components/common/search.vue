@@ -166,6 +166,27 @@ export default {
             }
           ],
           showInput:true,
+        },
+        {
+          type:12,
+          subList:[
+            {
+              name:'返回上一级',
+              click:this.pageBack
+            },
+            {
+              name:'我创建的',
+              click:this.handleClickMyCreate
+            },
+            {
+              name:'我加入的',
+              click:this.handleClickMyJoin
+            },
+            {
+              name:'新建分组',
+              click:this.handleClickAdd
+            }
+          ]
         }
       ],
       keywords:''
@@ -208,6 +229,8 @@ export default {
           params.type = 'addSettingOfficial'
         }else if(path == '/setting/concat'){
           params.type = 'addConcatSchool'
+        }else if(path == '/message/group'){
+          params.type = 'addGroup'
         }
         this.$store.commit('changeDialogStatus',params)
       }
@@ -264,6 +287,15 @@ export default {
         return item.name !== e.name
       })[0].isActive = false
       this.$emit('getList',{state:true,name:e.name})
+    },
+
+    //我创建的
+    handleClickMyCreate(){
+      this.$emit('getClickMsg','create')
+    },
+    //我加入的
+    handleClickMyJoin(){
+      this.$emit('getClickMsg','join')
     }
   }
 };

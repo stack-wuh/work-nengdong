@@ -209,6 +209,7 @@ export default {
     handleClickSubmit(e){
       this.$refs['addForm'].validate(valid=>{
         if(valid){
+          this.form.address = this.form.address.toString()
           this.$http('SchoolFellow/addActivity_Manager',this.form).then(res=>{
             let error = res.error == 0 ? 'success' : 'error'
             _g.toastMsg(error,res.msg)

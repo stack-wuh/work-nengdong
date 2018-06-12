@@ -125,7 +125,7 @@ export default {
     //获取数据 传给子组件etable
     fetchData(e){
       let url = this.$route.params.type == 'firend' ? 'SchoolFellow/getStudent_Info' : 'SchoolFellow/getStudent_Info_outstandin'
-      let data = Object.assign(this.newList,this.selectList,{pageNo:this.page,name:e})
+      let data = Object.assign(this.newList,this.selectList,{pageNo:this.page,name:e,aid:sessionStorage.getItem('userId')})
       this.$http(url,data).then(res=>{
         if(Array.isArray(res.data)){
           res.data.map(item=>{

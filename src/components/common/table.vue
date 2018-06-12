@@ -607,6 +607,27 @@ export default {
               ]
             }
           ]
+        },
+        {
+          type:'group',
+          list:[
+            {
+              name:'群组名称'
+            },
+            {
+              name:'群组人数'
+            },
+            {
+              name:'操作',
+              child:[],
+              btnList:[
+                {
+                  name:'删除',
+                  click:this.handleClickDel
+                }
+              ]
+            },
+          ]
         }
       ]
     };

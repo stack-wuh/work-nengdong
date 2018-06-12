@@ -951,6 +951,42 @@ const state = {
       file:'',
       id:''
     }
+  },
+
+  //消息 -- 添加新的群组
+  addGroup:{
+    info:[
+      {
+        name:'群组名称',
+        isInput:true,
+        prop:'name',
+        rules:[
+          {
+            required:true,
+            message:'请填写必填项',
+            trigger:'blur'
+          }
+        ]
+      }
+    ],
+    validForm:{
+      name:''
+    }
+  },
+  //消息 -- 选择发送对象
+  chooseReciver:{
+    type:'isCheck',  // 与表单区别开
+    list:[
+      {
+        type:'系统分组'
+      },
+      {
+        type:'我创建的'
+      },
+      {
+        type:'我加入的'
+      }
+    ]
   }
 }
 

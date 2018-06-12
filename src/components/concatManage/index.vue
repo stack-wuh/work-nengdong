@@ -54,7 +54,8 @@
       },
       handleClickChange(e){
         this.current = e
-        this.type = e== 1 ? '' : e == 2 ? '寻求帮助' : '提供帮助'
+        this.type = e== 1 ? '' : e == 2 ? '需求帮助' : '提供帮助'
+        this.pageNo = 1
         this.fetchData()
       },
       propKey(e){

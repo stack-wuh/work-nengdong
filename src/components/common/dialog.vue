@@ -142,6 +142,8 @@ import E from 'wangeditor'
                             break;
           case 'editSettingConcat' : form = this.$store.state.form.editSettingConcat //设置-编辑-联系学院
                             break;
+          case 'addGroup' : form = this.$store.state.form.addGroup // 消息--添加新群组
+                            break; 
         }
         return form
       }
@@ -168,11 +170,6 @@ import E from 'wangeditor'
         },1000)
       },
       handleClickSubmit(){
-        // this.$emit('getSubMsg',{state:true})
-        // setTimeout(()=>{
-        //   this.hideDialog()
-        // },1000)
-        // return
         let type = this.$store.state.formType
         let action = this.$store.state.action
         let id = this.$store.state.id
@@ -226,8 +223,6 @@ import E from 'wangeditor'
                   this.hideDialog()
                 }
               })
-            }else if (type == 'addHelp'){  
-              
             }else if(type=='pagesFeedback'){
               this.$http('SchoolFellow/updateAlumni_Pages_no',data).then(res=>{
                 let error = res.error == 0 ? 'success' : 'error'

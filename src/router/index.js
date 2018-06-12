@@ -29,6 +29,8 @@ const DonateDetail = resolve => require(['@/components/donateManage/detail'],res
 const SchoolIndex = resolve => require(['@/components/SchoolManage/index'],resolve)
 
 const MessageIndex = resolve => require(['@/components/messageManage'],resolve)
+const MessagePublish = resolve => require(['@/components/messageManage/publish'],resolve)
+const MessageGroup = resolve => require(['@/components/messageManage/group'],resolve)
 
 const SettingIndex = resolve => require(['@/components/settingManage/index'],resolve)
 const SettingYear = resolve => require(['@/components/settingManage/child/year'],resolve)
@@ -198,6 +200,16 @@ export default new Router({
           path:'/message',
           name:'message',
           component:MessageIndex,
+        },
+        {
+          path:'/message/publish',
+          name:'messagePublish',
+          component:MessagePublish
+        },
+        {
+          path:'/message/group',
+          name:'messageGroup',
+          component:MessageGroup
         }
       ]
     },    

@@ -21,8 +21,8 @@
               <span>地点 :</span>{{newList.place}}
             </li>
             <li>
-              <img :src="newList.cover" alt="avatar">
-
+              <img v-if="newList.cover" :src="newList.cover" alt="avatar">
+              <img v-for="(imgItem,index) in listAddress" :key="index" :src="imgItem" alt="avatar">
             </li>
             <li><span>参与费用 :</span>{{newList.money}}</li>
             <li><span>参与要求 :</span>{{newList.require_text}}</li>
@@ -55,7 +55,7 @@
             </li>
             <li>
               <img :src="newPages.image" alt="avatar">
-              <img v-if="newPages.address.toString().length > 0" v-for="(item,index) in  newPages.address" :key="index" :src="item" alt="avatar">
+              <img v-for="(item,index) in pageAddress" :key="index" :src="item" alt="avatar">
             </li>
             <li><span>校友会介绍:</span>{{newPages.introduced}}</li>
             <li><span>入会要求:</span>{{newPages.require_text}}</li>
@@ -88,7 +88,7 @@
             </li>
             <li>
               <img v-if="newConcat.image" :src="newConcat.image" alt="avatar">
-              <img v-if="newConcat.addressList.toString().length > 0" v-for="(item,index) in  newConcat.addressList" :key="index" :src="item" alt="avatar">
+              <img v-for="(item,index) in concatAddress" :key="index" :src="item" alt="avatar">
             </li>
             <li><span>详细内容:</span>{{newConcat.content}}</li>
             <li><span>手机号:</span>{{newConcat.phone }}</li>
@@ -134,16 +134,40 @@
       newList(){ 
         return this.info
       },
+      //活动 -- 其他图片
+      listAddress(){
+        if(this.newList.activity_image){
+          if(this.newList.activity_image.address){
+            return this.newList.activity_image.address.split(',')
+          }else{
+            return []
+          }
+        }
+      },
       //校友会详情
       newPages(){
         return this.info.list
       },
-
+      //黄页 -- 其他图片
+      pageAddress(){
+        if(this.newPages.alumni_pages_album){
+          if(this.newPages.alumni_pages_album.address){
+            return this.newPages.alumni_pages_album.address.split(',')
+          }
+        }
+      },
       //互联互助详情
       newConcat(){
         return this.info.list
       },
-
+      //互联互助 -- 其他图片
+      concatAddress(){
+        if(this.newConcat.mutual_help_image){
+          if(this.newConcat.mutual_help_image.address){
+            return this.newConcat.mutual_help_image.address.split(',')
+          }
+        }
+      },
       userId(){
         return sessionStorage.getItem('userId')
       },
