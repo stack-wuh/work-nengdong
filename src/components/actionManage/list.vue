@@ -75,9 +75,4 @@
 </script>
 
 <style lang="less" scoped>
-.wrapper{
-  ::-webkit-scrollbar{
-    display: none;
-  }
-}
 </style>

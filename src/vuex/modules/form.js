@@ -987,7 +987,7 @@ const state = {
         type:'我加入的'
       }
     ]
-  }
+  },
 }
 
 const mutations = {

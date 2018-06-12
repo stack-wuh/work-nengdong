@@ -200,6 +200,7 @@ export default {
       this.form.cover = e[0]
     },
     handleListSuccess(e){
+      console.log(this.form.address)
       this.form.address.push(e[0])
     },
     handleRemove(index){
@@ -207,6 +208,7 @@ export default {
     },
 
     handleClickSubmit(e){
+      console.log(this.form)
       this.$refs['addForm'].validate(valid=>{
         if(valid){
           this.form.address = this.form.address.toString()
@@ -226,11 +228,13 @@ export default {
     this.getWhether()
     this.$nextTick(()=>{
       if(this.$route.params.data){
-        this.form = this.$route.params.data
+        this.form = Object.assign(this.form,this.$route.params.data)
         if(this.$route.params.data.activity_image.address){
           this.form.address = this.$route.params.data.activity_image.address ? 
                                   this.$route.params.data.activity_image.address : []
+          this.form.address = this.form.address.split(',')                        
         }
+       console.log(this.form)
       }
     })
   }

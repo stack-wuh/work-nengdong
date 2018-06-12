@@ -21,6 +21,7 @@ ul,ol,li{
 .flex-box .empty{
   flex:1;
 }
+
 .btn{
   display: inline-block;
   height:30px;

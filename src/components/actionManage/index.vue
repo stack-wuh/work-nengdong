@@ -128,12 +128,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.wrapper {
-  overflow: hidden;
-  ::-webkit-scrollbar {
-    display: none;
-  }
-}
+
 .item-list {
   li {
     span {

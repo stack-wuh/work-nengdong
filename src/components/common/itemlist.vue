@@ -19,7 +19,7 @@
                             item.check_text == '待审核' ? 'info' : 
                               item.check_text == '已完成' ? 'info gray' :
                                  'info default']">{{item.check_text}}</span>
-                  <!-- <img @click="handleClickShare" class="img-btn" src="../../../static/img/icon-share.png" alt="icon-share"> -->
+                  <img @click.prevent.stop="handleClickShare" class="img-btn" src="../../../static/img/icon-share.png" alt="icon-share">
                   <img @click.prevent.stop="jumpToEdit(item)" v-if="item.student_info_id == userId" class="img-btn" src="../../../static/img/icon-edit.png" alt="icon-edit">
                   <img @click.prevent.stop="handleClickDel(item)" class="img-btn" src="../../../static/img/icon-delete.png" alt="icon-delete">
                 </p>
@@ -49,7 +49,11 @@
                 <p class="flex-box">
                   <span >类型：</span>{{item.type}}
                   <span class="empty"></span>
-                  <!-- <img @click="handleClickShare" class="img-btn" src="../../../static/img/icon-share.png" alt="icon-share"> -->
+                  <span  :class="[item.check_text == '未通过' ? 'danger info' : 
+                           item.check_text == '待审核' ? 'info' : 
+                             item.check_text == '已完成' ? 'info gray' :
+                               'info default']">{{item.check_text}}</span>
+                  <img @click.prevent.stop="handleClickShare" class="img-btn" src="../../../static/img/icon-share.png" alt="icon-share">
                   <img @click.prevent.stop="jumpToEdit(item)" v-if="item.student_info_id == userId" class="img-btn" src="../../../static/img/icon-edit.png" alt="icon-edit">
                   <img @click.prevent.stop="handleClickDel(item)" class="img-btn" src="../../../static/img/icon-delete.png" alt="icon-delete">
                 </p>
@@ -76,8 +80,12 @@
                 <p class="flex-box">
                   <span >类型：</span>{{item.type}}
                   <span class="empty"></span>
-                  <span class="info">{{item.type}}</span>
-                  <!-- <img @click="handleClickShare" class="img-btn" src="../../../static/img/icon-share.png" alt="icon-share"> -->
+                  <span  :class="[item.check_text == '未通过' ? 'danger info' : 
+                            item.check_text == '待审核' ? 'info' : 
+                              item.check_text == '已完成' ? 'info gray' :
+                                 'info default']">{{item.check_text}}</span>
+                  <!-- <span class="info">{{item.type}}</span> -->
+                  <img @click.prevent.stop="handleClickShare" class="img-btn" src="../../../static/img/icon-share.png" alt="icon-share">
                   <img @click.prevent.stop="jumpToEdit(item)" v-if="item.student_info_id == userId" class="img-btn" src="../../../static/img/icon-edit.png" alt="icon-edit">
                   <img @click.prevent.stop="handleClickDel(item)" class="img-btn" src="../../../static/img/icon-delete.png" alt="icon-delete">
                 </p>
@@ -148,7 +156,7 @@
                 <p class="flex-box">
                   <span >标题</span>{{item.title}}
                   <span class="empty"></span>
-                  <!-- <img @click="handleClickShare" class="img-btn" src="../../../static/img/icon-share.png" alt="icon-share"> -->
+                  <img @click.prevent.stop="handleClickShare" class="img-btn" src="../../../static/img/icon-share.png" alt="icon-share">
                   <img @click.prevent.stop="handleClickDel(item)" class="img-btn" src="../../../static/img/icon-delete.png" alt="icon-delete">
                 </p>
                 <!-- <p class="text-overflow">
@@ -160,7 +168,7 @@
           </div>
       </div>
 
-      <el-dialog title='分享' :visible.sync="dialogVisible">
+      <el-dialog title='分享' :visible.sync="dialogVisible" class="my-dialog">
         <span>复制下面的地址就可以分享啦!</span><br>
         <input class="input-text" type="text" id="aaa" v-model="Urlhref" readonly @click="copy">
         <span slot="footer" class="dialog-footer">
@@ -434,5 +442,10 @@
   white-space:nowrap;
   overflow: hidden;
   text-overflow:ellipsis;
+}
+.my-dialog{
+  position: fixed;
+  left:calc(50% - 500px);
+  top:calc(50% - 300px);
 }
 </style>

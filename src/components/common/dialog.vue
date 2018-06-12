@@ -1,6 +1,7 @@
 <template>
   <section class="dialog" v-show="isShowDialog">
     <el-dialog class="el-dialog" ref="my-dialog" @close="dialogClose" :title="title" :visible.sync="isShowDialog">
+        <!-- <div v-if="form.type == 'default'"></div> -->
         <el-form :model="form.validForm" ref="myForm" class="my-form">
           <el-form-item class="my-form-item" :prop="item.prop" v-for="(item,index) in form.info" :key="index" :label="item.name" :rules="item.rules" label-width="100px">
             <el-select v-if="item.isSelect" v-model="form.validForm[item.prop]">
@@ -23,7 +24,6 @@
             <div v-if="item.isEditor" id="editor"></div>
           </el-form-item>
         </el-form>
-
       <span slot="footer" class="dialog-footer">
         <el-button @click="hideDialog">取 消</el-button>
         <el-button type="primary" @click="handleClickSubmit">确 定</el-button>
