@@ -1,7 +1,16 @@
 <template>
   <section class="dialog" v-show="isShowDialog">
     <el-dialog class="el-dialog" ref="my-dialog" @close="dialogClose" :title="title" :visible.sync="isShowDialog">
-        <!-- <div v-if="form.type == 'default'"></div> -->
+        <section class="wrapper" v-if="form.type == 'default'">
+          <div class="list-content" v-for="(dItem,dIndex) in form.list" :key="dIndex">
+            {{dItem.type}}
+            <div v-for="(tItem,tIndex) in dItem.subList" :key="tIndex">
+              {{tItem.name}}
+              {{tree[dIndex]}}
+              <el-tree :default-checked-keys="tree[dIndex]" ref="myTree" class="my-tree" :data="tItem.tree" show-checkbox node-key="label"></el-tree>
+            </div>
+          </div>
+        </section>
         <el-form :model="form.validForm" ref="myForm" class="my-form">
           <el-form-item class="my-form-item" :prop="item.prop" v-for="(item,index) in form.info" :key="index" :label="item.name" :rules="item.rules" label-width="100px">
             <el-select v-if="item.isSelect" v-model="form.validForm[item.prop]">
@@ -22,6 +31,10 @@
             <el-switch v-if="item.isSwitch" active-text="是" inactive-text="否" active-value='1' inactive-value="0" v-model="form.validForm[item.prop]"></el-switch>
             <el-checkbox v-if="item.isCheck" v-for="(citem,cindex) in  item.checkList" :key="cindex" :label="citem.name" v-model="form.validForm[citem.prop]"></el-checkbox>
             <div v-if="item.isEditor" id="editor"></div>
+            <div class="item-tree-list" v-if="item.isTree">
+              {{item.treeName}}
+              <el-tree ref="myTree" node-key="id" :data="item.tree" show-checkbox></el-tree>
+            </div>
           </el-form-item>
         </el-form>
       <span slot="footer" class="dialog-footer">
@@ -144,8 +157,13 @@ import E from 'wangeditor'
                             break;
           case 'addGroup' : form = this.$store.state.form.addGroup // 消息--添加新群组
                             break; 
+          case 'chooseReciver' : form = this.$store.state.form.chooseReciver // 选择发送对象
+                            break;
         }
         return form
+      },
+      tree(){
+        return this.$store.state.keys
       }
     },
     methods:{
@@ -153,6 +171,7 @@ import E from 'wangeditor'
       dialogClose(){
         this.$emit('dialogClose',true)
       },
+
       handleAvatarSuccess(e){
         for(var k in this.form.validForm){
           if(k == 'image'){
@@ -162,6 +181,7 @@ import E from 'wangeditor'
           }
         }
       },
+
       hideDialog(){
         this.$refs.myForm.resetFields()
         this.$store.commit('changeDialogStatus',{status:false,formType:''})
@@ -169,176 +189,216 @@ import E from 'wangeditor'
           this.$store.commit('changeRefresh',{state:false})
         },1000)
       },
+
       handleClickSubmit(){
         let type = this.$store.state.formType
         let action = this.$store.state.action
         let id = this.$store.state.id
         let student_info_id = sessionStorage.getItem('userId')
-        let data = {}
-        data = Object.assign(this.form.validForm,{id:id,student_info_id:student_info_id})
-        this.$refs['myForm'].validate((valid)=>{
-          if(valid){
-            if(type == 'updatePwd'){
-              if(this.form.validForm.password != this.form.validForm.checkword){
-                _g.toastMsg('error','两次密码不一致')
-                return
-              }else{
+        if(this.form.validForm){
+          let data = {}
+          data = Object.assign(this.form.validForm,{id:id,student_info_id:student_info_id})
+          this.$refs['myForm'].validate((valid)=>{
+            if(valid){
+              if(type == 'updatePwd'){
+                if(this.form.validForm.password != this.form.validForm.checkword){
+                  _g.toastMsg('error','两次密码不一致')
+                  return
+                }else{
+                  let data = {}
+                  data = Object.assign(this.form.validForm,{id:window.sessionStorage.getItem('userId')})
+                  this.$http('SchoolFellow/UpdatePassword',this.form.validForm).then(res=>{
+                    let error = res.error == 0 ? 'success' : 'error'
+                    _g.toastMsg(error,res.msg)
+                    if(res.error == 0){
+                      this.hideDialog()
+                    }
+                  })
+                }
+              }else if(type == 'feedback'){           // 活动--添加反馈
                 let data = {}
-                data = Object.assign(this.form.validForm,{id:window.sessionStorage.getItem('userId')})
-                this.$http('SchoolFellow/UpdatePassword',this.form.validForm).then(res=>{
+                data = Object.assign(this.form.validForm,{id:id})
+                this.$http('SchoolFellow/Activity_Manager_NoPass',data).then(res=>{
                   let error = res.error == 0 ? 'success' : 'error'
                   _g.toastMsg(error,res.msg)
                   if(res.error == 0){
+                    this.$emit('getSubMsg',{state:true})
+                    this.hideDialog()
+                  }
+                })
+              }else if(type == 'addYear'){ // 设置-- 添加/编辑学年
+                let url = '' , data = {}
+                if(action == 'add'){
+                    url = 'SchoolFellow/addStudent_Info_Age'
+                    data = this.form.validForm
+                }else if(action == 'edit'){
+                  url = 'SchoolFellow/updateStudent_Info_Age'
+                  data = Object.assign(this.form.validForm,{id:id})
+                }
+                this.$http(url,data).then(res=>{
+                  let error = res.error == 0 ? 'success' : 'error'
+                  _g.toastMsg(error,res.msg)
+                  this.error = res.error
+                  this.$store.commit('handleClickStatus',{state:res.error})
+                  if(res.error == 0){
+                    this.$emit('getSubMsg',{state:true})                  
+                    this.hideDialog()
+                  }
+                })
+              }else if(type=='pagesFeedback'){
+                this.$http('SchoolFellow/updateAlumni_Pages_no',data).then(res=>{
+                  let error = res.error == 0 ? 'success' : 'error'
+                  _g.toastMsg(error,res.msg)
+                  if(res.error == 0){
+                    this.$emit('getSubMsg',{state:true})
+                    this.hideDialog()
+                  }
+                })
+              }else if(type == 'addDonate'){
+                this.$http('SchoolFellow/addAlumni',data).then(res=>{
+                  let error = res.error == 0 ? 'success' : 'error'
+                  _g.toastMsg(error,res.msg)
+                  if(res.error == 0){
+                    this.$emit('getSubMsg',{state:true})
+                    this.hideDialog()
+                  }
+                })
+              }else if(type == 'editCollege' || type == 'addPagesSchool'){
+                this.$http('SchoolFellow/updateSchool_Info_School',data).then(res=>{
+                  let error = res.error == 0 ? 'success' : 'error'
+                  _g.toastMsg(error,res.msg)
+                  if(res.error == 0){
+                    this.$emit('getSubMsg',{state:true})
+                    this.hideDialog()
+                  }
+                })
+              }else if(type == 'editSchool' || type == 'addPagesCollege'){
+                this.$http('SchoolFellow/updateXueXiao',data).then(res=>{
+                  let error = res.error == 0 ? 'success' : 'error'
+                  _g.toastMsg(error,res.msg)
+                  if(res.error == 0){
+                    this.$emit('getSubMsg',{state:true})
+                    this.hideDialog()
+                  }
+                })
+              }else if(type == 'addRemark'){
+                this.$http('SchoolFellow/updateStudent_Remarks',data).then(res=>{
+                  let error = res.error == 0 ? 'success' : 'error'
+                  _g.toastMsg(error,res.msg)
+                  if(res.error == 0){
+                    this.$emit('getSubMsg',{state:true})
+                    this.hideDialog()
+                  }
+                })
+              }else if(type == 'concatFeedback'){
+                this.$http('SchoolFellow/Mutual_Help_No',data).then(res=>{
+                  let error = res.error == 0 ? 'success' : 'error'
+                  _g.toastMsg(error,res.msg)
+                  if(res.error == 0){
+                    this.$emit('getSubMsg',{state:true})
+                    this.hideDialog()
+                  }
+                })
+              }else if(type == 'addHelpType'){
+                this.$http('SchoolFellow/addMutual_Help_Type',data).then(res=>{
+                  let error = res.error == 0 ? 'success' : 'error'
+                  _g.toastMsg(error,res.msg)
+                  if(res.error == 0){
+                    this.$emit('getSubMsg',{state:true})
+                    this.hideDialog()
+                  }
+                })
+              }else if(type == 'addActionType' || type == 'editActionType'){
+                this.$http('SchoolFellow/addActivity_Type',data).then(res=>{
+                  let error = res.error == 0 ? 'success' : 'error'
+                  _g.toastMsg(error,res.msg)
+                  if(res.error == 0){
+                    this.$emit('getSubMsg',{state:true})
+                    this.hideDialog()
+                  }
+                })
+              }else if(type == 'addSettingMajor' || type == 'editSettingMajor'){
+                this.$http('SchoolFellow/addStudent_info_Line',data).then(res=>{
+                  let error = res.error == 0 ? 'success' : 'error'
+                  _g.toastMsg(error,res.msg)
+                  if(res.error == 0){
+                    this.$emit('getSubMsg',{state:true})
+                    this.hideDialog()
+                  }
+                })
+              }else if(type == 'addSettingKlass' || type == 'editSettingKlass'){
+                this.$http('SchoolFellow/addStudent_Info_Class',data).then(res=>{
+                  let error = res.error == 0 ? 'success' : 'error'
+                  _g.toastMsg(error,res.msg)
+                  if(res.error == 0){
+                    this.$emit('getSubMsg',{state:true})
+                    this.hideDialog()
+                  }
+                })
+              }else if(type == 'addSettingOfficial' || type == 'editSettingOfficial'){
+                this.$http('SchoolFellow/addActivity_Official',data).then(res=>{
+                  let  error = res.error == 0 ? 'success' : 'error'
+                  _g.toastMsg(error,res.msg)
+                  if(res.error == 0){
+                    this.$emit('getSubMsg',{state:true})
+                    this.hideDialog()
+                  }
+                })
+              }else if(type == 'addConcatSchool' || type == 'editSettingConcat'){
+                this.$http('SchoolFellow/addContact_College',data).then(res=>{
+                let error = res.error == 0 ? 'success' : 'error'
+                  _g.toastMsg(error,res.msg)
+                  if(res.error == 0){
+                    this.$emit('getSubMsg',{state:true})
+                    this.hideDialog()
+                    setTimeout(()=>{
+                      this.$router.push('/school')
+                    },1000)
+                  }
+                })
+              }else if(type == 'addGroup'){
+                let elem = this.$refs.myTree
+                let data = elem.map(item=>{
+                  let data = item.getCheckedNodes().filter(list=>{
+                    return !list.children
+                  })
+                  return data.map(list=>{
+                      return list.label
+                  })
+                })
+                data = Object.assign(this.form.validForm,{grouping_people:[...data[0],...data[1]].toString()})
+                this.$http('SchoolFellow/addTidings_Grouping',data).then(res=>{
+                  let error = res.error == 0 ? 'success' :'error'
+                  _g.toastMsg(error,res.msg)
+                  if(res.error == 0){
+                    this.$emit('getSubMsg',{state:true})
                     this.hideDialog()
                   }
                 })
               }
-            }else if(type == 'feedback'){           // 活动--添加反馈
-              let data = {}
-              data = Object.assign(this.form.validForm,{id:id})
-              this.$http('SchoolFellow/Activity_Manager_NoPass',data).then(res=>{
-                let error = res.error == 0 ? 'success' : 'error'
-                _g.toastMsg(error,res.msg)
-                if(res.error == 0){
-                  this.$emit('getSubMsg',{state:true})
-                  this.hideDialog()
-                }
-              })
-            }else if(type == 'addYear'){ // 设置-- 添加/编辑学年
-              let url = '' , data = {}
-              if(action == 'add'){
-                  url = 'SchoolFellow/addStudent_Info_Age'
-                  data = this.form.validForm
-              }else if(action == 'edit'){
-                url = 'SchoolFellow/updateStudent_Info_Age'
-                data = Object.assign(this.form.validForm,{id:id})
-              }
-              this.$http(url,data).then(res=>{
-                let error = res.error == 0 ? 'success' : 'error'
-                _g.toastMsg(error,res.msg)
-                this.error = res.error
-                this.$store.commit('handleClickStatus',{state:res.error})
-                if(res.error == 0){
-                  this.$emit('getSubMsg',{state:true})                  
-                  this.hideDialog()
-                }
-              })
-            }else if(type=='pagesFeedback'){
-              this.$http('SchoolFellow/updateAlumni_Pages_no',data).then(res=>{
-                let error = res.error == 0 ? 'success' : 'error'
-                _g.toastMsg(error,res.msg)
-                if(res.error == 0){
-                  this.$emit('getSubMsg',{state:true})
-                  this.hideDialog()
-                }
-              })
-            }else if(type == 'addDonate'){
-              this.$http('SchoolFellow/addAlumni',data).then(res=>{
-                let error = res.error == 0 ? 'success' : 'error'
-                _g.toastMsg(error,res.msg)
-                if(res.error == 0){
-                  this.$emit('getSubMsg',{state:true})
-                  this.hideDialog()
-                }
-              })
-            }else if(type == 'editCollege' || type == 'addPagesSchool'){
-              this.$http('SchoolFellow/updateSchool_Info_School',data).then(res=>{
-                let error = res.error == 0 ? 'success' : 'error'
-                _g.toastMsg(error,res.msg)
-                if(res.error == 0){
-                  this.$emit('getSubMsg',{state:true})
-                  this.hideDialog()
-                }
-              })
-            }else if(type == 'editSchool' || type == 'addPagesCollege'){
-              this.$http('SchoolFellow/updateXueXiao',data).then(res=>{
-                let error = res.error == 0 ? 'success' : 'error'
-                _g.toastMsg(error,res.msg)
-                if(res.error == 0){
-                  this.$emit('getSubMsg',{state:true})
-                  this.hideDialog()
-                }
-              })
-            }else if(type == 'addRemark'){
-              this.$http('SchoolFellow/updateStudent_Remarks',data).then(res=>{
-                let error = res.error == 0 ? 'success' : 'error'
-                _g.toastMsg(error,res.msg)
-                if(res.error == 0){
-                  this.$emit('getSubMsg',{state:true})
-                  this.hideDialog()
-                }
-              })
-            }else if(type == 'concatFeedback'){
-              this.$http('SchoolFellow/Mutual_Help_No',data).then(res=>{
-                let error = res.error == 0 ? 'success' : 'error'
-                _g.toastMsg(error,res.msg)
-                if(res.error == 0){
-                  this.$emit('getSubMsg',{state:true})
-                  this.hideDialog()
-                }
-              })
-            }else if(type == 'addHelpType'){
-              this.$http('SchoolFellow/addMutual_Help_Type',data).then(res=>{
-                let error = res.error == 0 ? 'success' : 'error'
-                _g.toastMsg(error,res.msg)
-                if(res.error == 0){
-                  this.$emit('getSubMsg',{state:true})
-                  this.hideDialog()
-                }
-              })
-            }else if(type == 'addActionType' || type == 'editActionType'){
-              this.$http('SchoolFellow/addActivity_Type',data).then(res=>{
-                let error = res.error == 0 ? 'success' : 'error'
-                _g.toastMsg(error,res.msg)
-                if(res.error == 0){
-                  this.$emit('getSubMsg',{state:true})
-                  this.hideDialog()
-                }
-              })
-            }else if(type == 'addSettingMajor' || type == 'editSettingMajor'){
-              this.$http('SchoolFellow/addStudent_info_Line',data).then(res=>{
-                let error = res.error == 0 ? 'success' : 'error'
-                _g.toastMsg(error,res.msg)
-                if(res.error == 0){
-                  this.$emit('getSubMsg',{state:true})
-                  this.hideDialog()
-                }
-              })
-            }else if(type == 'addSettingKlass' || type == 'editSettingKlass'){
-              this.$http('SchoolFellow/addStudent_Info_Class',data).then(res=>{
-                let error = res.error == 0 ? 'success' : 'error'
-                _g.toastMsg(error,res.msg)
-                if(res.error == 0){
-                  this.$emit('getSubMsg',{state:true})
-                  this.hideDialog()
-                }
-              })
-            }else if(type == 'addSettingOfficial' || type == 'editSettingOfficial'){
-              this.$http('SchoolFellow/addActivity_Official',data).then(res=>{
-                let  error = res.error == 0 ? 'success' : 'error'
-                _g.toastMsg(error,res.msg)
-                if(res.error == 0){
-                  this.$emit('getSubMsg',{state:true})
-                  this.hideDialog()
-                }
-              })
-            }else if(type == 'addConcatSchool' || type == 'editSettingConcat'){
-              this.$http('SchoolFellow/addContact_College',data).then(res=>{
-              let error = res.error == 0 ? 'success' : 'error'
-                _g.toastMsg(error,res.msg)
-                if(res.error == 0){
-                  this.$emit('getSubMsg',{state:true})
-                  this.hideDialog()
-                  setTimeout(()=>{
-                    this.$router.push('/school')
-                  },1000)
-                }
-              })
             }
+          })
+        }else{
+          if(type == 'chooseReciver'){
+            let elem = this.$refs.myTree , total = 0 , keys = []
+            let data =  elem.map(item=>{
+               let data =  item.getCheckedNodes().filter(item=>{
+                  if(!item.children){
+                    total ++
+                  }
+                  return !item.children
+              })
+               keys.push(item.getCheckedKeys())
+              return data
+            })
+            this.$store.commit('saveDialogValueAndHide',{state:false,data:data,total:total,keys:keys})
+            // console.log(data,total)
           }
-        })
+        }
       }
     },
+    created(){
+    }
   }
 </script>
 
@@ -367,6 +427,27 @@ import E from 'wangeditor'
         height:400px;
         border:1px solid red;
       }
+    }
+    .wrapper{
+      display: flex;
+      justify-content: space-between;
+
+      .list-content{
+        flex:.8;
+        margin-right:5px;
+        .my-tree{
+          margin-top:5px;
+          margin-bottom:5px;
+          border:1px solid #eee;
+        }
+      }
+    }
+    .item-tree-list{
+      // display: flex;
+      // justify-content: space-between;
+      padding:0 10px;
+      padding-bottom:10px;
+      border:1px solid #eee;
     }
   }
   .avatar-uploader .el-upload {

@@ -1,3 +1,5 @@
+import { STATUS_CODES } from "http";
+
 const mutations = {
   showLoading(state,status){
     state.globlaLoading = status
@@ -30,7 +32,27 @@ const mutations = {
   changeRefresh(state,status){
     state.submitState = status.state
     console.log(state,status,'state is change')
-  }
+  },
+
+  //修改消息页的接受对象值
+  changeMessageTree(state,status){
+    state.form.addGroup.info.map(item=>{
+      if(item.subList){
+        item.subList.map(list=>{
+          list.label = status[item.prop]
+        })
+      }
+    })
+    console.log(state,status,'is tree')
+  },
+  //保存对话框的值,关闭对话框
+  saveDialogValueAndHide(state,status){
+    console.log(status , 'is diao')
+    state.isShowDialog = status.state
+    state.chooseArr = status.data
+    state.keys = status.keys
+    state.total = status.total
+  },
 }
 
 export default mutations

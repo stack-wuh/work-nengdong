@@ -200,7 +200,6 @@ export default {
       this.form.cover = e[0]
     },
     handleListSuccess(e){
-      console.log(this.form.address)
       this.form.address.push(e[0])
     },
     handleRemove(index){

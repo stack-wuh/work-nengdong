@@ -88,7 +88,7 @@ import Bottom from '@/components/common/bottom'
       }
     },
     created(){
-      this.fetchData()
+      // this.fetchData()
     }
   }
 </script>

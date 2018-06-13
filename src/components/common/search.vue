@@ -14,7 +14,7 @@
 
 <script>
 export default {
-  props: ["type",'school'],
+  props: ["type",'school','tree'],
   data() {
     return {
       list: [
@@ -231,6 +231,7 @@ export default {
           params.type = 'addConcatSchool'
         }else if(path == '/message/group'){
           params.type = 'addGroup'
+          this.$store.commit('changeMessageTree',this.tree)
         }
         this.$store.commit('changeDialogStatus',params)
       }

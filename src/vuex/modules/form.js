@@ -967,24 +967,170 @@ const state = {
             trigger:'blur'
           }
         ]
+      },
+      {
+        name:'',
+        treeName:'教职工',
+        isTree:true,
+        prop:'age_name',
+        subList:[],
+        tree:[
+          {
+            label:'老师',
+            children:[
+              {
+                label:'aaa1'
+              },
+              {
+                label:'bbb1'
+              }
+            ]
+          }
+        ]
+      },
+      { 
+        treeName:'学生',
+        isTree:true,
+        prop:'age_name',
+        subList:[],
+        tree:[
+          {
+            label:'学生',
+            children:[
+              {
+                label:'aaa2'
+              },
+              {
+                label:'bbb2'
+              }
+            ]
+          }
+        ]
       }
     ],
     validForm:{
-      name:''
+      grouping_name:''
     }
   },
   //消息 -- 选择发送对象
   chooseReciver:{
-    type:'isCheck',  // 与表单区别开
+    type:'default',  // 与表单区别开
     list:[
       {
-        type:'系统分组'
+        type:'系统分组',
+        subList:[
+          {
+            name:'学生',
+            tree:[
+              {
+                id:1,
+                label:'学生1',
+                children:[
+                  {
+                    id:2,
+                    label:'学生1'
+                  }
+                ]
+              },
+              {
+                id:3,
+                label:'学生2',
+                children:[
+                  {
+                    id:4,
+                    label:'学生2'
+                  },
+                  {
+                    id:5,
+                    label:'学生3'
+                  }
+                ]
+              },
+              {
+                id:6,
+                label:'学生3'
+              }
+            ]
+          }
+        ]
       },
       {
-        type:'我创建的'
+        type:'',
+        subList:[
+          {
+            name:'老师',
+            tree:[
+              {
+                id:1,
+                label:'11',
+                children:[
+                  {
+                    id:2,
+                    label:'11-1'
+                  }
+                ]
+              },
+              {
+                id:3,
+                label:'22',
+                children:[
+                  {
+                    id:4,
+                    label:'2-1'
+                  }
+                ]
+              }
+            ]
+          }
+        ]
       },
       {
-        type:'我加入的'
+        type:'我创建的',
+        subList:[
+          {
+            tree:[
+              {
+                id:1,
+                label:'1',
+                children:[
+                  {
+                    id:'2',
+                    label:'1-1'
+                  }
+                ]
+              },
+              {
+                id:3,
+                label:'2',
+                children:[
+                  {
+                    id:4,
+                    label:'2-1'
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        type:'我加入的',
+        subList:[
+          {
+            tree:[
+              {
+                id:1,
+                label:'1',
+                children:[
+                  {
+                    id:'2',
+                    label:'1-1'
+                  }
+                ]
+              }
+            ]
+          }
+        ]
       }
     ]
   },

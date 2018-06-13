@@ -12,7 +12,7 @@
         </el-form-item>
         <el-form-item label="发送对象" prop="receive_id">
           <div class="tips">
-            <el-input @focus="openDialog" :placeholder="dialogMsg"  style="width:220px;"></el-input>
+            <el-input v-model="chooseNum" readonly @focus="openDialog" style="width:220px;"></el-input>
             <span class="tips">附件</span>
             <el-upload class="upload-demo" :action="uploadPath" :limit="1">
               <el-button size="small" type="primary">点击上传</el-button>
@@ -114,7 +114,18 @@ import Search from '@/components/common/search'
             }
           ]
         },
-        dialogMsg:'点击选择发送对象'
+        dialogMsg:'点击选择发送对象',
+      }
+    },
+    computed:{
+      chooseNum(){
+        return '已经选中了' + this.total + '人'
+      },
+      total(){
+        return this.$store.state.total
+      },
+      chooseArr(){
+        return this.$store.state.chooseArr
       }
     },
     methods:{
@@ -125,7 +136,7 @@ import Search from '@/components/common/search'
       },
       //选择发送对象
       openDialog(){
-        this.$store.commit('changeDialogStatus',{status:true,title:'选择发送对象',type:'chosseReciver'})
+        this.$store.commit('changeDialogStatus',{status:true,title:'选择发送对象',type:'chooseReciver'})
       },
       getReciver(){
         this.$http('SchoolFellow/getStudent_Info_Tidings')
@@ -148,7 +159,7 @@ import Search from '@/components/common/search'
       }
     },
     created(){
-      this.getStudentInfo()
+      // this.getStudentInfo()
     }
   }
 </script>

@@ -6,30 +6,7 @@
 
 <script>
   import ETable from '@/components/common/table'
-  const list = [
-    {
-      type:'校友活动',
-      color:'#002211',
-      setting:[
-        {
-          stu:0,
-          tea:0,
-          fir:0
-        }
-      ],
-    },
-    {
-      type:'学院活动',
-      color:'#002211',
-      setting:[
-        {
-          stu:1,
-          tea:1,
-          fir:1
-        }
-      ]
-    }
-  ]
+  const list = []
   export default{
     components:{
       ETable

@@ -7,7 +7,10 @@ const state = {
   addState:false,
   action:'add',
   id:'',
-  submitState:'false'
+  submitState:'false',
+  total:0,   // 消息--选择的操作人数
+  chooseArr:[],  // 消息 -- 选择的对象
+  keys:[]   // 消息 -- 选择对象的key
 }
 
 export default state
