@@ -2,7 +2,7 @@
   <section class="wrapper">
     <h3>校友端<span>管理平台</span></h3>
     <ul>
-      <li v-on:mouseover="mouseOver(item,$event)" v-on:mouseout="mouseOut(item,$event)" @click.stop="handleClick(item,$event)" :class="{'active' : item.active}" v-for="(item,index) in menuList" :key="index">
+      <li v-on:mouseover="mouseOver(item,$event)" v-on:mouseout="mouseOut(item,$event)" @click.prevent.stop="handleClick(item,$event)" :class="{'active' : item.active || item.isActive}" v-for="(item,index) in menuList" :key="index">
         <img class="nav-icon" :src="item.navIcon" alt="nav-icon">
         <span>{{item.name}}</span>
         <i :class="[item.active ? 'my-icon-moreunfold' : 'my-icon-more',item.subList.length>0 ? 'full':'empty']"></i>
@@ -189,12 +189,12 @@ const iconRootPath = '../../../static'
         this.list = []
       },
       handleClick(data,$event){
-        // data.active = true
-        // this.list = data.subList
+        data.isActive = true
         this.menuList.map(item=>{
           if(item.name == data.name){
-            // item.active = false
             this.$router.push(item.urlPath)
+          }else if(item.name !== data.name){
+            item.isActive = false
           }
         })
       },

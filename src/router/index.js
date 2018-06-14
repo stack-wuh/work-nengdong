@@ -31,6 +31,7 @@ const SchoolIndex = resolve => require(['@/components/SchoolManage/index'],resol
 const MessageIndex = resolve => require(['@/components/messageManage'],resolve)
 const MessagePublish = resolve => require(['@/components/messageManage/publish'],resolve)
 const MessageGroup = resolve => require(['@/components/messageManage/group'],resolve)
+const MessageDetail = resolve => require(['@/components/messageManage/child/detail'],resolve)
 
 const SettingIndex = resolve => require(['@/components/settingManage/index'],resolve)
 const SettingYear = resolve => require(['@/components/settingManage/child/year'],resolve)
@@ -51,7 +52,7 @@ export default new Router({
     {
       path:'/',
       name:'home',
-      redirect:'/firend/firend',
+      redirect:'/message',
       component:Home
     },
     {
@@ -210,6 +211,11 @@ export default new Router({
           path:'/message/group',
           name:'messageGroup',
           component:MessageGroup
+        },
+        {
+          path:'/message/detail',
+          name:'messageDetail',
+          component:MessageDetail
         }
       ]
     },    

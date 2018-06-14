@@ -32,9 +32,7 @@
           <div class="tips">
             <el-date-picker type="datetime" value-format="yyyy-MM-dd hh:mm:ss" placeholder="选择结束日期" v-model="form.endtime" style="width:220px;"></el-date-picker>
             <span class="tips">表单</span>
-            <el-upload class="upload-demo" :action="uploadPath" :limit="1">
-              <el-button size="small" type="primary">添加表单</el-button>
-            </el-upload>
+            <el-button @click="handleClickAddFormItem" type="primary" size="small">添加表单</el-button>
           </div>
         </el-form-item>
         <el-form-item label="提醒时间" prop="remind">
@@ -54,125 +52,156 @@
 </template>
 
 <script>
-import Search from '@/components/common/search'
-  export default{
-    components:{
-      Search
-    },
-    data(){
-      return{
-        uploadPath:rootPath + '',
-        form:{
-          title:'',
-          content:'',
-          starttime:'',
-          endtime:'',
-          remind:'',
-          time_or:'',
-          send_id:sessionStorage.getItem('userId'),
-          receive_id:'1',
-          accessory_name:'',
-          image_name:'',
-          form_title:'',
-          form_content:''
-        },
-        rules:{
-          title:[
-            {
-              required:true,
-              message:'请填写标题',
-              trigger:'blur'
-            }
-          ],
-          content:[
-            {
-              required:true,
-              message:'请填写内容',
-              trigger:'blur'
-            }
-          ],
-          receive_id:[
-            {
-              required:true,
-              message:'请选择发送对象',
-              trigger:'blur'
-            }
-          ],
-          starttime:[
-            {
-              required:false
-            }
-          ],
-          endtime:[
-            {
-              required:false
-            }
-          ],
-          remind:[
-            {
-              required:false
-            }
-          ]
-        },
-        dialogMsg:'点击选择发送对象',
-      }
-    },
-    computed:{
-      chooseNum(){
-        return '已经选中了' + this.total + '人'
+import Search from "@/components/common/search";
+export default {
+  components: {
+    Search
+  },
+  data() {
+    return {
+      uploadPath: rootPath + "",
+      form: {
+        title: "",
+        content: "",
+        starttime: "",
+        endtime: "",
+        remind: "",
+        time_or: "",
+        send_id: sessionStorage.getItem("userId"),
+        receive_id: [],
+        accessory_name: "",
+        image_name: "",
+        form_title: "",
+        form_content: ""
       },
-      total(){
-        return this.$store.state.total
-      },
-      chooseArr(){
-        return this.$store.state.chooseArr
-      }
-    },
-    methods:{
-      getStudentInfo(){
-        this.$http('SchoolFellow/getStudent_Info_Tidings').then(res=>{
-            
-        })
-      },
-      //选择发送对象
-      openDialog(){
-        this.$store.commit('changeDialogStatus',{status:true,title:'选择发送对象',type:'chooseReciver'})
-      },
-      getReciver(){
-        this.$http('SchoolFellow/getStudent_Info_Tidings')
-      },
-      submit(){
-        this.$refs.myForm.validate(valid=>{
-          if(valid){
-            this.$http('SchoolFellow/addTidings',this.form).then(res=>{
-              let error = res.error == 0 ? 'success' : 'error'
-              _g.toastMsg(error,res.msg)
-              if(res.error == 0){
-                setTimeout(()=>{
-                  this.$refs.myForm.resetFields()
-                  this.$router.go(-1)
-                },1000)
-              }
-            })
+      rules: {
+        title: [
+          {
+            required: true,
+            message: "请填写标题",
+            trigger: "blur"
           }
-        })
-      }
+        ],
+        content: [
+          {
+            required: true,
+            message: "请填写内容",
+            trigger: "blur"
+          }
+        ],
+        receive_id: [
+          // {
+          //   required:true,
+          //   message:'请选择发送对象',
+          //   trigger:'blur'
+          // }
+        ],
+        starttime: [
+          {
+            required: false
+          }
+        ],
+        endtime: [
+          {
+            required: false
+          }
+        ],
+        remind: [
+          {
+            required: false
+          }
+        ]
+      },
+      dialogMsg: "点击选择发送对象"
+    };
+  },
+  computed: {
+    chooseNum() {
+      return "已经选中了" + this.total + "人";
     },
-    created(){
-      // this.getStudentInfo()
+    total() {
+      return this.$store.state.total;
+    },
+    chooseArr() {
+      return this.$store.state.chooseArr;
+    },
+    addFormItem(){
+      return this.$store.state.addFormItem
     }
+  },
+  methods: {
+    handleClickAddFormItem(){   //单击添加表单
+      this.$store.commit('changeDialogStatus',{status:true,type:'addFormItem',title:'添加表单'})
+    },
+    getStudentInfo() {
+      // 获取发送对象
+      this.$http("SchoolFellow/showTidings_People", {
+        student_info_id: sessionStorage.getItem("userId")
+      }).then(res => {
+        this.$store.commit("changeMessageTree", res);
+      });
+    },
+    //选择发送对象
+    openDialog() {
+      this.$store.commit("changeDialogStatus", {
+        status: true,
+        title: "选择发送对象",
+        type: "chooseReciver"
+      });
+      // this.$store.commit('changeMessageTree')
+    },
+    getReciver() {
+      this.$http("SchoolFellow/getStudent_Info_Tidings");
+    },
+    submit() {
+
+      this.form.receive_id = [];
+      this.chooseArr.map(item => {
+        if (item.length > 0) {
+          item.map(item => {
+            this.form.receive_id.push(item.number);
+          });
+        }
+      });
+      this.form.receive_id = this.form.receive_id.toString();
+      if (this.form.receive_id.length == 0) {
+        _g.toastMsg("error", "请选择发送对象");
+        return;
+      }
+      this.form = Object.assign(this.form,this.addFormItem)
+      this.form.form_content =  this.form.form_content.toString()
+      console.log(this.form)
+      this.$refs.myForm.validate(valid => {
+        if (valid) {
+          this.$http("SchoolFellow/addTidings", this.form).then(res => {
+            let error = res.error == 0 ? "success" : "error";
+            _g.toastMsg(error, res.msg);
+            if (res.error == 0) {
+              setTimeout(() => {
+                this.$refs.myForm.resetFields();
+                this.$router.go(-1);
+              }, 1000);
+            }
+          });
+        }
+      });
+    }
+  },
+  created() {
+    this.getStudentInfo();
   }
+};
 </script>
 
 <style lang="less" scoped>
-.tips{
+.tips {
   display: flex;
 }
-span.tips{
-  margin-left:40px;
-  margin-right:10px;
+span.tips {
+  margin-left: 40px;
+  margin-right: 10px;
 }
-.btn-area{
-  margin-left:30px;
+.btn-area {
+  margin-left: 30px;
 }
 </style>

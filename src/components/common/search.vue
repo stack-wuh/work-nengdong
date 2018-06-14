@@ -14,6 +14,7 @@
 
 <script>
 export default {
+  //@params tree:传递选择对象
   props: ["type",'school','tree'],
   data() {
     return {
@@ -175,6 +176,10 @@ export default {
               click:this.pageBack
             },
             {
+              name:'全部分组',
+              click:this.handleClickGetAll
+            },
+            {
               name:'我创建的',
               click:this.handleClickMyCreate
             },
@@ -200,6 +205,7 @@ export default {
     }
   },
   created(){
+    console.log(this.tree)
     // console.log(this.format)
   },
   methods:{
@@ -289,14 +295,17 @@ export default {
       })[0].isActive = false
       this.$emit('getList',{state:true,name:e.name})
     },
-
+    //全部分组
+    handleClickGetAll(){
+      this.$emit('getClickMsg','')
+    },
     //我创建的
     handleClickMyCreate(){
-      this.$emit('getClickMsg','create')
+      this.$emit('getClickMsg',0)
     },
     //我加入的
     handleClickMyJoin(){
-      this.$emit('getClickMsg','join')
+      this.$emit('getClickMsg',1)
     }
   }
 };

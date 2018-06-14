@@ -6,12 +6,23 @@
             {{dItem.type}}
             <div v-for="(tItem,tIndex) in dItem.subList" :key="tIndex">
               {{tItem.name}}
-              {{tree[dIndex]}}
-              <el-tree :default-checked-keys="tree[dIndex]" ref="myTree" class="my-tree" :data="tItem.tree" show-checkbox node-key="label"></el-tree>
+              <!-- {{tree[dIndex]}} -->
+              <el-tree :default-checked-keys="tree[dIndex]" ref="myTree" class="my-tree" :data="tItem.tree" show-checkbox node-key="number"></el-tree>
             </div>
           </div>
         </section>
-        <el-form :model="form.validForm" ref="myForm" class="my-form">
+        <section v-if="form.type == 'addForm'">
+          <el-form  class="my-form" :model="form.validForm" ref="myAddForm" label-width="120px">
+            <el-form-item :prop="item.prop" :label="item.name" :rules="item.rules" v-for="(item,index) in form.info" :key="index">
+              <el-input v-if="item.isFather" style="width:200px;" v-model="form.validForm[item.prop]" ></el-input>
+              <el-input v-if="item.isChild" style="width:200px;" v-model="itemValue"></el-input> <el-button v-if="item.subList" @click="handleClickAdd" type="mini">添加</el-button>
+              <div v-for="(item,index) in item.subList">
+                <span  class="my-form-title">{{item}}</span><el-button @click="handleClickDel(index)" type="danger" size="mini">删除</el-button>
+              </div>
+            </el-form-item>
+          </el-form>
+        </section>
+        <el-form v-else :model="form.validForm" ref="myForm" class="my-form">
           <el-form-item class="my-form-item" :prop="item.prop" v-for="(item,index) in form.info" :key="index" :label="item.name" :rules="item.rules" label-width="100px">
             <el-select v-if="item.isSelect" v-model="form.validForm[item.prop]">
               <el-option v-for="(sItem,sIndex) in item.list" :key="sIndex" :label="sItem.name" :value="sItem.value"></el-option>
@@ -37,6 +48,7 @@
             </div>
           </el-form-item>
         </el-form>
+
       <span slot="footer" class="dialog-footer">
         <el-button @click="hideDialog">取 消</el-button>
         <el-button type="primary" @click="handleClickSubmit">确 定</el-button>
@@ -104,7 +116,8 @@ import E from 'wangeditor'
         },
         error:1,
         uploadUrl:rootPath + 'SchoolFellow/addImages',
-        imgUrl:''
+        imgUrl:'',
+        itemValue:''
       }
     },
     computed:{
@@ -159,6 +172,9 @@ import E from 'wangeditor'
                             break; 
           case 'chooseReciver' : form = this.$store.state.form.chooseReciver // 选择发送对象
                             break;
+          case 'addFormItem' : form = this.$store.state.form.addFormItem  //消息 -- 添加表单项目
+                            break;
+          
         }
         return form
       },
@@ -167,6 +183,17 @@ import E from 'wangeditor'
       }
     },
     methods:{
+      //单击添加消息 -- 表单元素
+      handleClickAdd(){
+        this.form.info[1].subList.push(this.itemValue)
+        this.form.validForm.form_content.push(this.itemValue)
+        this.itemValue = ''
+      },
+      //单击删除消息 -- 表单元素
+      handleClickDel(index){
+        this.form.info[1].subList.splice(index,1)
+        this.form.validForm.form_content.push(this.itemValue)
+      },
       //对话框关闭
       dialogClose(){
         this.$emit('dialogClose',true)
@@ -183,7 +210,11 @@ import E from 'wangeditor'
       },
 
       hideDialog(){
-        this.$refs.myForm.resetFields()
+        if(this.$store.state.formType == 'addFormItem'){
+          this.$refs.myAddForm.resetFields()
+        }else{
+          this.$refs.myForm.resetFields()
+        }
         this.$store.commit('changeDialogStatus',{status:false,formType:''})
         setTimeout(()=>{
           this.$store.commit('changeRefresh',{state:false})
@@ -195,7 +226,7 @@ import E from 'wangeditor'
         let action = this.$store.state.action
         let id = this.$store.state.id
         let student_info_id = sessionStorage.getItem('userId')
-        if(this.form.validForm){
+        if(this.form.validForm && this.$refs.myForm){
           let data = {}
           data = Object.assign(this.form.validForm,{id:id,student_info_id:student_info_id})
           this.$refs['myForm'].validate((valid)=>{
@@ -392,12 +423,14 @@ import E from 'wangeditor'
               return data
             })
             this.$store.commit('saveDialogValueAndHide',{state:false,data:data,total:total,keys:keys})
-            // console.log(data,total)
+          }else if(type == 'addFormItem'){
+              this.$store.commit('saveFormItemValue',this.form.validForm)
           }
         }
       }
     },
     created(){
+     
     }
   }
 </script>
@@ -476,5 +509,9 @@ import E from 'wangeditor'
   img[alt="avatar"]{
     width:300px;
     height:200px;
+  }
+  .my-form-title{
+    display: inline-block;
+    width:205px;
   }
 </style>

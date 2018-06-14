@@ -959,7 +959,7 @@ const state = {
       {
         name:'群组名称',
         isInput:true,
-        prop:'name',
+        prop:'grouping_name',
         rules:[
           {
             required:true,
@@ -1134,6 +1134,34 @@ const state = {
       }
     ]
   },
+  //消息 -- 添加表单项目
+  addFormItem:{
+    type:'addForm',
+    info:[
+      {
+        name:'表单标题',
+        prop:'form_title',
+        isFather:true,
+        rules:[
+          {
+            required:true,
+            message:'请填写表单标题',
+            trigger:'blur'
+          }
+        ]
+      },
+      {
+        name:'字段',
+        prop:'form_content',
+        isChild:true,
+        subList:[]
+      }
+    ],
+    validForm:{
+      form_title:'',
+      form_content:[]
+    }
+  }
 }
 
 const mutations = {

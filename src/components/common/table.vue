@@ -612,10 +612,12 @@ export default {
           type:'group',
           list:[
             {
-              name:'群组名称'
+              name:'群组名称',
+              prop:'grouping_name'
             },
             {
-              name:'群组人数'
+              name:'群组人数',
+              prop:'countPeople'
             },
             {
               name:'操作',
@@ -704,6 +706,8 @@ export default {
         case 'concat' : 
           (url = 'SchoolFellow/delContact_College') ,(data.id = $event.row.id)
           break;
+        case 'group' :
+          (url = 'SchoolFellow/delTidings_Grouping') , (data.id = $event.row.id)
       }
       this.$http(url, data).then(res => {
         let error = res.error == 0 ? "success" : "error";
