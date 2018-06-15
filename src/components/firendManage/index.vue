@@ -27,6 +27,7 @@ import Search from  '@/components/common/search'
 import ETable from '@/components/common/table'
 import Bottom from '@/components/common/bottom'
 
+const json2Excel = require('js-export-excel')
 const list = []
 export default {
   components:{
@@ -279,7 +280,21 @@ export default {
       console.log('导入')
     },
     export2excel(msg){
-      console.log('导出')
+      this.info.list = Object.assign(this.info.list,this.info.list.advance_archives)
+      if(msg){
+        var option = {}
+        option.fileName = '当前页校友名单'
+        option.datas = [
+          {
+            sheetData:this.info.list,
+            sheetName:'当前页学生名单',
+            sheetFilter:['name','school_age','number','no','classes','phone_number','email','unit_name','unit_property','unit_way','place_class','post_name','money','levels','schools','faculty','line_text'],
+            sheetHeader:['姓名','入学年份','学号','身份证号','专业班级','手机号','邮箱','用人单位名称','单位性质','所在行业','职位类别','职位名称','起薪','层次','学校','院系','专业']
+          },
+        ]
+        var toExcel = new json2Excel(option)
+        toExcel.saveExcel() 
+      }
     },
     Search(e){
       console.log(e)

@@ -150,7 +150,8 @@ export default {
               click:this.handleClickPick
             },
             {
-              name:'导出当前页'
+              name:'导出当前页',
+              click:this.handClick2Excel
             }
           ]
         },
@@ -246,10 +247,7 @@ export default {
       this.$store.commit('changeDialogStatus',{status:true,title:'批量导入学生',type:'upload'})
     },
     export2excel(){
-      this.$http('SchoolFellow/Student_Info_Excel').then(res=>{
-        let error = res.error == 0 ? 'success' : 'erorr'
-        _g.toastMsg(error,res.msg)
-      })
+      this.$emit('export2excel',true)
     },
     //活动模块
     //返回上一级
@@ -309,6 +307,9 @@ export default {
     //我加入的
     handleClickMyJoin(){
       this.$emit('getClickMsg',1)
+    },
+    handClick2Excel(){
+      this.$emit('json2excel',true)
     }
   }
 };

@@ -1,6 +1,6 @@
 <template>
     <section class="wrapper">
-      <search @PickAny="pickAny" type="10" @propKey="propKey" @confirm="fetchData" />
+      <search @PickAny="pickAny" type="10" @json2excel="handleClickExport2excel" @propKey="propKey" @confirm="fetchData" />
       <section class="content">
         <p class="nav-title">当前位置: 联系学院>列表</p>
         <nav class="nav">
@@ -20,6 +20,7 @@
 import Search from '@/components/common/search'
 import Bottom from '@/components/common/bottom'
 import ItemList from '@/components/common/itemList'
+const json2Excel = require('js-export-excel')
 const list=[]
   export default{
     components:{
@@ -39,6 +40,22 @@ const list=[]
       }
     },
     methods:{
+      handleClickExport2excel(msg){
+        var option = {}
+        option.fileName = '导出当前页信息',
+        option.datas=[
+          {
+            sheetData:this.list,
+            sheetName:'联系学院列表',
+            sheetFilter:['name','year','classes','no','phone','email','question_type','illustrate',''],
+            sheetHeader:['姓名','入学年份','专业班级','身份证号','手机号','邮箱','问题类型','问题详情']
+          }
+        ]
+        if(msg){
+          var toExcel = new json2Excel(option)
+          toExcel.saveExcel()
+        }
+      },
       getCurrentPage(e){
         this.pageNo = e
         this.fetchData()

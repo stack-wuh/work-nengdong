@@ -22,6 +22,16 @@
             <span>已结束</span>
           </div>
         </section>
+        <section class="bottom">
+            <div class="form-area">
+              <p class="form-title">需要填写的表单</p>
+              <span>{{FormInfo.title}}</span>
+            </div>
+            <div class="form-area">
+              <p class="form-title">附件</p>
+              <span @click="handleDownload">点击下载附件</span>
+            </div>
+        </section>
       </section>
       <section class="right">
         <p class="title">收到 (0)</p>
@@ -51,10 +61,35 @@ export default {
           }
         }
       }
-      // return this.info.tidings_imageList[0].image_name.split(',')
+    },
+    FormInfo(){
+      let obj = {}
+      if(this.info){
+        if(this.info.tidings_formList){
+          if(this.info.tidings_formList[0].form_title){
+            obj.title = this.info.tidings_formList[0].form_title
+          }
+          if(this.info.tidings_formList[0].form_content){
+            obj.form_content = this.info.tidings_formList[0].form_content.split(',')
+          }
+        }
+      }
+      return obj
+    },
+    fileInfo(){
+      if(this.info){
+        if(this.info.tidings_accessoryList){
+          if(this.info.tidings_accessoryList[0].accessory_name){
+            return this.info.tidings_accessoryList[0].accessory_name
+          }
+        }
+      }
     }
   },
   methods: {
+    handleDownload(){
+      location.href = this.info.tidings_accessoryList[0].accessory_name
+    },
     handleClickCollect(){
       this.$http('SchoolFellow/addTidings_Collect',{tidings_id:this.$route.params.id,student_info_id:sessionStorage.getItem('userId')}).then(res=>{
         let error = res.error == 0 ? 'success' : 'error'
@@ -131,6 +166,21 @@ export default {
           color: #fff;
           background-color: #00998d;
         }
+      }
+    }
+    .bottom{
+      .form-area{
+        margin-top:20px;
+        margin-left:20px;
+      .form-title+span{
+        margin-top:20px;
+        margin-left:20px;
+        font-size: 15px;
+        color: #00998d;
+      }
+      .form-title+span:hover{
+        cursor: pointer;
+      }
       }
     }
   }

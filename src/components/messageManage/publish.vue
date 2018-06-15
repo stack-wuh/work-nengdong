@@ -14,7 +14,7 @@
           <div class="tips">
             <el-input v-model="chooseNum" readonly @focus="openDialog" style="width:220px;"></el-input>
             <span class="tips">附件</span>
-            <el-upload class="upload-demo" :action="uploadPath" :limit="1">
+            <el-upload class="upload-demo" :action="uploadPath" :on-success="handleFileSuccess" :show-file-list="true" :limit="1">
               <el-button size="small" type="primary">点击上传</el-button>
             </el-upload>
           </div>
@@ -60,6 +60,7 @@ export default {
   data() {
     return {
       uploadPath: rootPath + "SchoolFellow/addImages",
+      uploadFilesPath:rootPath + 'fileUpLoad',
       form: {
         title: "",
         content: "",
@@ -130,6 +131,10 @@ export default {
     }
   },
   methods: {
+    //点击上传附件
+    handleFileSuccess(file){
+      this.form.accessory_name = file.toString()
+    },
     //点击上传图片
     handleSuccessImage(file){
       this.form.image_name.push(file.toString())

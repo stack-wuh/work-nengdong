@@ -66,6 +66,7 @@
 <script>
   import Search from '@/components/common/search'
   import '../../../static/css/base.less'
+  const json2Excel = require('js-export-excel')
   export default{
     components:{
       Search
@@ -81,12 +82,25 @@
         this.$http('SchoolFellow/showStudent_Info',{id:this.$route.params.data.id}).then(res=>{
           this.info = res.data[0]
           this.advance = res.data[0].advance_archives
-          console.log(this.info)
         })  
       },
       //单击导出个人信息
       export2excel(){
-
+        this.info = Object.assign(this.info,this.info.advance_archives)
+        let data = []
+        data.push(this.info)
+        var option = {}
+        option.fileName = '导出个人信息'
+        option.datas = [
+          {
+            sheetData:data,
+            sheetName:'当前个人信息',
+            sheetFilter:['name','school_age','number','no','classes','phone_number','email','unit_name','unit_property','unit_way','place_class','post_name','money','levels','schools','faculty','line_text'],
+            sheetHeader:['姓名','入学年份','学号','身份证号','专业班级','手机号','邮箱','用人单位名称','单位性质','所在行业','职位类别','职位名称','起薪','层次','学校','院系','专业']
+          },
+        ]
+        var toExcel = new json2Excel(option)
+        toExcel.saveExcel() 
       },
       //单击加入/移除杰出校友
       handleClickRemove(){
