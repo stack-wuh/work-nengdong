@@ -205,7 +205,7 @@ export default {
     }
   },
   created(){
-    console.log(this.tree)
+    // console.log(this.tree)
     // console.log(this.format)
   },
   methods:{
@@ -243,10 +243,13 @@ export default {
       }
     },
     otherImport(){
-      console.log('批量导入')
+      this.$store.commit('changeDialogStatus',{status:true,title:'批量导入学生',type:'upload'})
     },
     export2excel(){
-      console.log('导出当前页菜单')
+      this.$http('SchoolFellow/Student_Info_Excel').then(res=>{
+        let error = res.error == 0 ? 'success' : 'erorr'
+        _g.toastMsg(error,res.msg)
+      })
     },
     //活动模块
     //返回上一级

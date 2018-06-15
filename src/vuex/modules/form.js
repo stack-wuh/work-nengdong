@@ -1161,6 +1161,12 @@ const state = {
       form_title:'',
       form_content:[]
     }
+  },
+
+  //批量导入
+  upload:{
+    type:'uploadFile',
+    
   }
 }
 

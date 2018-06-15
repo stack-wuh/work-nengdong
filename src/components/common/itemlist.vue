@@ -302,7 +302,7 @@ export default {
       } else if (this.path == "/action/list/concat" || this.path == "/concat") {
         this.$router.push("/concat/detail/" + e.id);
       }else if(this.path == '/message'){
-        this.$router.push('/message/detail')
+        this.$router.push('/message/detail/'+ e.id)
       }
     },
 

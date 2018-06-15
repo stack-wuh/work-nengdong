@@ -23,7 +23,7 @@
           <div class="tips">
             <el-date-picker  value-format="yyyy-MM-dd hh:mm:ss" type="datetime" placeholder="选择开始日期" v-model="form.starttime" style="width:220px;"></el-date-picker>
             <span class="tips">图片</span>
-            <el-upload class="upload-demo" :action="uploadPath" :limit="1">
+            <el-upload class="upload-demo" :action="uploadPath" :on-success="handleSuccessImage" :limit="4">
               <el-button size="small" type="primary">点击上传</el-button>
             </el-upload>
           </div>
@@ -59,7 +59,7 @@ export default {
   },
   data() {
     return {
-      uploadPath: rootPath + "",
+      uploadPath: rootPath + "SchoolFellow/addImages",
       form: {
         title: "",
         content: "",
@@ -70,7 +70,7 @@ export default {
         send_id: sessionStorage.getItem("userId"),
         receive_id: [],
         accessory_name: "",
-        image_name: "",
+        image_name: [],
         form_title: "",
         form_content: ""
       },
@@ -130,6 +130,10 @@ export default {
     }
   },
   methods: {
+    //点击上传图片
+    handleSuccessImage(file){
+      this.form.image_name.push(file.toString())
+    },
     handleClickAddFormItem(){   //单击添加表单
       this.$store.commit('changeDialogStatus',{status:true,type:'addFormItem',title:'添加表单'})
     },
@@ -154,7 +158,6 @@ export default {
       this.$http("SchoolFellow/getStudent_Info_Tidings");
     },
     submit() {
-
       this.form.receive_id = [];
       this.chooseArr.map(item => {
         if (item.length > 0) {
@@ -170,7 +173,7 @@ export default {
       }
       this.form = Object.assign(this.form,this.addFormItem)
       this.form.form_content =  this.form.form_content.toString()
-      console.log(this.form)
+      this.form.image_name = this.form.image_name.toString()
       this.$refs.myForm.validate(valid => {
         if (valid) {
           this.$http("SchoolFellow/addTidings", this.form).then(res => {

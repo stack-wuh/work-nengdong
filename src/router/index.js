@@ -4,7 +4,7 @@ import Router from 'vue-router'
 import Login from '@/components/loginManage/login'
 import Home from '@/components/home'
 
-const FirendIndex  = resolve =>require(['@/components/firendManage/index'],resolve)
+const FirendIndex  = resolve => require(['@/components/firendManage/index'],resolve)
 const FirendDetail = resolve => require(['@/components/firendManage/detail'],resolve)
 
 const ActionIndex = resolve => require(['@/components/actionManage/index'],resolve)
@@ -213,7 +213,7 @@ export default new Router({
           component:MessageGroup
         },
         {
-          path:'/message/detail',
+          path:'/message/detail/:id',
           name:'messageDetail',
           component:MessageDetail
         }

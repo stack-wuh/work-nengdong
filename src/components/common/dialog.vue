@@ -48,7 +48,12 @@
             </div>
           </el-form-item>
         </el-form>
-
+        <section class="wrapper" v-if="form.type == 'uploadFile'">
+          {{uploadFileUrl}}
+            <el-upload ref="myUpload" class="upload-demo" :action="uploadFileUrl" :auto-upload="false" :show-file-list="true" :on-success="handelUpload" >
+              <el-button>选择文件</el-button>
+            </el-upload>
+        </section>
       <span slot="footer" class="dialog-footer">
         <el-button @click="hideDialog">取 消</el-button>
         <el-button type="primary" @click="handleClickSubmit">确 定</el-button>
@@ -63,6 +68,7 @@ import E from 'wangeditor'
     props:['title','isShowDialog','id'],
     data(){
       return{
+        // uploadFileUrl:window.rootPath + 'SchoolFellow/addImages',   // 文件上传
         updatePwd:{
           info:[
             {
@@ -174,15 +180,24 @@ import E from 'wangeditor'
                             break;
           case 'addFormItem' : form = this.$store.state.form.addFormItem  //消息 -- 添加表单项目
                             break;
+          case 'upload' : form = this.$store.state.form.upload // 批量导入
+                            break;
           
         }
         return form
       },
       tree(){
         return this.$store.state.keys
+      },
+      uploadFileUrl(){
+          return rootPath + 'SchoolFellow/LeadingStuden_Info'
       }
     },
     methods:{
+      //单击选择文件
+      handelUpload(file){
+        console.log(file)
+      },
       //单击添加消息 -- 表单元素
       handleClickAdd(){
         this.form.info[1].subList.push(this.itemValue)
@@ -425,6 +440,8 @@ import E from 'wangeditor'
             this.$store.commit('saveDialogValueAndHide',{state:false,data:data,total:total,keys:keys})
           }else if(type == 'addFormItem'){
               this.$store.commit('saveFormItemValue',this.form.validForm)
+          }else if(type == 'upload'){
+            this.$refs.myUpload.submit()
           }
         }
       }
