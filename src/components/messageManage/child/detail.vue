@@ -34,7 +34,14 @@
         </section>
       </section>
       <section class="right">
-        <p class="title">收到 (0)</p>
+        <p class="title danger">未收到( {{send_sum}} )</p>
+        <p class="list-item" v-for="(item,index) in  reciver" :key="index">
+          <span>{{index+1}}</span>
+          <span>asdasd</span>
+          <span>工号/学号：</span>
+          <span>10000</span>
+        </p>
+        <p class="title">收到 ({{reciver_sum}})</p>
         <p class="list-item">
           <span>1</span>
           <span>维多利亚</span>
@@ -49,7 +56,11 @@
 export default {
   data() {
     return {
-      info:{}
+      info:{},
+      reciver:[],
+      send:[],
+      reciver_sum:0,
+      send_sum:0,
     };
   },
   computed:{
@@ -101,6 +112,10 @@ export default {
       this.$http('SchoolFellow/QueryTidings',{id:this.$route.params.id}).then(res=>{
         this.info = res.data[0]
         this.info.isCollect = this.info.collect_name ? true : false
+        this.reciver = res.yes
+        this.send = res.no
+        this.reciver_sum = res.yesSum
+        this.send_sum = res.noSum
       })
     }
   },
@@ -208,6 +223,9 @@ export default {
         flex:1;
         margin-left:10px;
       }
+    }
+    .danger{
+      background-color: #ff6b64;
     }
   }
 }
