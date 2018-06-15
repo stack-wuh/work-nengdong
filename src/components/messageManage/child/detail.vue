@@ -10,7 +10,7 @@
               <p>内容: {{info.content}}</p>
               <p>提醒: {{info.time_or == 0 ? '开始前' : '截止前'}} {{info.remind || 0}}小时</p>
               <p>时间: {{info.starttime | format}} 至 {{info.endtime | format}}</p>
-              <div class="img-list">
+              <div v-show="imgList" class="img-list">
                 <img v-for="item in imgList" :src="item" alt="img-i">
               </div>
           </div>
