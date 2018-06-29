@@ -51,7 +51,7 @@ axios.interceptors.response.use((config)=>{
 })
 
 // window.rootPath = '/adminapi/'
-window.rootPath = '/'
+window.rootPath = ''
 
 /* eslint-disable no-new */
 new Vue({
