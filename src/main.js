@@ -4,7 +4,7 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import axios from 'axios'
-import ElementUI from '../static/js/index'
+import ElementUI from '../static/js/index.min.js'
 import '../static/element-default/index.css'
 import '../static/css/base.css'
 import '../static/css/base.less'
@@ -50,7 +50,8 @@ axios.interceptors.response.use((config)=>{
   return config
 })
 
-window.rootPath = '/adminapi/'
+// window.rootPath = '/adminapi/'
+window.rootPath = '/'
 
 /* eslint-disable no-new */
 new Vue({

@@ -17,7 +17,7 @@
 
 <script>
 import Subnav  from '@/components/common/subnav'
-const iconRootPath = '../../../static'
+const iconRootPath = './static'
   export default{
     components:{
       Subnav
