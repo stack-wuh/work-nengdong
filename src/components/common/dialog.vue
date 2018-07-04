@@ -454,15 +454,16 @@ export default {
               type == "addConcatSchool" ||
               type == "editSettingConcat"
             ) {
-              this.$http("SchoolFellow/addContact_College", data).then(res => {
+              // console.log(data)
+              var info =JSON.parse(JSON.stringify(data))
+              info.file = info.file.toString()
+              // return
+              this.$http("SchoolFellow/addContact_College", info).then(res => {
                 let error = res.error == 0 ? "success" : "error";
                 _g.toastMsg(error, res.msg);
                 if (res.error == 0) {
                   this.$emit("getSubMsg", { state: true });
                   this.hideDialog();
-                  setTimeout(() => {
-                    this.$router.push("/school");
-                  }, 1000);
                 }
               });
             } else if (type == "addGroup") {
