@@ -40,7 +40,7 @@
     },
     data(){
       return{
-        uploadPath:rootPath + 'SchoolFellow/addImages',
+        uploadPath:rootPath + 'addImages',
         imgUrl:'',
         form:{
           title:'',
@@ -82,7 +82,7 @@
     },
     methods:{
       handleAvatarSuccess(e){
-        this.form.image = e
+        this.form.image = e[0]
       },
       submit(){
         this.$refs.myForm.validate(valid=>{
@@ -104,7 +104,7 @@
     created(){
       this.$nextTick(()=>{
         var editor = new E('#editor')
-        editor.customConfig.uploadImgServer = rootPath + 'SchoolFellow/InsertImages' //上传服务器地址
+        editor.customConfig.uploadImgServer = rootPath + '/InsertImages' //上传服务器地址
         editor.customConfig.uploadFileName = 'file'
         editor.customConfig.customAlert = function(info){
           _g.toastMsg('warning',info)
