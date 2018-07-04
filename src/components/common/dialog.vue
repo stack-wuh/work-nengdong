@@ -6,7 +6,6 @@
             {{dItem.type}}
             <div v-for="(tItem,tIndex) in dItem.subList" :key="tIndex">
               {{tItem.name}}
-              <!-- {{tree[dIndex]}} -->
               <el-tree :default-checked-keys="tree[dIndex]" ref="myTree" class="my-tree" :data="tItem.tree" show-checkbox node-key="number"></el-tree>
             </div>
           </div>
@@ -50,7 +49,7 @@
         </el-form>
         <section class="wrapper" v-if="form.type == 'uploadFile'">
           {{uploadFileUrl}}
-            <el-upload ref="myUpload" class="upload-demo" :action="uploadFileUrl" :auto-upload="false" :show-file-list="true" :on-success="handelUpload" >
+            <el-upload ref="myUpload" class="upload-demo" name="file" :action="uploadFileUrl" :auto-upload="false" :show-file-list="true" :on-success="handelUpload" >
               <el-button>选择文件</el-button>
             </el-upload>
         </section>
@@ -63,472 +62,543 @@
 </template>
 
 <script>
-import E from 'wangeditor'
-  export default{
-    props:['title','isShowDialog','id'],
-    data(){
-      return{
-        // uploadFileUrl:window.rootPath + 'SchoolFellow/addImages',   // 文件上传
-        updatePwd:{
-          info:[
-            {
-              name:'更改密码',
-              value:'',
-              type:'password',
-              prop:'password',
-              rules:[
-                {
-                  required:true,
-                  message:'密码不能为空',
-                  trigger:'blur'
-                },
-              ]
-            },
-            {
-              name:'确认密码',
-              value:'',
-              type:'password',
-              prop:'checkword',
-              rules:[
-                {
-                  required:true,
-                  message:'密码不能为空',
-                  trigger:'blur'
-                },
-              ]
-            }
-          ],
-          validForm:{
-            password:'',
-            checkword:''
-          }
-        },
-        feedback:{
-          info:[
-            {
-              name:'反馈',
-              value:'',
-              type:'text',
-              prop:'feedback',
-              rules:[
-                {
-                  required:true,
-                  message:'请填写反馈',
-                  trigger:'blur'
-                }
-              ]
-            }
-          ]
-        },
-        error:1,
-        uploadUrl:rootPath + 'SchoolFellow/addImages',
-        imgUrl:'',
-        itemValue:''
-      }
-    },
-    computed:{
-      form(){
-        let form = {}
-        switch(this.$store.state.formType){
-          case 'updatePwd' : form = this.$store.state.form.changePwd 
-                            break;
-          case 'feedback' : form = this.$store.state.form.addFeedback // 活动--添加反馈信息 
-                            break;
-          case 'addYear' : form = this.$store.state.form.addNewYear
-                            break;
-          case 'pagesFeedback' : form = this.$store.state.form.pagesFeed
-                            break;
-          case 'addDonate' : form = this.$store.state.form.addDonate
-                            break;
-          case 'editCollege' :form = this.$store.state.form.editCollege
-                            break;
-          case 'editSchool' : form = this.$store.state.form.editSchool
-                            break;
-          case 'addRemark' : form = this.$store.state.form.addRemark //黄页--杰出校友管理--添加备注
-                            break;
-          case 'concatFeedback' :form = this.$store.state.form.addConcatFeed
-                            break;
-          case 'addHelpType'  :form = this.$store.state.form.addHelpType
-                            break;
-          case 'addActionType' : form = this.$store.state.form.addActionType //设置--活动类型设置--添加活动类型
-                            break;
-          case 'editActionType' : form = this.$store.state.form.editActionType //设置--活动类型设置--编辑活动类型
-                            break;
-          case 'addPagesSchool' : form  = this.$store.state.form.addPagesSchool   //添加-黄页管理-添加学院
-                            break;
-          case 'addPagesCollege' : form = this.$store.state.form.addPagesCollege //添加 -黄页管理 -添加学校
-                            break;
-          case 'addSettingMajor' : form = this.$store.state.form.addSettingMajor //设置--添加--专业
-                            break;
-          case 'editSettingMajor' : form = this.$store.state.form.editSettingMajor //设置--编辑--专业
-                            break;
-          case 'addSettingKlass' : form = this.$store.state.form.addSettingKlass // 设置-添加-班级
-                            break;
-          case 'editSettingKlass' : form = this.$store.state.form.editSettingKlass //设置-编辑-班级
-                            break;
-          case 'addSettingOfficial' : form = this.$store.state.form.addSettingOfficial //设置-添加-官方组织
-                            break;
-          case 'editSettingOfficial' : form = this.$store.state.form.editSettingOfficial //设置-编辑 -官方组织
-                            break;
-          case 'addConcatSchool' : form = this.$store.state.form.addConcatSchool //设置-添加-联系学院
-                            break;
-          case 'editSettingConcat' : form = this.$store.state.form.editSettingConcat //设置-编辑-联系学院
-                            break;
-          case 'addGroup' : form = this.$store.state.form.addGroup // 消息--添加新群组
-                            break; 
-          case 'chooseReciver' : form = this.$store.state.form.chooseReciver // 选择发送对象
-                            break;
-          case 'addFormItem' : form = this.$store.state.form.addFormItem  //消息 -- 添加表单项目
-                            break;
-          case 'upload' : form = this.$store.state.form.upload // 批量导入
-                            break;
-          
-        }
-        return form
-      },
-      tree(){
-        return this.$store.state.keys
-      },
-      uploadFileUrl(){
-          return rootPath + 'SchoolFellow/LeadingStuden_Info'
-      }
-    },
-    methods:{
-      //单击选择文件
-      handelUpload(file){
-        console.log(file)
-      },
-      //单击添加消息 -- 表单元素
-      handleClickAdd(){
-        this.form.info[1].subList.push(this.itemValue)
-        this.form.validForm.form_content.push(this.itemValue)
-        this.itemValue = ''
-      },
-      //单击删除消息 -- 表单元素
-      handleClickDel(index){
-        this.form.info[1].subList.splice(index,1)
-        this.form.validForm.form_content.push(this.itemValue)
-      },
-      //对话框关闭
-      dialogClose(){
-        this.$emit('dialogClose',true)
-      },
-
-      handleAvatarSuccess(e){
-        for(var k in this.form.validForm){
-          if(k == 'image'){
-            this.form.validForm.image = e
-          }else if(k == 'file'){
-            this.form.validForm.file = e
-          }
-        }
-      },
-
-      hideDialog(){
-        if(this.$store.state.formType == 'addFormItem'){
-          this.$refs.myAddForm.resetFields()
-        }else{
-          this.$refs.myForm.resetFields()
-        }
-        this.$store.commit('changeDialogStatus',{status:false,formType:''})
-        setTimeout(()=>{
-          this.$store.commit('changeRefresh',{state:false})
-        },1000)
-      },
-
-      handleClickSubmit(){
-        let type = this.$store.state.formType
-        let action = this.$store.state.action
-        let id = this.$store.state.id
-        let student_info_id = sessionStorage.getItem('userId')
-        if(this.form.validForm && this.$refs.myForm){
-          let data = {}
-          data = Object.assign(this.form.validForm,{id:id,student_info_id:student_info_id})
-          this.$refs['myForm'].validate((valid)=>{
-            if(valid){
-              if(type == 'updatePwd'){
-                if(this.form.validForm.password != this.form.validForm.checkword){
-                  _g.toastMsg('error','两次密码不一致')
-                  return
-                }else{
-                  let data = {}
-                  data = Object.assign(this.form.validForm,{id:window.sessionStorage.getItem('userId')})
-                  this.$http('SchoolFellow/UpdatePassword',this.form.validForm).then(res=>{
-                    let error = res.error == 0 ? 'success' : 'error'
-                    _g.toastMsg(error,res.msg)
-                    if(res.error == 0){
-                      this.hideDialog()
-                    }
-                  })
-                }
-              }else if(type == 'feedback'){           // 活动--添加反馈
-                let data = {}
-                data = Object.assign(this.form.validForm,{id:id})
-                this.$http('SchoolFellow/Activity_Manager_NoPass',data).then(res=>{
-                  let error = res.error == 0 ? 'success' : 'error'
-                  _g.toastMsg(error,res.msg)
-                  if(res.error == 0){
-                    this.$emit('getSubMsg',{state:true})
-                    this.hideDialog()
-                  }
-                })
-              }else if(type == 'addYear'){ // 设置-- 添加/编辑学年
-                let url = '' , data = {}
-                if(action == 'add'){
-                    url = 'SchoolFellow/addStudent_Info_Age'
-                    data = this.form.validForm
-                }else if(action == 'edit'){
-                  url = 'SchoolFellow/updateStudent_Info_Age'
-                  data = Object.assign(this.form.validForm,{id:id})
-                }
-                this.$http(url,data).then(res=>{
-                  let error = res.error == 0 ? 'success' : 'error'
-                  _g.toastMsg(error,res.msg)
-                  this.error = res.error
-                  this.$store.commit('handleClickStatus',{state:res.error})
-                  if(res.error == 0){
-                    this.$emit('getSubMsg',{state:true})                  
-                    this.hideDialog()
-                  }
-                })
-              }else if(type=='pagesFeedback'){
-                this.$http('SchoolFellow/updateAlumni_Pages_no',data).then(res=>{
-                  let error = res.error == 0 ? 'success' : 'error'
-                  _g.toastMsg(error,res.msg)
-                  if(res.error == 0){
-                    this.$emit('getSubMsg',{state:true})
-                    this.hideDialog()
-                  }
-                })
-              }else if(type == 'addDonate'){
-                this.$http('SchoolFellow/addAlumni',data).then(res=>{
-                  let error = res.error == 0 ? 'success' : 'error'
-                  _g.toastMsg(error,res.msg)
-                  if(res.error == 0){
-                    this.$emit('getSubMsg',{state:true})
-                    this.hideDialog()
-                  }
-                })
-              }else if(type == 'editCollege' || type == 'addPagesSchool'){
-                this.$http('SchoolFellow/updateSchool_Info_School',data).then(res=>{
-                  let error = res.error == 0 ? 'success' : 'error'
-                  _g.toastMsg(error,res.msg)
-                  if(res.error == 0){
-                    this.$emit('getSubMsg',{state:true})
-                    this.hideDialog()
-                  }
-                })
-              }else if(type == 'editSchool' || type == 'addPagesCollege'){
-                this.$http('SchoolFellow/updateXueXiao',data).then(res=>{
-                  let error = res.error == 0 ? 'success' : 'error'
-                  _g.toastMsg(error,res.msg)
-                  if(res.error == 0){
-                    this.$emit('getSubMsg',{state:true})
-                    this.hideDialog()
-                  }
-                })
-              }else if(type == 'addRemark'){
-                this.$http('SchoolFellow/updateStudent_Remarks',data).then(res=>{
-                  let error = res.error == 0 ? 'success' : 'error'
-                  _g.toastMsg(error,res.msg)
-                  if(res.error == 0){
-                    this.$emit('getSubMsg',{state:true})
-                    this.hideDialog()
-                  }
-                })
-              }else if(type == 'concatFeedback'){
-                this.$http('SchoolFellow/Mutual_Help_No',data).then(res=>{
-                  let error = res.error == 0 ? 'success' : 'error'
-                  _g.toastMsg(error,res.msg)
-                  if(res.error == 0){
-                    this.$emit('getSubMsg',{state:true})
-                    this.hideDialog()
-                  }
-                })
-              }else if(type == 'addHelpType'){
-                this.$http('SchoolFellow/addMutual_Help_Type',data).then(res=>{
-                  let error = res.error == 0 ? 'success' : 'error'
-                  _g.toastMsg(error,res.msg)
-                  if(res.error == 0){
-                    this.$emit('getSubMsg',{state:true})
-                    this.hideDialog()
-                  }
-                })
-              }else if(type == 'addActionType' || type == 'editActionType'){
-                this.$http('SchoolFellow/addActivity_Type',data).then(res=>{
-                  let error = res.error == 0 ? 'success' : 'error'
-                  _g.toastMsg(error,res.msg)
-                  if(res.error == 0){
-                    this.$emit('getSubMsg',{state:true})
-                    this.hideDialog()
-                  }
-                })
-              }else if(type == 'addSettingMajor' || type == 'editSettingMajor'){
-                this.$http('SchoolFellow/addStudent_info_Line',data).then(res=>{
-                  let error = res.error == 0 ? 'success' : 'error'
-                  _g.toastMsg(error,res.msg)
-                  if(res.error == 0){
-                    this.$emit('getSubMsg',{state:true})
-                    this.hideDialog()
-                  }
-                })
-              }else if(type == 'addSettingKlass' || type == 'editSettingKlass'){
-                this.$http('SchoolFellow/addStudent_Info_Class',data).then(res=>{
-                  let error = res.error == 0 ? 'success' : 'error'
-                  _g.toastMsg(error,res.msg)
-                  if(res.error == 0){
-                    this.$emit('getSubMsg',{state:true})
-                    this.hideDialog()
-                  }
-                })
-              }else if(type == 'addSettingOfficial' || type == 'editSettingOfficial'){
-                this.$http('SchoolFellow/addActivity_Official',data).then(res=>{
-                  let  error = res.error == 0 ? 'success' : 'error'
-                  _g.toastMsg(error,res.msg)
-                  if(res.error == 0){
-                    this.$emit('getSubMsg',{state:true})
-                    this.hideDialog()
-                  }
-                })
-              }else if(type == 'addConcatSchool' || type == 'editSettingConcat'){
-                this.$http('SchoolFellow/addContact_College',data).then(res=>{
-                let error = res.error == 0 ? 'success' : 'error'
-                  _g.toastMsg(error,res.msg)
-                  if(res.error == 0){
-                    this.$emit('getSubMsg',{state:true})
-                    this.hideDialog()
-                    setTimeout(()=>{
-                      this.$router.push('/school')
-                    },1000)
-                  }
-                })
-              }else if(type == 'addGroup'){
-                let elem = this.$refs.myTree
-                let data = elem.map(item=>{
-                  let data = item.getCheckedNodes().filter(list=>{
-                    return !list.children
-                  })
-                  return data.map(list=>{
-                      return list.label
-                  })
-                })
-                data = Object.assign(this.form.validForm,{grouping_people:[...data[0],...data[1]].toString()})
-                this.$http('SchoolFellow/addTidings_Grouping',data).then(res=>{
-                  let error = res.error == 0 ? 'success' :'error'
-                  _g.toastMsg(error,res.msg)
-                  if(res.error == 0){
-                    this.$emit('getSubMsg',{state:true})
-                    this.hideDialog()
-                  }
-                })
+import E from "wangeditor";
+export default {
+  props: ["title", "isShowDialog", "id"],
+  data() {
+    return {
+      // uploadFileUrl:window.rootPath + '/SchoolFellow/addImages',   // 文件上传
+      updatePwd: {
+        info: [
+          {
+            name: "更改密码",
+            value: "",
+            type: "password",
+            prop: "password",
+            rules: [
+              {
+                required: true,
+                message: "密码不能为空",
+                trigger: "blur"
               }
-            }
-          })
-        }else{
-          if(type == 'chooseReciver'){
-            let elem = this.$refs.myTree , total = 0 , keys = []
-            let data =  elem.map(item=>{
-               let data =  item.getCheckedNodes().filter(item=>{
-                  if(!item.children){
-                    total ++
-                  }
-                  return !item.children
-              })
-               keys.push(item.getCheckedKeys())
-              return data
-            })
-            this.$store.commit('saveDialogValueAndHide',{state:false,data:data,total:total,keys:keys})
-          }else if(type == 'addFormItem'){
-              this.$store.commit('saveFormItemValue',this.form.validForm)
-          }else if(type == 'upload'){
-            this.$refs.myUpload.submit()
+            ]
+          },
+          {
+            name: "确认密码",
+            value: "",
+            type: "password",
+            prop: "checkword",
+            rules: [
+              {
+                required: true,
+                message: "密码不能为空",
+                trigger: "blur"
+              }
+            ]
           }
+        ],
+        validForm: {
+          password: "",
+          checkword: ""
+        }
+      },
+      feedback: {
+        info: [
+          {
+            name: "反馈",
+            value: "",
+            type: "text",
+            prop: "feedback",
+            rules: [
+              {
+                required: true,
+                message: "请填写反馈",
+                trigger: "blur"
+              }
+            ]
+          }
+        ]
+      },
+      error: 1,
+      uploadUrl: rootPath + "SchoolFellow/addImages",
+      imgUrl: "",
+      itemValue: ""
+    };
+  },
+  computed: {
+    form() {
+      let form = {};
+      switch (this.$store.state.formType) {
+        case "updatePwd":  // 更改密码
+          form = this.$store.state.form.changePwd;
+          break;
+        case "feedback": // 活动 -- 添加反馈信息
+          form = this.$store.state.form.addFeedback; 
+          break;
+        case "addYear":  // 添加年份
+          form = this.$store.state.form.addNewYear;
+          break;
+        case "pagesFeedback": // 黄页 -- 添加反馈信息
+          form = this.$store.state.form.pagesFeed;
+          break;
+        case "addDonate": 
+          form = this.$store.state.form.addDonate;
+          break;
+        case "editCollege":
+          form = this.$store.state.form.editCollege;
+          break;
+        case "editSchool":
+          form = this.$store.state.form.editSchool;
+          break;
+        case "addRemark":
+          form = this.$store.state.form.addRemark; //黄页--杰出校友管理--添加备注
+          break;
+        case "concatFeedback": // 联系学院 -- 添加备注
+          form = this.$store.state.form.addConcatFeed;
+          break;
+        case "addHelpType": // 添加 -- 帮助类型
+          form = this.$store.state.form.addHelpType;
+          break;
+        case "addActionType": // 添加 -- 活动类型
+          form = this.$store.state.form.addActionType; //设置--活动类型设置--添加活动类型
+          break;
+        case "editActionType":
+          form = this.$store.state.form.editActionType; //设置--活动类型设置--编辑活动类型
+          break;
+        case "addPagesSchool":
+          form = this.$store.state.form.addPagesSchool; //添加-黄页管理-添加学院
+          break;
+        case "addPagesCollege":
+          form = this.$store.state.form.addPagesCollege; //添加 -黄页管理 -添加学校
+          break;
+        case "addSettingMajor":
+          form = this.$store.state.form.addSettingMajor; //设置--添加--专业
+          break;
+        case "editSettingMajor":
+          form = this.$store.state.form.editSettingMajor; //设置--编辑--专业
+          break;
+        case "addSettingKlass":
+          form = this.$store.state.form.addSettingKlass; // 设置-添加-班级
+          break;
+        case "editSettingKlass":
+          form = this.$store.state.form.editSettingKlass; //设置-编辑-班级
+          break;
+        case "addSettingOfficial":
+          form = this.$store.state.form.addSettingOfficial; //设置-添加-官方组织
+          break;
+        case "editSettingOfficial":
+          form = this.$store.state.form.editSettingOfficial; //设置-编辑 -官方组织
+          break;
+        case "addConcatSchool":
+          form = this.$store.state.form.addConcatSchool; //设置-添加-联系学院
+          break;
+        case "editSettingConcat":
+          form = this.$store.state.form.editSettingConcat; //设置-编辑-联系学院
+          break;
+        case "addGroup":
+          form = this.$store.state.form.addGroup; // 消息--添加新群组
+          break;
+        case "chooseReciver":
+          form = this.$store.state.form.chooseReciver; // 选择发送对象
+          break;
+        case "addFormItem":
+          form = this.$store.state.form.addFormItem; //消息 -- 添加表单项目
+          break;
+        case "upload":
+          form = this.$store.state.form.upload; // 批量导入
+          break;
+      }
+      return form;
+    },
+    tree() {
+      return this.$store.state.keys;
+    },
+    uploadFileUrl() {
+      return rootPath + "/LeadingStuden_Info";
+    }
+  },
+  methods: {
+    //单击选择文件
+    handelUpload(file) {
+      console.log(file);
+    },
+    //单击添加消息 -- 表单元素
+    handleClickAdd() {
+      this.form.info[1].subList.push(this.itemValue);
+      this.form.validForm.form_content.push(this.itemValue);
+      this.itemValue = "";
+    },
+    //单击删除消息 -- 表单元素
+    handleClickDel(index) {
+      this.form.info[1].subList.splice(index, 1);
+      this.form.validForm.form_content.push(this.itemValue);
+    },
+    //对话框关闭
+    dialogClose() {
+      this.$emit("dialogClose", true);
+    },
+
+    handleAvatarSuccess(e) {
+      for (var k in this.form.validForm) {
+        if (k == "image") {
+          this.form.validForm.image = e;
+        } else if (k == "file") {
+          this.form.validForm.file = e;
         }
       }
     },
-    created(){
-     
+
+    hideDialog() {
+      if (this.$store.state.formType == "addFormItem") {
+        this.$refs.myAddForm.resetFields();
+      } else {
+        this.$refs.myForm.resetFields();
+      }
+      this.$store.commit("changeDialogStatus", { status: false, formType: "" });
+      setTimeout(() => {
+        this.$store.commit("changeRefresh", { state: false });
+      }, 1000);
+    },
+
+    handleClickSubmit() {
+      let type = this.$store.state.formType;
+      let action = this.$store.state.action;
+      let id = this.$store.state.id;
+      let student_info_id = sessionStorage.getItem("userId");
+      if (this.form.validForm && this.$refs.myForm) {
+        let data = {};
+        data = Object.assign(this.form.validForm, {
+          id: id,
+          student_info_id: student_info_id
+        });
+        this.$refs["myForm"].validate(valid => {
+          if (valid) {
+            if (type == "updatePwd") {
+              if (
+                this.form.validForm.password != this.form.validForm.checkword
+              ) {
+                _g.toastMsg("error", "两次密码不一致");
+                return;
+              } else {
+                let data = {};
+                data = Object.assign(this.form.validForm, {
+                  id: window.sessionStorage.getItem("userId")
+                });
+                this.$http(
+                  "SchoolFellow/UpdatePassword",
+                  this.form.validForm
+                ).then(res => {
+                  let error = res.error == 0 ? "success" : "error";
+                  _g.toastMsg(error, res.msg);
+                  if (res.error == 0) {
+                    this.hideDialog();
+                  }
+                });
+              }
+            } else if (type == "feedback") {
+              // 活动--添加反馈
+              let data = {};
+              data = Object.assign(this.form.validForm, { id: id });
+              this.$http("SchoolFellow/Activity_Manager_NoPass", data).then(
+                res => {
+                  let error = res.error == 0 ? "success" : "error";
+                  _g.toastMsg(error, res.msg);
+                  if (res.error == 0) {
+                    this.$emit("getSubMsg", { state: true });
+                    this.hideDialog();
+                  }
+                }
+              );
+            } else if (type == "addYear") {
+              // 设置-- 添加/编辑学年
+              let url = "",
+                data = {};
+              if (action == "add") {
+                url = "SchoolFellow/addStudent_Info_Age";
+                data = this.form.validForm;
+              } else if (action == "edit") {
+                url = "SchoolFellow/updateStudent_Info_Age";
+                data = Object.assign(this.form.validForm, { id: id });
+              }
+              this.$http(url, data).then(res => {
+                let error = res.error == 0 ? "success" : "error";
+                _g.toastMsg(error, res.msg);
+                this.error = res.error;
+                this.$store.commit("handleClickStatus", { state: res.error });
+                if (res.error == 0) {
+                  this.$emit("getSubMsg", { state: true });
+                  this.hideDialog();
+                }
+              });
+            } else if (type == "pagesFeedback") {
+              this.$http("SchoolFellow/updateAlumni_Pages_no", data).then(
+                res => {
+                  let error = res.error == 0 ? "success" : "error";
+                  _g.toastMsg(error, res.msg);
+                  if (res.error == 0) {
+                    this.$emit("getSubMsg", { state: true });
+                    this.hideDialog();
+                  }
+                }
+              );
+            } else if (type == "addDonate") {
+              this.$http("SchoolFellow/addAlumni", data).then(res => {
+                let error = res.error == 0 ? "success" : "error";
+                _g.toastMsg(error, res.msg);
+                if (res.error == 0) {
+                  this.$emit("getSubMsg", { state: true });
+                  this.hideDialog();
+                }
+              });
+            } else if (type == "editCollege" || type == "addPagesSchool") {
+              this.$http("SchoolFellow/updateSchool_Info_School", data).then(
+                res => {
+                  let error = res.error == 0 ? "success" : "error";
+                  _g.toastMsg(error, res.msg);
+                  if (res.error == 0) {
+                    this.$emit("getSubMsg", { state: true });
+                    this.hideDialog();
+                  }
+                }
+              );
+            } else if (type == "editSchool" || type == "addPagesCollege") {
+              this.$http("SchoolFellow/updateXueXiao", data).then(res => {
+                let error = res.error == 0 ? "success" : "error";
+                _g.toastMsg(error, res.msg);
+                if (res.error == 0) {
+                  this.$emit("getSubMsg", { state: true });
+                  this.hideDialog();
+                }
+              });
+            } else if (type == "addRemark") {
+              this.$http("SchoolFellow/updateStudent_Remarks", data).then(
+                res => {
+                  let error = res.error == 0 ? "success" : "error";
+                  _g.toastMsg(error, res.msg);
+                  if (res.error == 0) {
+                    this.$emit("getSubMsg", { state: true });
+                    this.hideDialog();
+                  }
+                }
+              );
+            } else if (type == "concatFeedback") {
+              this.$http("SchoolFellow/Mutual_Help_No", data).then(res => {
+                let error = res.error == 0 ? "success" : "error";
+                _g.toastMsg(error, res.msg);
+                if (res.error == 0) {
+                  this.$emit("getSubMsg", { state: true });
+                  this.hideDialog();
+                }
+              });
+            } else if (type == "addHelpType") {
+              this.$http("SchoolFellow/addMutual_Help_Type", data).then(res => {
+                let error = res.error == 0 ? "success" : "error";
+                _g.toastMsg(error, res.msg);
+                if (res.error == 0) {
+                  this.$emit("getSubMsg", { state: true });
+                  this.hideDialog();
+                }
+              });
+            } else if (type == "addActionType" || type == "editActionType") {
+              this.$http("SchoolFellow/addActivity_Type", data).then(res => {
+                let error = res.error == 0 ? "success" : "error";
+                _g.toastMsg(error, res.msg);
+                if (res.error == 0) {
+                  this.$emit("getSubMsg", { state: true });
+                  this.hideDialog();
+                }
+              });
+            } else if (
+              type == "addSettingMajor" ||
+              type == "editSettingMajor"
+            ) {
+              this.$http("SchoolFellow/addStudent_info_Line", data).then(
+                res => {
+                  let error = res.error == 0 ? "success" : "error";
+                  _g.toastMsg(error, res.msg);
+                  if (res.error == 0) {
+                    this.$emit("getSubMsg", { state: true });
+                    this.hideDialog();
+                  }
+                }
+              );
+            } else if (
+              type == "addSettingKlass" ||
+              type == "editSettingKlass"
+            ) {
+              this.$http("SchoolFellow/addStudent_Info_Class", data).then(
+                res => {
+                  let error = res.error == 0 ? "success" : "error";
+                  _g.toastMsg(error, res.msg);
+                  if (res.error == 0) {
+                    this.$emit("getSubMsg", { state: true });
+                    this.hideDialog();
+                  }
+                }
+              );
+            } else if (
+              type == "addSettingOfficial" ||
+              type == "editSettingOfficial"
+            ) {
+              this.$http("SchoolFellow/addActivity_Official", data).then(
+                res => {
+                  let error = res.error == 0 ? "success" : "error";
+                  _g.toastMsg(error, res.msg);
+                  if (res.error == 0) {
+                    this.$emit("getSubMsg", { state: true });
+                    this.hideDialog();
+                  }
+                }
+              );
+            } else if (
+              type == "addConcatSchool" ||
+              type == "editSettingConcat"
+            ) {
+              this.$http("SchoolFellow/addContact_College", data).then(res => {
+                let error = res.error == 0 ? "success" : "error";
+                _g.toastMsg(error, res.msg);
+                if (res.error == 0) {
+                  this.$emit("getSubMsg", { state: true });
+                  this.hideDialog();
+                  setTimeout(() => {
+                    this.$router.push("/school");
+                  }, 1000);
+                }
+              });
+            } else if (type == "addGroup") {
+              let elem = this.$refs.myTree;
+              let data = elem.map(item => {
+                let data = item.getCheckedNodes().filter(list => {
+                  return !list.children;
+                });
+                return data.map(list => {
+                  return list.label;
+                });
+              });
+              data = Object.assign(this.form.validForm, {
+                grouping_people: [...data[0], ...data[1]].toString()
+              });
+              this.$http("SchoolFellow/addTidings_Grouping", data).then(res => {
+                let error = res.error == 0 ? "success" : "error";
+                _g.toastMsg(error, res.msg);
+                if (res.error == 0) {
+                  this.$emit("getSubMsg", { state: true });
+                  this.hideDialog();
+                }
+              });
+            }
+          }
+        });
+      } else {
+        if (type == "chooseReciver") {
+          let elem = this.$refs.myTree,
+            total = 0,
+            keys = [];
+          let data = elem.map(item => {
+            let data = item.getCheckedNodes().filter(item => {
+              if (!item.children) {
+                total++;
+              }
+              return !item.children;
+            });
+            keys.push(item.getCheckedKeys());
+            return data;
+          });
+          this.$store.commit("saveDialogValueAndHide", {
+            state: false,
+            data: data,
+            total: total,
+            keys: keys
+          });
+        } else if (type == "addFormItem") {
+          this.$store.commit("saveFormItemValue", this.form.validForm);
+        } else if (type == "upload") {
+          this.$refs.myUpload.submit();
+        }
+      }
     }
-  }
+  },
+  created() {}
+};
 </script>
 
 <style lang="less" scoped>
-  .dialog{
-    position: fixed;
-    top:0;
-    bottom:0;
-    right:0;
-    left:0;
-    z-index:10 !important;
-    .el-dialog{
-      width:100%;
-      height:100%;
-      background-color: rgba(0,0,0,.5);
+.dialog {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  z-index: 10 !important;
+  .el-dialog {
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+  .my-form {
+    margin: 0 auto;
+    .my-form-item {
+      width: 90%;
+      margin: 0 auto;
+      margin-bottom: 20px;
     }
-    .my-form{
-      margin:0 auto;
-      .my-form-item{
-        width:90%;
-        margin:0 auto;
-        margin-bottom:20px;
-      }
-      #editor{
-        width:100%;
-        height:400px;
-        border:1px solid red;
-      }
+    #editor {
+      width: 100%;
+      height: 400px;
+      border: 1px solid red;
     }
-    .wrapper{
-      display: flex;
-      justify-content: space-between;
+  }
+  .wrapper {
+    display: flex;
+    justify-content: space-between;
 
-      .list-content{
-        flex:.8;
-        margin-right:5px;
-        .my-tree{
-          margin-top:5px;
-          margin-bottom:5px;
-          border:1px solid #eee;
-        }
+    .list-content {
+      flex: 0.8;
+      margin-right: 5px;
+      .my-tree {
+        margin-top: 5px;
+        margin-bottom: 5px;
+        border: 1px solid #eee;
       }
     }
-    .item-tree-list{
-      // display: flex;
-      // justify-content: space-between;
-      padding:0 10px;
-      padding-bottom:10px;
-      border:1px solid #eee;
-    }
   }
-  .avatar-uploader .el-upload {
-    border: 1px dashed #d9d9d9;
-    border-radius: 6px;
-    cursor: pointer;
-    position: relative;
-    overflow: hidden;
+  .item-tree-list {
+    // display: flex;
+    // justify-content: space-between;
+    padding: 0 10px;
+    padding-bottom: 10px;
+    border: 1px solid #eee;
   }
-  .avatar-uploader .el-upload:hover {
-    border-color: #409EFF;
-  }
-  .avatar-uploader-icon {
-    font-size: 28px;
-    color: #8c939d;
-    width: 178px;
-    height: 178px;
-    line-height: 178px;
-    text-align: center;
-  }
-  .avatar {
-    width: 178px;
-    height: 178px;
-    display: block;
-  }
-  img[alt="avatar"]{
-    width:300px;
-    height:200px;
-  }
-  .my-form-title{
-    display: inline-block;
-    width:205px;
-  }
+}
+.avatar-uploader .el-upload {
+  border: 1px dashed #d9d9d9;
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+.avatar-uploader .el-upload:hover {
+  border-color: #409eff;
+}
+.avatar-uploader-icon {
+  font-size: 28px;
+  color: #8c939d;
+  width: 178px;
+  height: 178px;
+  line-height: 178px;
+  text-align: center;
+}
+.avatar {
+  width: 178px;
+  height: 178px;
+  display: block;
+}
+img[alt="avatar"] {
+  width: 300px;
+  height: 200px;
+}
+.my-form-title {
+  display: inline-block;
+  width: 205px;
+}
 </style>
