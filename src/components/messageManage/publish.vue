@@ -14,7 +14,7 @@
           <div class="tips">
             <el-input v-model="chooseNum" readonly @focus="openDialog" style="width:220px;"></el-input>
             <span class="tips">附件</span>
-            <el-upload class="upload-demo" :action="uploadPath" :on-success="handleFileSuccess" :show-file-list="true" :limit="1">
+            <el-upload class="upload-demo" :action="uploadFilesPath" name="file" :on-success="handleFileSuccess" :show-file-list="true" :limit="1">
               <el-button size="small" type="primary">点击上传</el-button>
             </el-upload>
           </div>
@@ -59,21 +59,21 @@ export default {
   },
   data() {
     return {
-      uploadPath: rootPath + "SchoolFellow/addImages",
+      uploadPath: rootPath + "addImages",
       uploadFilesPath:rootPath + 'fileUpLoad',
       form: {
-        title: "",
-        content: "",
-        starttime: "",
-        endtime: "",
-        remind: "",
-        time_or: "",
+        title: "",  //标题
+        content: "", // 内容
+        starttime: "", // 开始时间
+        endtime: "", // 结束时间
+        remind: "", // 提醒
+        time_or: "", // 开始or结束
         send_id: sessionStorage.getItem("userId"),
-        receive_id: [],
-        accessory_name: "",
-        image_name: [],
-        form_title: "",
-        form_content: ""
+        receive_id: [], // 接收人id
+        accessory_name: "", // 上传附件地址
+        image_name: [], // 上传图片地址
+        form_title: "", // 表单标题
+        form_content: "" //表单内容
       },
       rules: {
         title: [
@@ -132,8 +132,8 @@ export default {
   },
   methods: {
     //点击上传附件
-    handleFileSuccess(file){
-      this.form.accessory_name = file.toString()
+    handleFileSuccess(res){
+      this.form.accessory_name = res
     },
     //点击上传图片
     handleSuccessImage(file){

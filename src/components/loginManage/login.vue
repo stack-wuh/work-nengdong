@@ -35,6 +35,7 @@ export default{
   },
   methods:{
     Login(){
+      console.log('is ok')
       if(!this.user.name){
         _g.toastMsg('error','请输入用户名')
         return
@@ -43,7 +44,7 @@ export default{
         _g.toastMsg('error','请输入密码')
         return
       }
-      this.$http('SchoolFellow/LoginAdministrators',this.user).then(res=>{
+      this.$http('LoginAdministrators',this.user).then(res=>{
         let error = res.error == 0 ? 'success' : 'error'
         _g.toastMsg(error,res.msg)
         if(res.error == 0){

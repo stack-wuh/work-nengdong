@@ -264,7 +264,8 @@ export default {
     },
     //批量操作
     handleClickPick(){
-      this.$emit('PickAny',true)
+      // this.$emit('PickAny',true)
+      this.$store.commit('handleClickChangeChooseBtn',true)
     },
 
     //跳转路由

@@ -32,7 +32,7 @@ const mutations = {
   //dialog框提交成功之后，页面刷新
   changeRefresh(state,status){
     state.submitState = status.state
-    console.log(state,status,'state is change')
+    // console.log(state,status,'state is change')
   },
 
   //修改消息页的接受对象值
@@ -122,17 +122,9 @@ const mutations = {
       }
     })
     return
-    state.form.addGroup.info.map(item=>{
-      if(item.subList){
-        item.subList.map(list=>{
-          list.label = status[item.prop]
-        })
-      }
-    })
   },
   //发布 -- 保存对话框的值,关闭对话框
   saveDialogValueAndHide(state,status){
-    console.log(status , 'is dialog')
     state.isShowDialog = status.state
     state.chooseArr = status.data
     state.keys = status.keys
@@ -141,9 +133,17 @@ const mutations = {
 
   //消息 -- 发布 -- 添加表单的值
   saveFormItemValue(state,status){
-    console.log(status)
     state.addFormItem = status
     state.isShowDialog = false
+  },
+
+  //批量操作 -- 修改isShowChooseBtn 
+  handleClickChangeChooseBtn(state,status){
+    if(!status){
+      this.state.isShowChooseBtn = false
+    }else{
+      this.state.isShowChooseBtn = !this.state.isShowChooseBtn
+    }
   }
 }
 

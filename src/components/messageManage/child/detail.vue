@@ -9,8 +9,8 @@
               <h3>标题: {{info.title}}</h3>
               <p>内容: {{info.content}}</p>
               <p>提醒: {{info.time_or == 0 ? '开始前' : '截止前'}} {{info.remind || 0}}小时</p>
-              <p>时间: {{info.starttime | format}} 至 {{info.endtime | format}}</p>
-              <div v-show="imgList" class="img-list">
+              <p>时间: {{info.starttime}} 至 {{info.endtime}}</p>
+              <div v-if="imgList"  class="img-list">
                 <img v-for="item in imgList" :src="item" alt="img-i">
               </div>
           </div>
@@ -25,7 +25,7 @@
         <section class="bottom">
             <div class="form-area">
               <p class="form-title">需要填写的表单</p>
-              <span>{{FormInfo.title}}</span>
+              <span>{{FormInfo && FormInfo.form_title}}</span>
             </div>
             <div class="form-area">
               <p class="form-title">附件</p>
@@ -34,19 +34,19 @@
         </section>
       </section>
       <section class="right">
-        <p class="title danger">未收到( {{send_sum}} )</p>
-        <p class="list-item" v-for="(item,index) in  reciver" :key="index">
+        <p class="title danger">未收到( {{no_reciver_sum}} )</p>
+        <p class="list-item" v-for="(item,index) in  no_reciver" :key="index">
           <span>{{index+1}}</span>
           <span>asdasd</span>
           <span>工号/学号：</span>
-          <span>10000</span>
+          <span>{{item.receive_id}}</span>
         </p>
-        <p class="title">收到 ({{reciver_sum}})</p>
-        <p class="list-item">
+        <p class="title">收到 ({{yes_reciver_sum}})</p>
+        <p class="list-item" v-for="(item,index) in yes_reciver" :key="index">
           <span>1</span>
           <span>维多利亚</span>
           <span>工号/学号: </span>
-          <span>10000</span>
+          <span>{{item.receive_id}}</span>
         </p>
       </section>
     </section>
@@ -57,49 +57,29 @@ export default {
   data() {
     return {
       info:{},
-      reciver:[],
-      send:[],
-      reciver_sum:0,
-      send_sum:0,
+      no_reciver_sum:0,
+      yes_reciver_sum:0,
+      no_reciver:[],
+      yes_reciver:[]
     };
   },
   computed:{
     imgList(){
-      if(this.info){
-        if(this.info.tidings_imageList){
-          if(this.info.tidings_imageList[0].image_name){
-            return this.info.tidings_imageList[0].image_name.split(',')
-          }
-        }
-      }
+      return this.info && this.info.tidings_imageList && this.info.tidings_imageList[0]
+              && this.info.tidings_imageList[0].image_name 
+               && (this.info.tidings_imageList[0].image_name.split(','))
     },
     FormInfo(){
-      let obj = {}
-      if(this.info){
-        if(this.info.tidings_formList){
-          if(this.info.tidings_formList[0].form_title){
-            obj.title = this.info.tidings_formList[0].form_title
-          }
-          if(this.info.tidings_formList[0].form_content){
-            obj.form_content = this.info.tidings_formList[0].form_content.split(',')
-          }
-        }
-      }
-      return obj
+      return this.info && this.info.tidings_formList && this.info.tidings_formList[0]
     },
     fileInfo(){
-      if(this.info){
-        if(this.info.tidings_accessoryList){
-          if(this.info.tidings_accessoryList[0].accessory_name){
-            return this.info.tidings_accessoryList[0].accessory_name
-          }
-        }
-      }
+      return this.info && this.info.tidings_accessoryList && this.info.tidings_accessoryList[0]
+        && this.info.tidings_accessoryList[0].accessory_name
     }
   },
   methods: {
     handleDownload(){
-      location.href = this.info.tidings_accessoryList[0].accessory_name
+      location.href = this.fileInfo
     },
     handleClickCollect(){
       this.$http('SchoolFellow/addTidings_Collect',{tidings_id:this.$route.params.id,student_info_id:sessionStorage.getItem('userId')}).then(res=>{
@@ -110,12 +90,12 @@ export default {
     },
     fetchData(){
       this.$http('SchoolFellow/QueryTidings',{id:this.$route.params.id}).then(res=>{
-        this.info = res.data[0]
+        this.info =  res.data[0]
         this.info.isCollect = this.info.collect_name ? true : false
-        this.reciver = res.yes
-        this.send = res.no
-        this.reciver_sum = res.yesSum
-        this.send_sum = res.noSum
+        this.no_reciver_sum = res.noSum
+        this.yes_reciver_sum = res.yesSum
+        this.no_reciver = res.no
+        this.yes_reciver = res.yes
       })
     }
   },

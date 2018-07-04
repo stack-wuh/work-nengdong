@@ -36,12 +36,16 @@ import MyDialog from '@/components/common/dialog'
         return this.$store.state.isShowLoading
       }
     },
+    watch:{
+      '$route':function(){
+        this.$store.commit('handleClickChangeChooseBtn',false)
+      }
+    },
     methods:{
       getSubMsg(e){
         e && this.$store.commit('changeRefresh',{state:true})
       },
       handleClickSubmit(e){
-        // e && location.reload()
       },
       dialogClose(e){
         e && this.$store.commit('changeDialogStatus',{status:false})

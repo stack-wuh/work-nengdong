@@ -1,12 +1,12 @@
 <template>
   <section class="wrapper">
     <div class="item-content">
-      <button-list @getDelAnyMsg="getDelAnyMsg" type="action" v-show="isShow" @handleCancel="cancel" :chooseArr="chooseItemId" />
+      <button-list @getDelAnyMsg="getDelAnyMsg" type="action" v-show="isShowChooseBtn" @handleCancel="cancel" :chooseArr="chooseItemId" />
 
       <!-- 活动模块-列表 -->
       <div @click="jumpToOther(item)" v-if="$route.path == '/action' || $route.path == '/action/list/action'" v-for="(item,index) in newList" :key="index" class="item-detail flex-box">
-          <img v-show="isShow && !item.isChoose" @click.prevent.stop="handleClickChoose(item,index)" src="../../../static/img/icon-check-default.png" alt="icon-check">
-          <img v-show="isShow && item.isChoose" @click.prevent.stop="handleClickChoose(item,index)" src="../../../static/img/icon-check-action.png" alt="icon-check">
+          <img v-show="isShowChooseBtn && !item.isChoose" @click.prevent.stop="handleClickChoose(item,index)" src="../../../static/img/icon-check-default.png" alt="icon-check">
+          <img v-show="isShowChooseBtn && item.isChoose" @click.prevent.stop="handleClickChoose(item,index)" src="../../../static/img/icon-check-action.png" alt="icon-check">
           <div class="img-box" >
               <img v-if="!item.cover" src="../../../static/img/logo.png" alt="avatar">
               <img v-else :src="item.cover" alt="avatar">
@@ -39,8 +39,8 @@
 
       <!-- 黄页模块-列表 -->
       <div  @click="jumpToOther(item)" v-if="$route.path == '/pages' || $route.path == '/action/list/pages'" v-for="(item,index) in newList" :key="index" class="item-detail flex-box">
-          <img v-show="isShow && !item.isChoose" @click.prevent.stop="handleClickChoose(item,index)" src="../../../static/img/icon-check-default.png" alt="icon-check">
-          <img v-show="isShow && item.isChoose" @click.prevent.stop="handleClickChoose(item,index)" src="../../../static/img/icon-check-action.png" alt="icon-check">
+          <img v-show="isShowChooseBtn && !item.isChoose" @click.prevent.stop="handleClickChoose(item,index)" src="../../../static/img/icon-check-default.png" alt="icon-check">
+          <img v-show="isShowChooseBtn && item.isChoose" @click.prevent.stop="handleClickChoose(item,index)" src="../../../static/img/icon-check-action.png" alt="icon-check">
           <div class="img-box">
               <img v-if="!item.image" src="../../../static/img/logo.png" alt="avatar">
               <img v-else :src="item.image" alt="avatar">
@@ -70,8 +70,8 @@
 
       <!-- 互联互助模块-列表 -->
       <div @click="jumpToOther(item)" v-if="$route.path == '/concat' || $route.path == '/action/list/concat'" v-for="(item,index) in newList" :key="index" class="item-detail flex-box">
-        <img v-show="isShow && !item.isChoose" @click.prevent.stop="handleClickChoose(item,index)" src="../../../static/img/icon-check-default.png" alt="icon-check">
-        <img v-show="isShow && item.isChoose" @click.prevent.stop="handleClickChoose(item,index)" src="../../../static/img/icon-check-action.png" alt="icon-check">
+        <img v-show="isShowChooseBtn && !item.isChoose" @click.prevent.stop="handleClickChoose(item,index)" src="../../../static/img/icon-check-default.png" alt="icon-check">
+        <img v-show="isShowChooseBtn && item.isChoose" @click.prevent.stop="handleClickChoose(item,index)" src="../../../static/img/icon-check-action.png" alt="icon-check">
         <div class="img-box">
           <img v-if="!item.image" src="../../../static/img/logo.png" alt="avatar">
           <img v-else :src="item.image" alt="avatar">
@@ -110,8 +110,8 @@
 
       <!-- 联系学院-列表 -->
       <div v-if="$route.path == '/school'" v-for="(item,index) in newList" :key="index" class="school-content">
-          <img v-show="isShow && !item.isChoose" @click.prevent.stop="handleClickChoose(item,index)" src="../../../static/img/icon-check-default.png" alt="icon-check">
-          <img v-show="isShow && item.isChoose" @click.prevent.stop="handleClickChoose(item,index)" src="../../../static/img/icon-check-action.png" alt="icon-check">
+          <img v-show="isShowChooseBtn && !item.isChoose" @click.prevent.stop="handleClickChoose(item,index)" src="../../../static/img/icon-check-default.png" alt="icon-check">
+          <img v-show="isShowChooseBtn && item.isChoose" @click.prevent.stop="handleClickChoose(item,index)" src="../../../static/img/icon-check-action.png" alt="icon-check">
           <div>
             <p class="flex-box">
               <span>问题类型:</span>
@@ -146,8 +146,8 @@
 
       <!-- 校友捐赠-列表 -->
       <div @click="jumpToOther(item)" v-if="$route.path == '/donate'" v-for="(item,index) in newList" :key="index" class="item-detail flex-box">
-          <img v-show="isShow && !item.isChoose" @click.prevent.stop="handleClickChoose(item,index)" src="../../../static/img/icon-check-default.png" alt="icon-check">
-          <img v-show="isShow && item.isChoose" @click.prevent.stop="handleClickChoose(item,index)" src="../../../static/img/icon-check-action.png" alt="icon-check">
+          <img v-show="isShowChooseBtn && !item.isChoose" @click.prevent.stop="handleClickChoose(item,index)" src="../../../static/img/icon-check-default.png" alt="icon-check">
+          <img v-show="isShowChooseBtn && item.isChoose" @click.prevent.stop="handleClickChoose(item,index)" src="../../../static/img/icon-check-action.png" alt="icon-check">
           <div class="img-box">
               <img v-if="!item.image" src="../../../static/img/logo.png" alt="avatar">
               <img v-else :src="item.image" alt="avatar">
@@ -170,8 +170,8 @@
 
       <!--消息列表-->
       <div @click="jumpToOther(item)" v-if="$route.path == '/message' " v-for="(item,index) in newList" :key="index" class="item-detail flex-box">
-        <img v-show="isShow && !item.isChoose" @click.prevent.stop="handleClickChoose(item,index)" src="../../../static/img/icon-check-default.png" alt="icon-check">
-        <img v-show="isShow && item.isChoose" @click.prevent.stop="handleClickChoose(item,index)" src="../../../static/img/icon-check-action.png" alt="icon-check">
+        <img v-show="isShowChooseBtn && !item.isChoose" @click.prevent.stop="handleClickChoose(item,index)" src="../../../static/img/icon-check-default.png" alt="icon-check">
+        <img v-show="isShowChooseBtn && item.isChoose" @click.prevent.stop="handleClickChoose(item,index)" src="../../../static/img/icon-check-action.png" alt="icon-check">
         <div class="img-box">
           <img v-if="!item.image" src="../../../static/img/logo.png" alt="avatar">
           <img v-else :src="item.image" alt="avatar">
@@ -189,12 +189,11 @@
                   <span>提醒时间:</span>{{item.time_or == 0 ? '开始前' : '截止前'}} {{item.remind ? item.remind : 0}} 小时
                 </p>
                 <p class="last-flex">
-                  <span>时间：</span>{{item.starttime | format}} 至 {{item.endtime | format}}
+                  <span>时间：</span>{{item.time}}
                   <span class="empty"></span>
                 </p>
         </div>
       </div>  
-
 
       <el-dialog title='分享' :visible.sync="dialogVisible" class="my-dialog">
         <span>复制下面的地址就可以分享啦!</span><br>
@@ -213,7 +212,7 @@ export default {
   components: {
     ButtonList
   },
-  props: ["list", "type", "isShow", "check"],
+  props: ["list", "type", "isShow", "check"], // isShow -- 废弃 , 改用state.isShowChooseBtn
   data() {
     return {
       dialogVisible: false,
@@ -234,6 +233,9 @@ export default {
     },
     userId() {
       return sessionStorage.getItem("userId");
+    },
+    isShowChooseBtn(){
+      return this.$store.state.isShowChooseBtn
     }
   },
   methods: {
@@ -332,7 +334,7 @@ export default {
     }
   },
   created() {
-    // console.log(this.list,this.type)
+    
   }
 };
 </script>

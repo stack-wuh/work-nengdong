@@ -4,6 +4,8 @@ import Axios from 'axios';
 const apiPost = (url,data)=>{
   // store.commit('changeLoading',{state:true})
   url = rootPath + url
+  var reg = 'SchoolFellow'
+  url = url.replace(reg,'')
   data = qs.stringify(data)
   return new Promise((resolve,reject)=>{
     Axios.post(url,data).then(res=>{

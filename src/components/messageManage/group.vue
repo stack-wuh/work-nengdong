@@ -1,6 +1,6 @@
 <template>
   <section class="wrapper">
-    <search @getClickMsg="getClickMsg" :tree="tree" type="12" />
+    <search @confirm="fetchData" @getClickMsg="getClickMsg" :tree="tree" type="12" />
     <section class="content">
       <p class="nav-title">当前位置: 校友管理>群组</p>
       <e-table @getDelMsg="getDelMsg" :info="info" type="group" />
@@ -58,13 +58,12 @@ export default {
       this.clickMsg = e;
       this.fetchData()
     },
-    fetchData() { // 读取群组消息
+    fetchData(e) { // 读取群组消息
       let data = {
         id:sessionStorage.getItem('userId'),
+        grouping_name:e
       }
-      // if(this.clickMsg>=0){
-        data.cjorjr = this.clickMsg
-      // }
+      data.cjorjr = this.clickMsg
       this.$http('SchoolFellow/getTidings_Grouping',data).then(res=>{
         this.info.list = res.data
       })

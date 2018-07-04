@@ -25,7 +25,7 @@
         </header>
         <section class="content">
           <item-list @getDelMsg="getDelMsg" class="item-list" :list="list" />
-          <bottom type="pagination" :total="total" />
+          <bottom type="pagination" @getCurrentPage="getCurrentPage" :total="total" />
         </section>
       </section>
       <section class="right box">
@@ -64,6 +64,10 @@ export default {
     };
   },
   methods: {
+    getCurrentPage(e){
+      this.data.pageNo = e
+      this.fetchData()
+    },
     getDelMsg(e){
       e && this.fetchData()
     },
