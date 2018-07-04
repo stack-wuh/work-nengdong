@@ -46,6 +46,7 @@
           <el-checkbox v-model="form.weixin_hide">
             <el-input v-model="form.weixin" placeholder="请输入微信"></el-input>
           </el-checkbox>
+          <p class="tips">联系方式勾选对人不可见</p>
         </el-form-item>
         <el-form-item label="封面图片" prop="image">
             <el-upload
@@ -88,7 +89,7 @@ import Search from '@/components/common/search'
     },
     data(){
       return{
-        uploadImg:rootPath + 'SchoolFellow/addImages',
+        uploadImg:rootPath + 'addImages',
         form:{
           id:'',
           type:'',
@@ -173,7 +174,7 @@ import Search from '@/components/common/search'
     },
     methods:{
       getTypeList(){
-        this.$http('SchoolFellow/getAlumni_Pages_TypeService').then(res=>{
+        this.$http('/SchoolFellow/getAlumni_Pages_TypeService').then(res=>{
           this.typeList = res
         })
       },
@@ -200,8 +201,8 @@ import Search from '@/components/common/search'
           }
         })
       },
-    handleAvatarSuccess(e){
-      this.form.image = e.replace('\"','')
+    handleAvatarSuccess(res){
+      this.form.image =  res
     },
     handleListSuccess(e){
       this.form.address.push(e)
@@ -216,6 +217,7 @@ import Search from '@/components/common/search'
       this.$nextTick(()=>{
         if(this.$route.params.data){
           this.form = this.$route.params.data
+          console.log(this.$route.params.data)
         }
       })
     },
@@ -267,5 +269,8 @@ import Search from '@/components/common/search'
   }
   .btn-list{
     text-align:center;
+  }
+  .tips{
+    color: #999;
   }
 </style>

@@ -67,7 +67,7 @@ export default {
           let error = res.error == 0 ? "success" : "error";
           _g.toastMsg(error, res.msg);
           if (res.error == 0) {
-            // this.$emit("getDelAnyMsg", true);
+            this.$emit("getDelAnyMsg", true);  // 删除成功 -- 向上传递参数 true --> 用于刷新视图
             this.$store.commit('handleClickChangeChooseBtn',false)
           }
         });

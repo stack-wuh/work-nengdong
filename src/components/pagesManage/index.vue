@@ -67,6 +67,7 @@
         }else{
           this.type = '行业'
         }
+        this.pageNo = 1 // 切换导航之后 -- 页码切换为 1
         this.fetchData()
       },
       fetchData(title){

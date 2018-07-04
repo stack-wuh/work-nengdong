@@ -281,7 +281,8 @@ export default {
         return item.id;
       });
     },
-    copy() {
+
+    copy() {  // 单击链接复制http地址
       let elem = document.getElementById("aaa");
       elem.select();
       document.execCommand("Copy");

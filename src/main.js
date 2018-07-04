@@ -50,7 +50,7 @@ axios.interceptors.response.use((config)=>{
   return config
 })
 
-window.rootPath = '/adminapi/'
+window.rootPath = '/adminapi'
 // window.rootPath = ''
 
 /* eslint-disable no-new */
