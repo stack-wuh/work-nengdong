@@ -708,6 +708,7 @@ export default {
           break;
         case 'group' :
           (url = 'SchoolFellow/delTidings_Grouping') , (data.id = $event.row.id)
+          break;
       }
       this.$http(url, data).then(res => {
         let error = res.error == 0 ? "success" : "error";
@@ -789,13 +790,6 @@ export default {
 </script>
 
 <style lang="less" scoped>
-// .wrapper{
-//   width:100%;
-//   height:100%;
-// }
-.my-table {
-  min-height: 300px;
-}
 @media screen and (max-width: 1366px) {
   .my-table {
     max-width: calc(1200px - 140px);

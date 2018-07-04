@@ -178,7 +178,7 @@ export default {
           }
         ]
       },
-      uploadImg:rootPath + 'SchoolFellow/addImages',
+      uploadImg:rootPath + 'addImages',
       actionLists:[],
       whetherList:[]
     };
@@ -205,13 +205,13 @@ export default {
     handleRemove(index){
       this.form.address.splice(index,1)
     },
-
     handleClickSubmit(e){
-      console.log(this.form)
       this.$refs['addForm'].validate(valid=>{
         if(valid){
-          this.form.address = this.form.address.toString()
-          this.$http('SchoolFellow/addActivity_Manager',this.form).then(res=>{
+          var data = {}
+          data = JSON.parse(JSON.stringify(this.form))
+          data.address = data.address.toString()
+          this.$http('SchoolFellow/addActivity_Manager',data).then(res=>{
             let error = res.error == 0 ? 'success' : 'error'
             _g.toastMsg(error,res.msg)
             if(res.error == 0){
@@ -233,7 +233,6 @@ export default {
                                   this.$route.params.data.activity_image.address : []
           this.form.address = this.form.address.split(',')                        
         }
-       console.log(this.form)
       }
     })
   }

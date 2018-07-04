@@ -333,9 +333,6 @@ export default {
       });
     }
   },
-  created() {
-    
-  }
 };
 </script>
 

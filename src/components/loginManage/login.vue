@@ -35,7 +35,6 @@ export default{
   },
   methods:{
     Login(){
-      console.log('is ok')
       if(!this.user.name){
         _g.toastMsg('error','请输入用户名')
         return

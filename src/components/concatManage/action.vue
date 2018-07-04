@@ -174,7 +174,6 @@
       this.$nextTick(()=>{
         if(this.$route.params.data){
           this.form = this.$route.params.data
-          console.log(this.form)
         }
       })
     }
