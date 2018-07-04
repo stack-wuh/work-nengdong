@@ -54,6 +54,9 @@ export default {
         case "/donate":
           url = "SchoolFellow/delAlumni";
           break;
+        case '/school' : 
+          url = 'SchoolFellow/delContact_College'
+          break;
       }
       if (this.chooseArr.length == 0) {
         _g.toastMsg("error", "请先选择操作对象");
@@ -78,7 +81,6 @@ export default {
     },
     //单击取消
     handleClickCancel() {
-      // this.$emit("handleCancel", true);
       this.$store.commit('handleClickChangeChooseBtn',false)
     }
   }
