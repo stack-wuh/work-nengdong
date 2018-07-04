@@ -46,7 +46,7 @@
           <el-checkbox v-model="form.weixin_hide">
             <el-input v-model="form.weixin" placeholder="请输入微信"></el-input>
           </el-checkbox>
-          <p class="tips">联系方式勾选对人不可见</p>
+          <p class="tips">联系方式勾选对人可见</p>
         </el-form-item>
         <el-form-item label="封面图片" prop="image">
             <el-upload
@@ -181,6 +181,9 @@ import Search from '@/components/common/search'
       handleClickSubmit(){
         this.$refs['addform'].validate(valid=>{
           if(valid){
+            var data = JSON.parse(JSON.stringify(this.form))
+            data.image = data.image.toString()
+            data.address = data.address.toString()
             if(!this.form.phone && !this.form.email && !this.form.qq && !this.form.weixin){
               _g.toastMsg('error','至少填写一项联系方式')
               return
@@ -189,7 +192,7 @@ import Search from '@/components/common/search'
               _g.toastMsg('error','至少勾选一项联系人可见')
               return
             }
-            this.$http('SchoolFellow/addAlumni_Pages',this.form).then(res=>{
+            this.$http('SchoolFellow/addAlumni_Pages',data).then(res=>{
               let error = res.error == 0 ? 'success' : 'error'
               _g.toastMsg(error,res.msg)
               if(res.error == 0){
@@ -216,8 +219,15 @@ import Search from '@/components/common/search'
       this.getTypeList()
       this.$nextTick(()=>{
         if(this.$route.params.data){
-          this.form = this.$route.params.data
-          console.log(this.$route.params.data)
+          var data = this.$route.params.data
+          this.form = data
+          this.form.address = data && data.alumni_pages_album 
+                               && data.alumni_pages_album.address 
+                                && data.alumni_pages_album.address.split(',')
+          this.form.qq_hide = data && data.alumni_information_hide && (data.alumni_information_hide.qq_hide == 'true' ? true : false)
+          this.form.phone_hide = data && data.alumni_information_hide && (data.alumni_information_hide.phone_hide == 'true' ? true : false)
+          this.form.email_hide = data && data.alumni_information_hide && (data.alumni_information_hide.email_hide == 'true' ? true : false)
+          this.form.weixin_hide = data && data.alumni_information_hide && (data.alumni_information_hide.weixin_hide == 'true' ? true : false)
         }
       })
     },

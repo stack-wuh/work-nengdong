@@ -58,7 +58,7 @@
       },
       fetchData(e=1){
         let url = this.type == 1 ? 'SchoolFellow/ShowSchool_Info_School' : 'SchoolFellow/getXueXiao'
-        this.$http(url,{pageNo:e}).then(res=>{
+        this.$http(url,{pageNo:e,student_info_id:sessionStorage.getItem('userId')}).then(res=>{
           this.info.list = res.data
           this.total = res.total
         })

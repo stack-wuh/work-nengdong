@@ -5,9 +5,8 @@
       <p class="nav-title">当前位置: 互联互助>列表</p>
       <nav class="nav">
         类型: 
-        <span @click="handleClickChange(1)" :class="{'txt-active':current==1}">全部</span>
-        <span @click="handleClickChange(2)" :class="{'txt-active':current==2}">寻求帮助</span>
-        <span @click="handleClickChange(3)" :class="{'txt-active':current==3}">提供帮助</span>
+        <span @click="handleClickChange(-1)" :class="{'txt-active':current == -1}">全部</span>
+        <span @click="handleClickChange(index,item.name)" :class="{'txt-active':current == index}" v-for="(item,index) in typeList" :key="index">{{item.name}}</span>
       </nav>
       <item-list @getDelAnyMsg="getDelAnyMsg" @changeIsShow="changeIsShow" @getDelMsg="getDelMsg" :list="list" :isShow="isShow" />
       <bottom @getCurrentPage="getCurrentPage" :total="total" type="pagination" />
@@ -30,9 +29,10 @@
         list:[],
         total:0,
         pageNo:1,
-        current:1,
+        current:-1,
         type:'',
-        isShow:false
+        isShow:false,
+        typeList:[]
       }
     },
     methods:{
@@ -52,14 +52,19 @@
       getDelMsg(e){
         e && this.fetchData()
       },
-      handleClickChange(e){
+      handleClickChange(e,type){
         this.current = e
-        this.type = e== 1 ? '' : e == 2 ? '需求帮助' : '提供帮助'
+        this.type = type
         this.pageNo = 1
         this.fetchData()
       },
       propKey(e){
         this.fetchData(e)  
+      },
+      getTypeList(){
+        this.$http('SchoolFellow/getMutual_Help_Type').then(res=>{
+          this.typeList = res.data
+        })
       },
       fetchData(title){
         this.$http('SchoolFellow/getMutual_Help',{title:title,type:this.type,pageNo:this.pageNo,student_info_id:sessionStorage.getItem('userId')}).then(res=>{
@@ -70,6 +75,7 @@
     },
     created(){
       this.fetchData()
+      this.getTypeList()
     }
   }
 </script>

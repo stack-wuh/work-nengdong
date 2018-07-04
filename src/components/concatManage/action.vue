@@ -31,9 +31,14 @@
                 :action="uploadImg"
                 :show-file-list="false"
                 :on-success="handleListSuccess">
-                <img v-if="imageUrl" :src="imageUrl" class="avatar">
-                <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                <i class="el-icon-plus avatar-uploader-icon"></i>
               </el-upload>
+                <div class="img-list">
+                    <span v-for="(item,index) in form.address" :key="index" >
+                      <img @click="handleRemove(index)" class="icon-close" src="../../../static/img/icon-close.png" alt="close">
+                      <img :src="item" alt="avatar" class="avatar">
+                    </span>
+                </div>
             </el-form-item>
             <el-form-item label="联系人" prop="college">
               <el-input class="my-input" v-model="form.college"></el-input>
@@ -66,152 +71,185 @@
 </template>
 
 <script>
-  import Search from '@/components/common/search'
-  export default{
-    components:{
-      Search
-    },
-    data(){
-      return{
-        uploadImg:rootPath + 'SchoolFellow/addImages',
-        imageUrl:'',
-        form:{
-          type:'',
-          title:'',
-          content:'',
-          image:'',
-          address:'',
-          college:'',
-          phone:'',
-          phone_hide:'',
-          email:'',
-          email_hide:'',
-          qq:'',
-          qq_hide:'',
-          weixin:'',
-          weixin_hide:'',
-        },
-        rules:{
-          type:[
-            {
-              required:true,
-              message:'请选择类型',
-              trigger:'change'
-            }
-          ],
-          title:[
-            {
-              required:true,
-              message:'请填写标题',
-              trigger:'blur'
-            }
-          ],
-          content:[
-            {
-              required:true,
-              message:'请填写内容',
-              trigger:'blur'
-            }
-          ],
-          image:[
-            {
-              required:true,
-              message:'请选择图片',
-              trigger:'change'
-            }
-          ],
-          college:[
-            {
-              required:true,
-              message:'请填写联系人',
-              trigger:'blur'
-            }
-          ]
-        },
-        typeList:[]
-      }
-    },
-    methods:{
-      handleListSuccess(e){
-        this.form.address.push(e)
+import Search from "@/components/common/search";
+export default {
+  components: {
+    Search
+  },
+  data() {
+    return {
+      uploadImg: rootPath + "/addImages",
+      imageUrl: "",
+      form: {
+        type: "",
+        title: "",
+        content: "",
+        image: "",
+        address: [],
+        college: "",
+        phone: "",
+        phone_hide: "",
+        email: "",
+        email_hide: "",
+        qq: "",
+        qq_hide: "",
+        weixin: "",
+        weixin_hide: ""
       },
-      handleAvatarSuccess(e){
-        this.form.image = e
-      },
-      fetchData(){
-        this.$http('SchoolFellow/getMutual_Help_Type').then(res=>{
-          this.typeList = res.data
-        })
-      },
-      handleClickSubmit(){
-        this.$refs.myForm.validate(valid=>{
-          if(valid){
-            let data = {}
-            data = Object.assign(this.form,{student_info_id:sessionStorage.getItem('userId')})
-            if(!data.phone && !data.qq && !data.email && !data.weixin){
-              _g.toastMsg('error','至少填写一项联系方式')
-              return
-            }
-            if(!data.phone_hide && !data.qq_hide && !data.weixin_hide && !data.email_hide){
-              _g.toastMsg('error','至少勾选一项可见')
-              return
-            }
-            this.$http('SchoolFellow/addMutual_Help',data).then(res=>{
-              let error = res.error == 0 ? 'success' : 'error'
-              _g.toastMsg(error,res.msg)
-              if(res.error == 0){
-                setTimeout(()=>{
-                  this.$router.go(-1)
-                },1000)
-              }
-            })
+      rules: {
+        type: [
+          {
+            required: true,
+            message: "请选择类型",
+            trigger: "change"
           }
-        })
-      }
+        ],
+        title: [
+          {
+            required: true,
+            message: "请填写标题",
+            trigger: "blur"
+          }
+        ],
+        content: [
+          {
+            required: true,
+            message: "请填写内容",
+            trigger: "blur"
+          }
+        ],
+        image: [
+          {
+            required: true,
+            message: "请选择图片",
+            trigger: "change"
+          }
+        ],
+        college: [
+          {
+            required: true,
+            message: "请填写联系人",
+            trigger: "blur"
+          }
+        ]
+      },
+      typeList: []
+    };
+  },
+  methods: {
+    handleRemove(index){
+      this.form.address.splice(index,1)
     },
-    created(){
-      this.fetchData()
-      this.$nextTick(()=>{
-        if(this.$route.params.data){
-          this.form = this.$route.params.data
+    handleListSuccess(res) {
+      this.form.address.push(res);
+    },
+    handleAvatarSuccess(res) {
+      this.form.image = res;
+    },
+    fetchData() {
+      this.$http("SchoolFellow/getMutual_Help_Type").then(res => {
+        this.typeList = res.data;
+      });
+    },
+    handleClickSubmit() {
+      this.$refs.myForm.validate(valid => {
+        if (valid) {
+          let data = {};
+          data = Object.assign(JSON.parse(JSON.stringify(this.form)), {
+            student_info_id: sessionStorage.getItem("userId")
+          });
+          if (!data.phone && !data.qq && !data.email && !data.weixin) {
+            _g.toastMsg("error", "至少填写一项联系方式");
+            return;
+          }
+          if (
+            !data.phone_hide &&
+            !data.qq_hide &&
+            !data.weixin_hide &&
+            !data.email_hide
+          ) {
+            _g.toastMsg("error", "至少勾选一项可见");
+            return;
+          }
+          data.address = data.address.toString()
+          this.$http("SchoolFellow/addMutual_Help", data).then(res => {
+            let error = res.error == 0 ? "success" : "error";
+            _g.toastMsg(error, res.msg);
+            if (res.error == 0) {
+              setTimeout(() => {
+                this.$router.go(-1);
+              }, 1000);
+            }
+          });
         }
-      })
+      });
     }
+  },
+  created() {
+    this.fetchData();
+    this.$nextTick(() => {
+      var data = this.$route.params.data
+      if (data) {
+        this.form = data
+        this.form.image = data.image
+        this.form.address = data && data.mutual_help_image 
+                              && data.mutual_help_image.address 
+                                && data.mutual_help_image.address.split(',')
+        console.log(this.form)
+      }
+    });
   }
+};
 </script>
 
 <style lang="less" scoped>
-  .btn-father{
-    text-align:center;
-  }
-  .avatar-uploader .el-upload {
-    border: 1px dashed #d9d9d9;
-    border-radius: 6px;
-    cursor: pointer;
+.btn-father {
+  text-align: center;
+}
+.avatar-uploader .el-upload {
+  border: 1px dashed #d9d9d9;
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+.avatar-uploader .el-upload:hover {
+  border-color: #409eff;
+}
+.avatar-uploader-icon {
+  font-size: 28px;
+  color: #8c939d;
+  width: 178px;
+  height: 178px;
+  line-height: 178px;
+  text-align: center;
+  border: 1px dashed #eee;
+}
+.avatar {
+  width: 178px;
+  height: 178px;
+  display: block;
+}
+.my-input {
+  width: 300px;
+}
+.form-msg {
+  color: #999;
+}
+.img-list {
+  display: flex;
+  align-items: center;
+  span {
     position: relative;
-    overflow: hidden;
   }
-  .avatar-uploader .el-upload:hover {
-    border-color: #409EFF;
+  img {
+    margin-right: 15px;
   }
-  .avatar-uploader-icon {
-    font-size: 28px;
-    color: #8c939d;
-    width: 178px;
-    height: 178px;
-    line-height: 178px;
-    text-align: center;
-    border:1px dashed #eee;
+  .icon-close {
+    position: absolute;
+    right: -15px;
+    top: -15px;
+    z-index: 1000 !important;
   }
-  .avatar {
-    width: 178px;
-    height: 178px;
-    display: block;
-  }
-  .my-input{
-    width:300px;
-  }
-  .form-msg{
-    color: #999;
-  }
+}
 </style>

@@ -1,6 +1,6 @@
 <template>
     <section class="wrapper">
-        <search @propKey="propKey" @confirm="fetchData" @getList="getList" type="4" />
+        <search @propKey="propKey" @confirm="propKey" @getList="getList" type="4" />
         <section class="content">
           <p class="nav-title">当前位置：{{$route.params.type == 'action' ? '活动管理' : $route.params.type == 'pages' ? '校友会管理' : '互助列表'}}>{{msg.name ? msg.name : '待审核'}}</p>
           
@@ -29,7 +29,8 @@
         total:0,
         msg:{
           name:'待审核'
-        }
+        },
+        keyword:''
       }
     },
     computed:{
@@ -43,7 +44,8 @@
         this.fetchData()
       },
       propKey(e){
-        this.fetchData(e)
+        this.keyword = e
+        this.fetchData()
       },
       getDelMsg(e){
         e && this.fetchData()
@@ -52,7 +54,7 @@
         this.msg = e 
         this.fetchData(e.name)
       },
-      fetchData(title='待审核'){
+      fetchData(title='待审核',e){
         let url = ''
         if(this.$route.params.type == 'action'){
           url = 'SchoolFellow/getActivity_Manager'
@@ -62,7 +64,7 @@
           url = 'SchoolFellow/getMutual_Help'
         }
 
-        this.$http(url,{check_text:title,pageNo:this.page,student_info_id:sessionStorage.getItem('userId')}).then(res=>{
+        this.$http(url,{check_text:title,title:this.keyword,pageNo:this.page,student_info_id:sessionStorage.getItem('userId')}).then(res=>{
           this.list = res.data
           this.total = res.total
         })
