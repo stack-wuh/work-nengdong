@@ -120,7 +120,7 @@ export default {
         ]
       },
       error: 1,
-      uploadUrl: rootPath + "SchoolFellow/addImages",
+      uploadUrl: rootPath + "addImages",
       imgUrl: "",
       itemValue: ""
     };
