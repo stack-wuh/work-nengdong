@@ -177,7 +177,7 @@ export default {
             _g.toastMsg(error, res.msg);
             if (res.error == 0) {
               setTimeout(() => {
-                this.$router.go(-1);
+                this.$router.push('/action/list/concat')
               }, 1000);
             }
           });
