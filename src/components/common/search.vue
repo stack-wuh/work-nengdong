@@ -15,7 +15,7 @@
 <script>
 export default {
   //@params tree:传递选择对象
-  props: ["type",'school','tree'],
+  props: ["type",'school','tree'], // school -- 黄页管理--区分学院学校
   data() {
     return {
       list: [
@@ -206,11 +206,10 @@ export default {
     }
   },
   created(){
-    // console.log(this.tree)
-    // console.log(this.format)
+
   },
   methods:{
-    //添加事件
+    //单击 -- 添加
     handleClickAdd(data){
       this.$store.commit('changeDialogStatus',{title:'修改密码',status:true})
       if(data){
@@ -239,12 +238,28 @@ export default {
         }else if(path == '/message/group'){
           params.type = 'addGroup'
           this.$store.commit('changeMessageTree',this.tree)
+        }else if(path == '/firend/firend'){
+          params.status = false
+          this.$router.push('/firendadd')
         }
         this.$store.commit('changeDialogStatus',params)
       }
     },
-    otherImport(){
-      this.$store.commit('changeDialogStatus',{status:true,title:'批量导入学生',type:'upload'})
+
+    otherImport(){ 
+      // this.$store.commit('changeDialogStatus',{status:true,title:'批量导入学生',type:'upload'})
+      let path = this.$route.path , title = '' , school = null
+      if(path == '/pages/school'){
+        title = this.school == 1 ? '导入学院信息' : '导入学校信息'
+        school = this.school
+      }else if(path == '/firend/pages'){
+        title = "导入杰出校友名单"
+        school = 3
+      }else if(path == '/firend/firend'){
+        title = '导入校友名单'
+        school = 4
+      }
+      this.$store.commit('changeDialogStatus',{status:true,title:title,type:'upload',school:school})
     },
     export2excel(){
       this.$emit('export2excel',true)
@@ -309,6 +324,7 @@ export default {
     handleClickMyJoin(){
       this.$emit('getClickMsg',1)
     },
+
     handClick2Excel(){
       this.$emit('json2excel',true)
     }

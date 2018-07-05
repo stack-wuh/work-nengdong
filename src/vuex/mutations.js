@@ -11,8 +11,9 @@ const mutations = {
     state.isShowDialog = status.status
     state.formType = status.type
     state.id = status.id
+    state.schoolIndex = status.school
   },
-  changeLoading(state,status){
+  changeLoading(state,status){  // Loading 动画
     state.isShowLoading = status.state
   },
   //提交事件的状态

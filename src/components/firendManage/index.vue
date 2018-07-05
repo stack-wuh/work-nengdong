@@ -103,6 +103,11 @@ export default {
       total:0,
     }
   },
+    computed:{
+      submitState(){
+        return this.$store.state.submitState
+      }
+    },
   watch:{
     $route(to,from){
       if(to.path == '/firend/pages'){
@@ -110,7 +115,10 @@ export default {
       }else{
         this.fetchData()
       }
-    }
+    },
+      submitState(e){
+        e && this.fetchData()
+      }
   },
   methods:{
     //获取子组件出来的页码

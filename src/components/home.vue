@@ -42,12 +42,13 @@ import MyDialog from '@/components/common/dialog'
       }
     },
     methods:{
-      getSubMsg(e){
+      getSubMsg(e){  // 获取子组件的刷新页面请求
         e && this.$store.commit('changeRefresh',{state:true})
       },
       handleClickSubmit(e){
+
       },
-      dialogClose(e){
+      dialogClose(e){  // 关闭dialog对话框
         e && this.$store.commit('changeDialogStatus',{status:false})
       }
     },

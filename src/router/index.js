@@ -6,6 +6,7 @@ import Home from '@/components/home'
 
 const FirendIndex  = resolve => require(['@/components/firendManage/index'],resolve)
 const FirendDetail = resolve => require(['@/components/firendManage/detail'],resolve)
+const FirendAdd = resolve => require(['@/components/firendManage/add'],resolve)
 
 const ActionIndex = resolve => require(['@/components/actionManage/index'],resolve)
 const ActionDetail = resolve => require(['@/components/actionManage/detail'],resolve)
@@ -75,6 +76,11 @@ export default new Router({
           name:'firendDetail',
           component:FirendDetail
         },
+        {
+          path:'/firendadd',
+          name:'firendAdd',
+          component:FirendAdd
+        }
       ]
     },
     {

@@ -48,7 +48,7 @@
           </el-form-item>
         </el-form>
         <section class="wrapper" v-if="form.type == 'uploadFile'">
-          {{uploadFileUrl}}
+          {{uploadFileUrl}} -- '导入信息'
             <el-upload ref="myUpload" class="upload-demo" name="file" :action="uploadFileUrl" :auto-upload="false" :show-file-list="true" :on-success="handelUpload" >
               <el-button>选择文件</el-button>
             </el-upload>
@@ -213,14 +213,28 @@ export default {
     tree() {
       return this.$store.state.keys;
     },
-    uploadFileUrl() {
-      return rootPath + "/LeadingStuden_Info";
+    uploadFileUrl() { // 批量导入文件的URL地址
+      if(this.$store.state.schoolIndex == 1){
+        return rootPath + '/LeadingCollege_Info'  // 批量导入学院
+      }else if(this.$store.state.schoolIndex == 2){
+        return rootPath + '/LeadingSchool_Info' // 批量导入学校
+      }else if(this.$store.state.schoolIndex == 3){
+        return rootPath + '/LeadingOutStanding_Info'  // 批量导入 -- 杰出校友
+      }else if(this.$store.state.schoolIndex == 4){ 
+        return rootPath + '/LeadingStuden_Info'  // 批量导入 -- 校友名单
+      }
     }
   },
   methods: {
-    //单击选择文件
-    handelUpload(file) {
-      console.log(file);
+    //批量导入文件上传成功
+    handelUpload(res) {
+      if(res.error == 0){
+        _g.toastMsg('success',res.msg)
+        setTimeout(()=>{
+          this.$emit("getSubMsg", { state: true });
+          this.hideDialog()
+        },1000)
+      }
     },
     //单击添加消息 -- 表单元素
     handleClickAdd() {
@@ -454,10 +468,8 @@ export default {
               type == "addConcatSchool" ||
               type == "editSettingConcat"
             ) {
-              // console.log(data)
               var info =JSON.parse(JSON.stringify(data))
               info.file = info.file.toString()
-              // return
               this.$http("SchoolFellow/addContact_College", info).then(res => {
                 let error = res.error == 0 ? "success" : "error";
                 _g.toastMsg(error, res.msg);
