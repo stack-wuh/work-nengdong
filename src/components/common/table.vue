@@ -165,7 +165,7 @@ export default {
                 {
                   name: "专业",
                   prop: "line_text2"
-                }  
+                }
               ]
             },
             {
@@ -302,7 +302,7 @@ export default {
               child: [
                 {
                   name: "入学年份",
-                  prop: "year"
+                  prop: "school_age"
                 },
                 {
                   name: "学号",
@@ -314,7 +314,7 @@ export default {
                 },
                 {
                   name: "专业班级",
-                  prop: "klass"
+                  prop: "classes"
                 }
               ]
             },
@@ -323,7 +323,7 @@ export default {
               child: [
                 {
                   name: "手机号",
-                  prop: "phone"
+                  prop: "phone_number"
                 },
                 {
                   name: "邮箱",
@@ -336,23 +336,28 @@ export default {
               child: [
                 {
                   name: "用人单位名称",
-                  prop: "compnay"
+                  prop: "unit_name"
                 },
                 {
-                  name: "单位性质"
+                  name: "单位性质",
+                  prop: "unit_property"
                 },
                 {
-                  name: "所在行业"
+                  name: "所在行业",
+                  prop: "unit_way"
                 },
                 {
-                  name: "职位类别"
+                  name: "职位类别",
+                  prop: "post_name"
                 },
                 {
-                  name: "岗位名称"
+                  name: "岗位名称",
+                  prop: "place_class"
                 },
                 {
-                  name: "起薪"
-                },                
+                  name: "起薪",
+                  prop: "money"
+                }
               ]
             },
             {
@@ -374,7 +379,7 @@ export default {
                   name: "专业",
                   prop: "line_text0"
                 },
-                                {
+                {
                   name: "层次",
                   prop: "levels1"
                 },
@@ -405,7 +410,7 @@ export default {
                 {
                   name: "专业",
                   prop: "line_text2"
-                }                
+                }
               ]
             },
             {
@@ -705,31 +710,44 @@ export default {
       ]
     };
   },
+  watch:{
+    newList:function(){
+        this.info.list.map(item => {
+          if (item && item.advance_ArchivesList) {
+            item.advance_ArchivesList.map((list, index) => {
+              for (var k in list) {
+                item[k + index] = list[k];
+              }
+            });
+          }
+        });
+    }
+  },
   computed: {
     newData() {
       return this.info;
     },
     newList() {
-      if(this.type == 'firend'){
-        this.info.list.map(item => {
-          if(item && item.advance_ArchivesList){
-            item.advance_ArchivesList.map( (list,index) => {
-              for(var k in list){
-                item[k+index] = list[k]
-              }
-            })
-          }
-        })
-        return this.info.list
-      }else{
+      // if (this.type == "firend" || this.type == "firends") {
+      //   this.info.list.map(item => {
+      //     if (item && item.advance_ArchivesList) {
+      //       item.advance_ArchivesList.map((list, index) => {
+      //         for (var k in list) {
+      //           item[k + index] = list[k];
+      //         }
+      //       });
+      //     }
+      //   });
+      //   return this.info.list;
+      // } else {
         return this.info.list;
-      }
+      // }
     },
     sublist() {
       var obj = this.list.find(item => {
         return item.type == this.type;
-      })
-      return  obj
+      });
+      return obj;
     },
     recoed() {
       // 升学档案
@@ -977,6 +995,9 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.my-table{
+  width:100%;
+}
 @media screen and (max-width: 1366px) {
   .my-table {
     max-width: calc(1200px - 140px);

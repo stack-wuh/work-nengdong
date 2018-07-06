@@ -19,6 +19,7 @@ import Search from '@/components/common/search'
 import ETable from '@/components/common/table'
 import ActionInfo from '@/components/common/actionInfo'
 import Bottom from '@/components/common/bottom'
+const json2Excel = require('js-export-excel')
   const list = []
   export default{
     components:{
@@ -50,9 +51,18 @@ import Bottom from '@/components/common/bottom'
     methods:{
       //导出报名表
       export2Excel(){
-        this.$http('SchoolFellow/getActivity_Excel',{id:this.$route.params.id}).then(res=>{
-          
-        })
+        var option = {}
+        option.fileName = '导出报名表'
+        option.datas = [
+          {
+            sheetData:this.info.list,
+            sheetName:'活动报名表',
+            sheetFilter:['name','line','classes','phone_number','qq','weixin','email'],
+            sheetHeader:['姓名','专业','班级','手机号','QQ','微信','邮箱']
+          }
+        ]
+        var toExcel = new json2Excel(option)
+        toExcel.saveExcel()
       },
       //获取报名列表
       getOrderList(){

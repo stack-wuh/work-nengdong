@@ -246,7 +246,7 @@ export default {
       }
     },
 
-    otherImport(){ 
+    otherImport(){  // 批量导入excel
       // this.$store.commit('changeDialogStatus',{status:true,title:'批量导入学生',type:'upload'})
       let path = this.$route.path , title = '' , school = null
       if(path == '/pages/school'){
@@ -261,8 +261,13 @@ export default {
       }
       this.$store.commit('changeDialogStatus',{status:true,title:title,type:'upload',school:school})
     },
-    export2excel(){
+    export2excel(){ // 批量导出excel
+      const path = this.$route.path
       this.$emit('export2excel',true)
+      if(path == '/pages/school'){ // 黄页管理
+        var type = this.school == 1 ? 'college' : 'school' // 学院黄页 / 学校黄页
+          location.href = 'School_Info_Excel?type' + type
+      }
     },
     //活动模块
     //返回上一级
