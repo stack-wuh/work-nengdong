@@ -94,7 +94,6 @@ import MyDialog from '@/components/common/dialog'
 
     .body{
       flex:1;
-      width:calc(100% - 220px);
       min-height:300px;
       padding:20px;
       background-color: #E3EEED;

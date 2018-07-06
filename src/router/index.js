@@ -54,7 +54,7 @@ export default new Router({
       path:'/',
       name:'home',
       redirect:'/message',
-      component:Home
+      component:Home,
     },
     {
       path:'/login',
@@ -79,7 +79,7 @@ export default new Router({
         {
           path:'/firendadd',
           name:'firendAdd',
-          component:FirendAdd
+          component:FirendAdd,
         }
       ]
     },

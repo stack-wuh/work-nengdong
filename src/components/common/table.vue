@@ -998,7 +998,7 @@ export default {
 .my-table{
   width:100%;
 }
-@media screen and (max-width: 1366px) {
+@media screen and (max-width: 1365px) {
   .my-table {
     max-width: calc(1200px - 140px);
   }

@@ -332,7 +332,7 @@ export default {
 
 <style lang="less" scoped>
 .wrapper {
-  width: 100%;
+  width: calc(100% - 220px) !important;
   height: 100%;
 
   .content{
