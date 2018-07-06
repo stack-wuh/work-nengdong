@@ -15,7 +15,7 @@
         </template>
       </el-table-column>      
       <el-table-column align="center" v-for="(item,index) in sublist.list" :key="index" v-if="item.child && !item.btnList" :label="item.name">
-        <el-table-column align="center" v-for="(subItem,subIndex) in item.child" :key="subIndex" :label="subItem.name" :prop="subItem.prop">
+        <el-table-column  align="center" v-for="(subItem,subIndex) in item.child" :key="subIndex" :label="subItem.name" :prop="subItem.prop">
         </el-table-column>
       </el-table-column>
       <el-table-column align="center" v-for="(item,index) in sublist.list" :key="index" v-if="item.isColorPicker" :label="item.name">
@@ -108,6 +108,10 @@ export default {
                 {
                   name: "岗位名称",
                   prop: "place_class"
+                },
+                {
+                  name: "起薪",
+                  prop: "money"
                 }
               ]
             },
@@ -115,25 +119,53 @@ export default {
               name: "升学档案",
               child: [
                 {
-                  name: "起薪",
-                  prop: "money"
-                },
-                {
                   name: "层次",
-                  prop: "levels"
+                  prop: "levels0"
                 },
                 {
                   name: "学校",
-                  prop: "schools"
+                  prop: "schools0"
                 },
                 {
                   name: "院系",
-                  prop: "faculty"
+                  prop: "faculty0"
                 },
                 {
                   name: "专业",
-                  prop: "line_text"
-                }
+                  prop: "line_text0"
+                },
+                {
+                  name: "层次",
+                  prop: "levels1"
+                },
+                {
+                  name: "学校",
+                  prop: "schools1"
+                },
+                {
+                  name: "院系",
+                  prop: "faculty1"
+                },
+                {
+                  name: "专业",
+                  prop: "line_text1"
+                },
+                {
+                  name: "层次",
+                  prop: "levels2"
+                },
+                {
+                  name: "学校",
+                  prop: "schools2"
+                },
+                {
+                  name: "院系",
+                  prop: "faculty2"
+                },
+                {
+                  name: "专业",
+                  prop: "line_text2"
+                }  
               ]
             },
             {
@@ -176,16 +208,16 @@ export default {
               prop: "phone_number"
             },
             {
-              name:'QQ',
-              prop:'qq'
+              name: "QQ",
+              prop: "qq"
             },
             {
-              name:'微信',
-              prop:'weixin'
+              name: "微信",
+              prop: "weixin"
             },
             {
-              name:'邮箱',
-              prop:'email'
+              name: "邮箱",
+              prop: "email"
             }
           ]
         },
@@ -219,11 +251,11 @@ export default {
               btnList: [
                 {
                   name: "编辑",
-                  click:this.handleClickEdit
+                  click: this.handleClickEdit
                 },
                 {
                   name: "删除",
-                  click:this.handleClickDel
+                  click: this.handleClickDel
                 }
               ]
             }
@@ -246,11 +278,11 @@ export default {
               btnList: [
                 {
                   name: "编辑",
-                  click:this.handleClickEdit
+                  click: this.handleClickEdit
                 },
                 {
                   name: "删除",
-                  click:this.handleClickDel
+                  click: this.handleClickDel
                 }
               ]
             }
@@ -317,24 +349,63 @@ export default {
                 },
                 {
                   name: "岗位名称"
-                }
+                },
+                {
+                  name: "起薪"
+                },                
               ]
             },
             {
               name: "升学档案",
               child: [
                 {
-                  name: "起薪"
+                  name: "层次",
+                  prop: "levels0"
                 },
                 {
-                  name: "层次"
+                  name: "学校",
+                  prop: "schools0"
                 },
                 {
-                  name: "学校"
+                  name: "院系",
+                  prop: "faculty0"
                 },
                 {
-                  name: "院系"
-                }
+                  name: "专业",
+                  prop: "line_text0"
+                },
+                                {
+                  name: "层次",
+                  prop: "levels1"
+                },
+                {
+                  name: "学校",
+                  prop: "schools1"
+                },
+                {
+                  name: "院系",
+                  prop: "faculty1"
+                },
+                {
+                  name: "专业",
+                  prop: "line_text1"
+                },
+                {
+                  name: "层次",
+                  prop: "levels2"
+                },
+                {
+                  name: "学校",
+                  prop: "schools2"
+                },
+                {
+                  name: "院系",
+                  prop: "faculty2"
+                },
+                {
+                  name: "专业",
+                  prop: "line_text2"
+                }                
               ]
             },
             {
@@ -345,15 +416,15 @@ export default {
               btnList: [
                 {
                   name: "移除",
-                  click:this.handleClickDel
+                  click: this.handleClickDel
                 },
                 {
                   name: "备注",
-                  click:this.handleClickEdit
+                  click: this.handleClickEdit
                 },
                 {
-                  name:'查看',
-                  click:this.handleClickShowMsg
+                  name: "查看",
+                  click: this.handleClickShowMsg
                 }
               ]
             }
@@ -365,12 +436,12 @@ export default {
             {
               name: "入学年份",
               prop: "age_name",
-              isSwitch:false
+              isSwitch: false
             },
             {
               name: "是否开放毕业档案",
               prop: "age_or",
-              isSwitch:true,
+              isSwitch: true
             },
             {
               name: "操作",
@@ -378,12 +449,12 @@ export default {
               btnList: [
                 {
                   name: "编辑",
-                  click:this.handleClickEdit
+                  click: this.handleClickEdit
                 },
                 {
                   name: "删除",
-                  click:this.handleClickDel
-                },
+                  click: this.handleClickDel
+                }
               ]
             }
           ]
@@ -392,9 +463,9 @@ export default {
           type: "concat",
           list: [
             {
-              name:'验证图片',
-              isImage:true,
-              prop:'file'
+              name: "验证图片",
+              isImage: true,
+              prop: "file"
             },
             {
               name: "问题类型",
@@ -405,42 +476,42 @@ export default {
               prop: "name"
             },
             {
-              name:'手机',
-              prop:'phone'
+              name: "手机",
+              prop: "phone"
             },
             {
-              name:'邮箱',
-              prop:'email'
+              name: "邮箱",
+              prop: "email"
             },
             {
-              name:'入学年份',
-              prop:'year'
+              name: "入学年份",
+              prop: "year"
             },
             {
-              name:'学号',
-              prop:'number'
+              name: "学号",
+              prop: "number"
             },
             {
-              name:'专业班级',
-              prop:'classes'
+              name: "专业班级",
+              prop: "classes"
             },
             {
-              name:'详情',
-              prop:'illustrate'
+              name: "详情",
+              prop: "illustrate"
             },
             {
               name: "操作",
               child: [],
-              fixed:'right',
-              width:'150',
+              fixed: "right",
+              width: "150",
               btnList: [
                 {
                   name: "编辑",
-                  click:this.handleClickEdit
+                  click: this.handleClickEdit
                 },
                 {
                   name: "删除",
-                  click:this.handleClickDel
+                  click: this.handleClickDel
                 }
               ]
             }
@@ -456,26 +527,26 @@ export default {
             {
               name: "自定义颜色",
               prop: "color",
-              isColorPicker:true
+              isColorPicker: true
             },
             {
               name: "同步展示设置",
-              isCheck:true,
-              checkList:[
+              isCheck: true,
+              checkList: [
                 {
-                  name:'教工端',
-                  prop:"faculty",
-                  click:this.handleClickCheckRow
+                  name: "教工端",
+                  prop: "faculty",
+                  click: this.handleClickCheckRow
                 },
                 {
-                  name:'校友端',
-                  prop:'schoolfellow',
-                  click:this.handleClickCheckRow
+                  name: "校友端",
+                  prop: "schoolfellow",
+                  click: this.handleClickCheckRow
                 },
                 {
-                  name:'学生端',
-                  prop:'pupil',
-                  click:this.handleClickCheckRow
+                  name: "学生端",
+                  prop: "pupil",
+                  click: this.handleClickCheckRow
                 }
               ]
             },
@@ -485,11 +556,11 @@ export default {
               btnList: [
                 {
                   name: "编辑",
-                  click:this.handleClickEdit
+                  click: this.handleClickEdit
                 },
                 {
                   name: "删除",
-                  click:this.handleClickDel
+                  click: this.handleClickDel
                 }
               ]
             }
@@ -501,20 +572,20 @@ export default {
             {
               name: "专业名称",
               prop: "line_name",
-              isColorPicker:false,
+              isColorPicker: false
             },
             {
               name: "操作",
               child: [],
-              width:'150',
+              width: "150",
               btnList: [
                 {
                   name: "编辑",
-                  click:this.handleClickEdit
+                  click: this.handleClickEdit
                 },
                 {
                   name: "删除",
-                  click:this.handleClickDel
+                  click: this.handleClickDel
                 }
               ]
             }
@@ -534,101 +605,101 @@ export default {
               btnList: [
                 {
                   name: "编辑",
-                  click:this.handleClickEdit
+                  click: this.handleClickEdit
                 },
                 {
                   name: "删除",
-                  click:this.handleClickDel
+                  click: this.handleClickDel
                 }
               ]
             }
           ]
         },
         {
-          type:'helpType',
-          list:[
+          type: "helpType",
+          list: [
             {
-              name:'类型',
-              prop:'name'
+              name: "类型",
+              prop: "name"
             },
             {
-              name:'自定义色彩',
-              prop:'color',
-              isColorPicker:true
+              name: "自定义色彩",
+              prop: "color",
+              isColorPicker: true
             },
             {
-              name:'操作',
-              child:[],
-              btnList:[
+              name: "操作",
+              child: [],
+              btnList: [
                 {
-                  name:'编辑',
-                  click:this.handleClickEdit
+                  name: "编辑",
+                  click: this.handleClickEdit
                 },
                 {
-                  name:'删除',
-                  click:this.handleClickDel
+                  name: "删除",
+                  click: this.handleClickDel
                 }
               ]
             }
           ]
         },
         {
-          type:'helpList',
-          list:[
+          type: "helpList",
+          list: [
             {
-              name:'公告',
-              prop:'name'
+              name: "公告",
+              prop: "name"
             },
             {
-              name:'内容',
-              prop:'text'
+              name: "内容",
+              prop: "text"
             }
           ]
         },
         {
-          type:'official',
-          list:[
+          type: "official",
+          list: [
             {
-              name:'官方组织',
-              prop:'official_name'
+              name: "官方组织",
+              prop: "official_name"
             },
             {
-              name:'操作',
-              child:[],
-              btnList:[
+              name: "操作",
+              child: [],
+              btnList: [
                 {
-                  name:'编辑',
-                  click:this.handleClickEdit
+                  name: "编辑",
+                  click: this.handleClickEdit
                 },
                 {
-                  name:'删除',
-                  click:this.handleClickDel
+                  name: "删除",
+                  click: this.handleClickDel
                 }
               ]
             }
           ]
         },
         {
-          type:'group',
-          list:[
+          type: "group",
+          list: [
             {
-              name:'群组名称',
-              prop:'grouping_name'
+              name: "群组名称",
+              prop: "grouping_name"
             },
             {
-              name:'群组人数',
-              prop:'countPeople'
+              name: "群组人数",
+              prop: "countPeople"
             },
             {
-              name:'操作',
-              child:[],
-              btnList:[
+              name: "操作",
+              child: [],
+              btnList: [
                 {
-                  name:'删除',
-                  click:this.handleClickDel
+                  name: "删除",
+                  click: this.handleClickDel
                 }
               ]
-            },
+            }
           ]
         }
       ]
@@ -639,153 +710,269 @@ export default {
       return this.info;
     },
     newList() {
-      return this.info.list;
+      if(this.type == 'firend'){
+        this.info.list.map(item => {
+          if(item && item.advance_ArchivesList){
+            item.advance_ArchivesList.map( (list,index) => {
+              for(var k in list){
+                item[k+index] = list[k]
+              }
+            })
+          }
+        })
+        return this.info.list
+      }else{
+        return this.info.list;
+      }
     },
     sublist() {
-      return this.list.find(item => {
+      var obj = this.list.find(item => {
         return item.type == this.type;
-      });
+      })
+      return  obj
+    },
+    recoed() {
+      // 升学档案
+      return this.info && this.info.list;
     }
   },
   methods: {
     //单击表格一行跳转
-    handleClickRow(e){
-      let path = this.$route.path
-      if(path == '/firend/firend'){
-        this.$router.push({name:'firendDetail',params:{data:e}})
+    handleClickRow(e) {
+      let path = this.$route.path;
+      if (path == "/firend/firend") {
+        this.$router.push({ name: "firendDetail", params: { data: e } });
       }
     },
     //色彩选择--提交
-    colorPickerChange(id,$event){
-      let url = '' , data = {id:id,color:$event}
-      switch(this.$route.path){
-        case '/setting/helpType' : url = 'SchoolFellow/addMutual_Help_Type' 
-                    break;
-        case '/setting/type' : url = 'SchoolFellow/updateActivity_Color'
-                    break; 
+    colorPickerChange(id, $event) {
+      let url = "",
+        data = { id: id, color: $event };
+      switch (this.$route.path) {
+        case "/setting/helpType":
+          url = "SchoolFellow/addMutual_Help_Type";
+          break;
+        case "/setting/type":
+          url = "SchoolFellow/updateActivity_Color";
+          break;
       }
-      this.$http(url,data).then(res=>{
-        let error = res.error == 0 ? 'success' : 'error'
-        _g.toastMsg(error,res.msg)
-      })
+      this.$http(url, data).then(res => {
+        let error = res.error == 0 ? "success" : "error";
+        _g.toastMsg(error, res.msg);
+      });
     },
     //单击删除按钮 -- 删除
     handleClickDel($event) {
-      let url = "",data = {};
+      let url = "",
+        data = {};
       switch (this.type) {
         case "firend":
           (url = "SchoolFellow/delStudent_Info"), (data.id = $event.row.id);
           break;
-        case 'year':
-          (url = 'SchoolFellow/delStudent_Info_Age'),(data.id = $event.row.id)
+        case "year":
+          (url = "SchoolFellow/delStudent_Info_Age"), (data.id = $event.row.id);
           break;
-        case 'school' : 
-          (url = 'SchoolFellow/delSchool_Info_School') , (data.id = $event.row.id)
+        case "school":
+          (url = "SchoolFellow/delSchool_Info_School"),
+            (data.id = $event.row.id);
           break;
-        case 'college' : 
-          (url = 'SchoolFellow/delXueXiao'),(data.id = $event.row.id)
+        case "college":
+          (url = "SchoolFellow/delXueXiao"), (data.id = $event.row.id);
           break;
-        case 'firends' : 
-          (url = 'SchoolFellow/del_outstandin'),(data.id = $event.row.id)
+        case "firends":
+          (url = "SchoolFellow/del_outstandin"), (data.id = $event.row.id);
           break;
-        case 'helpType' : 
-          (url = 'SchoolFellow/delMutual_Help_Type'),(data.id = $event.row.id)
+        case "helpType":
+          (url = "SchoolFellow/delMutual_Help_Type"), (data.id = $event.row.id);
           break;
-        case 'actions' : 
-          (url = 'SchoolFellow/delActivity_Type'),(data.id = $event.row.id)
+        case "actions":
+          (url = "SchoolFellow/delActivity_Type"), (data.id = $event.row.id);
           break;
-        case 'major' : 
-          (url = 'SchoolFellow/delStudent_info_Line'),(data.id = $event.row.id)
+        case "major":
+          (url = "SchoolFellow/delStudent_info_Line"),
+            (data.id = $event.row.id);
           break;
-        case 'klass' : 
-          (url = 'SchoolFellow/delStudent_Info_Class'),(data.id = $event.row.id)
+        case "klass":
+          (url = "SchoolFellow/delStudent_Info_Class"),
+            (data.id = $event.row.id);
           break;
-        case 'official' : 
-          (url = 'SchoolFellow/delActivity_Official'),(data.id = $event.row.id)
+        case "official":
+          (url = "SchoolFellow/delActivity_Official"),
+            (data.id = $event.row.id);
           break;
-        case 'concat' : 
-          (url = 'SchoolFellow/delContact_College') ,(data.id = $event.row.id)
+        case "concat":
+          (url = "SchoolFellow/delContact_College"), (data.id = $event.row.id);
           break;
-        case 'group' :
-          (url = 'SchoolFellow/delTidings_Grouping') , (data.id = $event.row.id)
+        case "group":
+          (url = "SchoolFellow/delTidings_Grouping"), (data.id = $event.row.id);
           break;
       }
       this.$http(url, data).then(res => {
         let error = res.error == 0 ? "success" : "error";
         _g.toastMsg(error, res.msg);
         if (res.error == 0) {
-          this.$emit("getDelMsg",true);
+          this.$emit("getDelMsg", true);
         }
       });
     },
     //单击编辑按钮 -- 编辑
-    handleClickEdit($event){
-      if(this.$route.path == '/setting/year'){
-          this.$store.commit('saveValue',{title:'编辑',status:true,name:'addNewYear',value:$event.row,type:'addYear',action:'edit',id:$event.row.id})
+    handleClickEdit($event) {
+      if (this.$route.path == "/setting/year") {
+        this.$store.commit("saveValue", {
+          title: "编辑",
+          status: true,
+          name: "addNewYear",
+          value: $event.row,
+          type: "addYear",
+          action: "edit",
+          id: $event.row.id
+        });
       }
-      if(this.$route.path == '/pages/school' && this.type=='school'){
-         this.$store.commit('saveValue',{title:'编辑',status:true,name:'editCollege',value:$event.row,type:'editCollege',action:'edit',id:$event.row.id})
+      if (this.$route.path == "/pages/school" && this.type == "school") {
+        this.$store.commit("saveValue", {
+          title: "编辑",
+          status: true,
+          name: "editCollege",
+          value: $event.row,
+          type: "editCollege",
+          action: "edit",
+          id: $event.row.id
+        });
       }
-      if(this.$route.path == '/pages/school' && this.type == 'college'){
-        this.$store.commit('saveValue',{title:'编辑',status:true,name:'editSchool',value:$event.row,type:'editSchool',action:'edit',id:$event.row.id})
+      if (this.$route.path == "/pages/school" && this.type == "college") {
+        this.$store.commit("saveValue", {
+          title: "编辑",
+          status: true,
+          name: "editSchool",
+          value: $event.row,
+          type: "editSchool",
+          action: "edit",
+          id: $event.row.id
+        });
       }
-      if(this.type == 'firends'){
-        this.$store.commit('saveValue',{title:'编辑',status:true,name:'addRemark',value:$event.row,type:'addRemark',action:'edit',id:$event.row.id})
+      if (this.type == "firends") {
+        this.$store.commit("saveValue", {
+          title: "编辑",
+          status: true,
+          name: "addRemark",
+          value: $event.row,
+          type: "addRemark",
+          action: "edit",
+          id: $event.row.id
+        });
       }
-      if(this.type == 'helpType'){
-        this.$store.commit('saveValue',{title:'编辑',status:true,name:'addHelpType',value:$event.row,type:'addHelpType',action:'edit',id:$event.row.id})
+      if (this.type == "helpType") {
+        this.$store.commit("saveValue", {
+          title: "编辑",
+          status: true,
+          name: "addHelpType",
+          value: $event.row,
+          type: "addHelpType",
+          action: "edit",
+          id: $event.row.id
+        });
       }
-      if(this.type == 'actions'){ 
-        this.$store.commit('saveValue',{title:'编辑',status:true,name:'editActionType',value:$event.row,type:'editActionType',action:'edit',id:$event.row.id})
+      if (this.type == "actions") {
+        this.$store.commit("saveValue", {
+          title: "编辑",
+          status: true,
+          name: "editActionType",
+          value: $event.row,
+          type: "editActionType",
+          action: "edit",
+          id: $event.row.id
+        });
       }
-      if(this.type == 'major'){
-         this.$store.commit('saveValue',{title:'编辑',status:true,name:'editSettingMajor',value:$event.row,type:'editSettingMajor',action:'edit',id:$event.row.id})
+      if (this.type == "major") {
+        this.$store.commit("saveValue", {
+          title: "编辑",
+          status: true,
+          name: "editSettingMajor",
+          value: $event.row,
+          type: "editSettingMajor",
+          action: "edit",
+          id: $event.row.id
+        });
       }
-      if(this.type == 'klass'){
-        this.$store.commit('saveValue',{title:'编辑',status:true,name:'editSettingKlass',value:$event.row,type:'editSettingKlass',action:'edit',id:$event.row.id})
+      if (this.type == "klass") {
+        this.$store.commit("saveValue", {
+          title: "编辑",
+          status: true,
+          name: "editSettingKlass",
+          value: $event.row,
+          type: "editSettingKlass",
+          action: "edit",
+          id: $event.row.id
+        });
       }
-      if(this.type == 'official'){
-        this.$store.commit('saveValue',{title:'编辑',status:true,name:'editSettingOfficial',value:$event.row,type:'editSettingOfficial',action:'edit',id:$event.row.id})
+      if (this.type == "official") {
+        this.$store.commit("saveValue", {
+          title: "编辑",
+          status: true,
+          name: "editSettingOfficial",
+          value: $event.row,
+          type: "editSettingOfficial",
+          action: "edit",
+          id: $event.row.id
+        });
       }
-      if(this.type == 'concat'){
-        this.$store.commit('saveValue',{title:'编辑',status:true,name:'editSettingConcat',value:$event.row,type:'editSettingConcat',action:'edit',id:$event.row.id})
+      if (this.type == "concat") {
+        this.$store.commit("saveValue", {
+          title: "编辑",
+          status: true,
+          name: "editSettingConcat",
+          value: $event.row,
+          type: "editSettingConcat",
+          action: "edit",
+          id: $event.row.id
+        });
       }
     },
     //单击查看按钮
-    handleClickShowMsg($event){
-      this.$alert($event.row.student_remarks ? $event.row.student_remarks : '他还没有备注哦,快点添加一条吧','备注',{
-        confirmButtonText:'确定',
-      })
+    handleClickShowMsg($event) {
+      this.$alert(
+        $event.row.student_remarks
+          ? $event.row.student_remarks
+          : "他还没有备注哦,快点添加一条吧",
+        "备注",
+        {
+          confirmButtonText: "确定"
+        }
+      );
     },
-    
+
     //单击改变状态 --是否开放档案
-    handleClickChangeState($event){
-      let url = '' , data = {}
-      if(this.type == 'year'){
-        url = 'SchoolFellow/XGStudent_Info_Age'
-        data = $event.row
+    handleClickChangeState($event) {
+      let url = "",
+        data = {};
+      if (this.type == "year") {
+        url = "SchoolFellow/XGStudent_Info_Age";
+        data = $event.row;
       }
 
-      this.$http(url,data).then(res=>{
-        let error = res.error == 0 ? 'success' : 'error'
-        _g.toastMsg(error,res.msg)
-      })
+      this.$http(url, data).then(res => {
+        let error = res.error == 0 ? "success" : "error";
+        _g.toastMsg(error, res.msg);
+      });
     },
 
     //复选框 -- 活动类型--设置同步展示
-    handleClickCheckRow($event){
-      let url = ''
-      switch (this.$route.path){
-        case '/setting/type' : url = 'SchoolFellow/XGActivity_Type'
-                              break; 
+    handleClickCheckRow($event) {
+      let url = "";
+      switch (this.$route.path) {
+        case "/setting/type":
+          url = "SchoolFellow/XGActivity_Type";
+          break;
       }
-      this.$http(url,$event.row).then(res=>{
-        let error = res.error == 0 ? 'success' : 'error'
-        _g.toastMsg(error,res.msg)
-      })
+      this.$http(url, $event.row).then(res => {
+        let error = res.error == 0 ? "success" : "error";
+        _g.toastMsg(error, res.msg);
+      });
     }
   },
-  created() {}
+  created() {
+
+  }
 };
 </script>
 
@@ -795,8 +982,8 @@ export default {
     max-width: calc(1200px - 140px);
   }
 }
-img[alt="avatar"]{
-  width:60px;
-  height:60px;
+img[alt="avatar"] {
+  width: 60px;
+  height: 60px;
 }
 </style>

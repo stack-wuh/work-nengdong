@@ -1,6 +1,6 @@
 <template>
   <section class="wrapper">
-    <search @propKey="propKey" type="7" />
+    <search @confirm="propKey" @propKey="propKey" type="7" />
     <e-table @getDelMsg="getDelMsg" :info="info" type="helpType" />
     <bottom :total='total' type="pagination" />
   </section>

@@ -27,8 +27,7 @@
             <el-input v-model="myForm.weixin" placeholder="请编辑微信" class="my-input"></el-input>
           </el-form-item>
           <el-form-item label="工作/升学所在地" prop="site">
-            <el-cascader change-on-select :options="citys"></el-cascader>
-            <!-- <el-input v-model="myForm.site" placeholder="请编辑工作/升学所在地" class="my-input"></el-input> -->
+            <el-cascader v-model="myForm.site" change-on-select :options="citys"></el-cascader>
           </el-form-item>
           <el-form-item label="详细地址" prop="address">
             <el-input v-model="myForm.address" placeholder="请编辑详细地址" class="my-input"></el-input>
@@ -50,7 +49,7 @@
             <el-input v-model="myForm.post_name" placeholder="请编辑岗位名称" class="my-input"></el-input>
           </el-form-item>
           <el-form-item label="起薪(选填)">
-            <el-input v-model="myForm.money" placeholder="请编辑起薪" class="my-input"></el-input>
+            <el-input v-model.number="myForm.money" placeholder="请编辑起薪" class="my-input"></el-input>
           </el-form-item>
           <span class="title">升学档案</span> 
           <div v-for="(item,index) in myForm.data" :key="index">
@@ -152,7 +151,7 @@ const rules = {
     {
       required:true,
       message:'请编辑工作/升学所在地',
-      trigger:'blur'
+      trigger:['blur','change']
     }
   ],
   address:[
