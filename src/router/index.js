@@ -77,7 +77,7 @@ export default new Router({
           component:FirendDetail
         },
         {
-          path:'/firendadd',
+          path:'/firendadd/:type',
           name:'firendAdd',
           component:FirendAdd,
         }

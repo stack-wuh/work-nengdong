@@ -72,7 +72,7 @@
           <span class="title">升学档案</span> 
           <div v-for="(item,index) in myForm.data" :key="index">
             <el-form-item label="层次">
-              <el-select v-model="item.level" placeholder="请选择层次">
+              <el-select v-model="item.levels" placeholder="请选择层次">
                 <el-option v-for="(list,lindex) in stuLevel" :key="lindex" :value="list.level_name" :label="list.level_name"></el-option>
               </el-select>
             </el-form-item>
@@ -85,7 +85,7 @@
             <el-form-item label="专业">
               <template>
                 <div class="flex">
-                  <el-input v-model="item.lines" placeholder="请编辑专业" class="my-input"></el-input>
+                  <el-input v-model="item.line_text" placeholder="请编辑专业" class="my-input"></el-input>
                   <el-button @click="handleClickAddItem" v-show="index == 0" class="my-button" size="mini" type="primary">添加</el-button>
                 </div>
               </template>
@@ -136,11 +136,11 @@ const rules = {
       message:'请编辑手机号',
       trigger:'blur'
     },
-    {
-      type:'number',
-      message:'请注意手机号格式',
-      trigger:'blur'
-    }
+    // {
+    //   type:'number',
+    //   message:'请注意手机号格式',
+    //   trigger:'blur'
+    // }
   ],
   weixin:[
     {
@@ -155,11 +155,11 @@ const rules = {
       message:'请编辑qq',
       trigger:'blur'
     },
-    {
-      type:'number',
-      message:'请输入正确的QQ号码',
-      trigger:'blur'
-    }
+    // {
+    //   type:'number',
+    //   message:'请输入正确的QQ号码',
+    //   trigger:'blur'
+    // }
   ],
   email:[
     {
@@ -264,10 +264,10 @@ export default {
         money: "",
         data: [
           {
-            level: "",
+            levels: "",
             schools: "",
             faculty: "",
-            lines: ""
+            line_text: ""
           }
         ],
         site: []
@@ -337,7 +337,27 @@ export default {
     },
   },
   created(){
-    console.log(this.$route)
+    var data = this.$route.params.data
+    console.log(data)
+    if(data){
+      if(data.row){
+        for(var r in data.row){
+          for(var ff in this.myForm){
+            if(r == ff){
+              this.myForm[ff] = data.row[r]
+              this.myForm.site = [data.row.site_provinces,data.row.site_cities,data.row.site_areas]
+            }
+          }
+          this.myForm.data = data.row.advance_ArchivesList
+          this.myForm.id = data.row.id
+          this.myForm.data.map(item => {
+            item.archivesId = item.id
+          })
+        }
+      }
+    }else{
+      console.warn('data is empty')
+    }
     this.getStudentProperty()
     this.getStudentWay()
     this.getStudentClass()

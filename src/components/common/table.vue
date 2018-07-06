@@ -60,6 +60,10 @@ export default {
                   prop: "school_age"
                 },
                 {
+                  name:'学院',
+                  prop:'school'
+                },
+                {
                   name: "学号",
                   prop: "number"
                 },
@@ -175,14 +179,16 @@ export default {
               child: [],
               btnList: [
                 {
-                  name: "编辑"
+                  name: "编辑",
+                  click:this.handleClickEdit
                 },
                 {
                   name: "删除",
                   click: this.handleClickDel
                 },
                 {
-                  name: "重置密码"
+                  name: "重置密码",
+                  click:this.handleClickResetPwd
                 }
               ]
             }
@@ -303,6 +309,10 @@ export default {
                 {
                   name: "入学年份",
                   prop: "school_age"
+                },
+                {
+                  name:'学院',
+                  prop:'school'
                 },
                 {
                   name: "学号",
@@ -712,6 +722,7 @@ export default {
   },
   watch:{
     newList:function(){
+        (this.type == 'firend' || this.type == 'firends') &&
         this.info.list.map(item => {
           if (item && item.advance_ArchivesList) {
             item.advance_ArchivesList.map((list, index) => {
@@ -755,6 +766,21 @@ export default {
     }
   },
   methods: {
+    handleClickResetPwd($event){  // 校友模块 -- 单击重置密码
+          this.$confirm('是否执行重置密码操作?','重置密码',{
+            confirmButtonText:'确定',
+            cancelButtonText:'取消',
+            type:'warning'
+          }).then(()=>{
+              this.$http('/SchoolFellow/resetPassword',{id:$event.row.id})
+                .then(res=>{
+                  let error = res.error == 0 ? 'success' : 'error'
+                  _g.toastMsg(error,res.msg)                
+                })
+          }).catch(() =>{
+            _g.toastMsg('warning','操作已取消')
+          })
+    },
     //单击表格一行跳转
     handleClickRow(e) {
       let path = this.$route.path;
@@ -944,6 +970,8 @@ export default {
           action: "edit",
           id: $event.row.id
         });
+      }if(this.type == 'firend' || this.type == 'firends'){
+        this.$router.push({name:'firendAdd',params:{type:1,data:$event}})
       }
     },
     //单击查看按钮

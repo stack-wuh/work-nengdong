@@ -240,10 +240,10 @@ export default {
           this.$store.commit('changeMessageTree',this.tree)
         }else if(path == '/firend/firend'){
           params.status = false
-          this.$router.push({path:'/firendadd',query:{type:1}})
+          this.$router.push({name:'firendAdd',params:{type:1}})
         }else if(path == '/firend/pages'){
           params.status = false
-          this.$router.push({path:'/firendadd',query:{type:2}})
+          this.$router.push({name:'firendAdd',params:{type:2}})
         }
         this.$store.commit('changeDialogStatus',params)
       }
