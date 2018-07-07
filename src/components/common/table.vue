@@ -783,9 +783,9 @@ export default {
     },
     //单击表格一行跳转
     handleClickRow(e) {
-      let path = this.$route.path;
+      let path = this.$route.path 
       if (path == "/firend/firend") {
-        this.$router.push({ name: "firendDetail", params: { data: e } });
+        this.$router.push({ name: "firendDetail", params: { id:e.id} });
       }
     },
     //色彩选择--提交

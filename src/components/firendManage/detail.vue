@@ -7,7 +7,7 @@
         <span class="btn active">毕业档案</span>
         <span class="btn">在校档案</span>
         <span class="empty"></span>
-        <span @click="handleClickRemove" class="info" v-show="info.outstandin == true">移出杰出校友名录</span>
+        <span @click="handleClickAdd" class="info">添加至杰出校友名录</span>
         <span @click="export2excel" class="success">导出个人信息</span>
         <span @click="handleClickEdit" class="default">编辑</span>
         <span @click="handleClickDel" class="danger">删除</span>
@@ -33,28 +33,28 @@
             <span>邮箱：<span>{{info.email}}</span></span>
             <span>QQ：<span>{{info.qq}}</span></span>
             <span>微信：<span>{{info.weixin}}</span></span>
-            <span>所在地：<span>{{info.site_areas}}{{info.site_cities}}{{info.site_provinces}}</span></span>
+            <span>所在地：<span>{{info.site_provinces}}{{info.site_cities}}{{info.site_areas}}</span></span>
             <span>具体地址：<span>{{info.address}}</span></span>
           </div>
         </li>
         <li>
           <h3>就业单位</h3>
           <div>
-            <span>用人单位名称: <span>{{info.unit_name}}</span></span>
-            <span>单位性质: <span>{{info.unit_property}}</span></span>
-            <span>单位所在行业: <span>{{info.unit_way}}</span></span>
-            <span>工作职位类别: <span>{{info.place_class}}</span></span>
-            <span>岗位名称: <span>{{info.post_name}}</span></span>
-            <span>起薪: <span>{{info.money}}</span></span>
+            <span>用人单位名称: <span>{{info.employment_archives && info.employment_archives.unit_name}}</span></span>
+            <span>单位性质: <span>{{info.employment_archives && info.employment_archives.unit_property}}</span></span>
+            <span>单位所在行业: <span>{{info.employment_archives && info.employment_archives.unit_way}}</span></span>
+            <span>工作职位类别: <span>{{info.employment_archives && info.employment_archives.place_class}}</span></span>
+            <span>岗位名称: <span>{{info.employment_archives && info.employment_archives.post_name}}</span></span>
+            <span>起薪: <span>{{info.employment_archives && info.employment_archives.money}}</span></span>
           </div>
         </li>
         <li>
           <h3>升学档案</h3>
-          <div>
-            <span>层次: <span>{{advance.levels}}</span></span>
-            <span>学校: <span>{{advance.schools}}</span></span>
-            <span>院系: <span>{{advance.faculty}}</span></span>
-            <span>专业: <span>{{advance.line_text}}</span></span>
+          <div v-for="(item,index) in info.advance_ArchivesList">
+            <span>层次: <span>{{item.levels}}</span></span>
+            <span>学校: <span>{{item.schools}}</span></span>
+            <span>院系: <span>{{item.faculty}}</span></span>
+            <span>专业: <span>{{item.line_text}}</span></span>
           </div>
         </li>
       </ul>
@@ -79,39 +79,26 @@
     },
     methods:{
       fetchData(){
-        this.$http('SchoolFellow/showStudent_Info',{id:this.$route.params.data.id}).then(res=>{
+        this.$http('SchoolFellow/showStudent_Info',{id:this.$route.params.id}).then(res=>{
           this.info = res.data[0]
           this.advance = res.data[0].advance_archives
         })  
       },
       //单击导出个人信息
       export2excel(){
-        this.info = Object.assign(this.info,this.info.advance_archives)
-        let data = []
-        data.push(this.info)
-        var option = {}
-        option.fileName = '导出个人信息'
-        option.datas = [
-          {
-            sheetData:data,
-            sheetName:'当前个人信息',
-            sheetFilter:['name','school_age','number','no','classes','phone_number','email','unit_name','unit_property','unit_way','place_class','post_name','money','levels','schools','faculty','line_text'],
-            sheetHeader:['姓名','入学年份','学号','身份证号','专业班级','手机号','邮箱','用人单位名称','单位性质','所在行业','职位类别','职位名称','起薪','层次','学校','院系','专业']
-          },
-        ]
-        var toExcel = new json2Excel(option)
-        toExcel.saveExcel() 
+        location = rootPath + '/SingleStuExcel?id=' + this.info.id
+        console.log(location,rootPath)
       },
-      //单击加入/移除杰出校友
-      handleClickRemove(){
-        this.$http('SchoolFellow/del_outstandin',{id:this.info.id}).then(res=>{
+      //单击加入杰出校友
+      handleClickAdd(){
+        this.$http('/SchoolFellow/updateOutStanding',{id:this.info.id}).then(res=>{
           let error = res.error == 0 ? 'success' : 'error'
           _g.toastMsg(error,res.msg)
         })
       },
       //单击编辑
       handleClickEdit(){
-
+        this.$router.push({name:'firendAdd',params:{type:1,data:this.info}})
       },
       //单击删除
       handleClickDel(){

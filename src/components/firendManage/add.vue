@@ -354,6 +354,27 @@ export default {
             item.archivesId = item.id
           })
         }
+      }else {
+        for(var r in data){
+          for(var ff in this.myForm){
+            if(r == ff){
+              this.myForm[ff] = data[r]
+              this.myForm.site = [data.site_provinces,data.site_cities,data.site_areas]
+            }
+          }
+          this.myForm.data = data.advance_ArchivesList
+          this.myForm.id = data.id
+          this.myForm.data.map(item => {
+            item.archivesId = item.id
+          })
+          this.myForm.unit_name = data.employment_archives.unit_name
+          this.myForm.place_class = data.employment_archives.place_class
+          this.myForm.money = data.employment_archives.money
+          this.myForm.post_name = data.employment_archives.post_name
+          this.myForm.unit_property = data.employment_archives.unit_property
+          this.myForm.unit_way = data.employment_archives.unit_way
+
+        }
       }
     }else{
       console.warn('data is empty')
