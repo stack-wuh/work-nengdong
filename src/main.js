@@ -27,14 +27,11 @@ window.store = store
 window.$bus = new Vue()
 
 router.beforeEach((to,from,next)=>{
-  let userId = sessionStorage.getItem('userId')
-
-  if(to.name === 'login'){
+  const userId = sessionStorage.getItem('userId')
+  if(to.name != 'login'){
     if(userId){
-      router.push({name:'firendIndex'})
-    }
-  }else{
-    if(userId == undefined || userId == null){
+      next()
+    }else{
       router.push({name:'login'})
     }
   }
@@ -50,8 +47,8 @@ axios.interceptors.response.use((config)=>{
   return config
 })
 
-window.rootPath = '/adminapi'
-// window.rootPath = ''
+// window.rootPath = '/adminapi'
+window.rootPath = ''
 
 /* eslint-disable no-new */
 new Vue({
