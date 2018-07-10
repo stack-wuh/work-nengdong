@@ -4,10 +4,10 @@
         <header class="header">
           <el-dropdown @command="changeType">
             <span class="el-dropdown-link">
-              {{data.collect_name ? '收藏 ': '全部'}} <i class="el-icon-arrow-down el-icon--right"></i>
+              {{data.collect_name == 1 ? '收藏 ': '全部'}} <i class="el-icon-arrow-down el-icon--right"></i>
             </span>
             <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item >全部</el-dropdown-item>
+              <el-dropdown-item command=''>全部</el-dropdown-item>
               <el-dropdown-item command="1">收藏</el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
@@ -52,15 +52,14 @@ export default {
         pageNo: 1,
         student_info_id: sessionStorage.getItem("userId"),
         i: 1,
-        collect_name: ""
+        collect_name:''
       },
-      // info: [],
       info:{
         type:'message',
         list:[]
       },
       list:[],
-      total: 0
+      total: 0,
     };
   },
   methods: {
@@ -72,7 +71,7 @@ export default {
       e && this.fetchData()
     },
     changeType(e) {
-      this.data.collect_name = e;
+      this.data.collect_name = e
       this.fetchData();
     },
     changeReciver(e) {

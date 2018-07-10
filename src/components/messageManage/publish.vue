@@ -157,11 +157,10 @@ export default {
         title: "选择发送对象",
         type: "chooseReciver"
       });
-      // this.$store.commit('changeMessageTree')
     },
-    getReciver() {
-      this.$http("SchoolFellow/getStudent_Info_Tidings");
-    },
+    // getReciver() {
+    //   this.$http("SchoolFellow/getStudent_Info_Tidings");
+    // },
     submit() {
       this.form.receive_id = [];
       this.chooseArr.map(item => {

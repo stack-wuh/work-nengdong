@@ -56,7 +56,8 @@ const mutations = {
             clist.student_info.map(slist=>{
               let stu = {}
               stu.label = slist.name
-              stu.number = slist.number
+              // stu.number = slist.number
+              stu.number = slist.id
               obj2.children.push(stu)
             })
           })
@@ -70,7 +71,8 @@ const mutations = {
       item.teachar.map(list=>{
         let obj1 = {}
         obj1.label = list.teacher_name
-        obj1.number = list.teacher_number
+        // obj1.number = list.teacher_number
+        obj1.number = list.id
         obj.children.push(obj1)
       })
       teacher.push(obj)
