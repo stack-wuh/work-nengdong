@@ -170,7 +170,7 @@ export default {
     },
     //获取入学年份
     getYears(){
-      this.$http('/SchoolFellow/getYear').then(res=>{
+      this.$http('SchoolFellow/getYear').then(res=>{
         this.checkList.map(item=>{
           if(item.prop == 'school_age'){
             item.list = res.data.map(list=>{

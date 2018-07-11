@@ -47,8 +47,10 @@ axios.interceptors.response.use((config)=>{
   return config
 })
 
-// window.rootPath = '/adminapi'
-window.rootPath = ''
+//开发地址
+window.rootPath = '/adminapi'
+//发布地址
+// window.rootPath = ''
 
 /* eslint-disable no-new */
 new Vue({
