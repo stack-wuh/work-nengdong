@@ -7,7 +7,7 @@
            <h3>{{info.title}}</h3>
            <p>{{info.details}}</p>
            <p>
-             <img src="../../../static/img/logo.png" alt="avatar">
+             <img :src="info.image || '../../../static/img/logo.png'" alt="avatar">
            </p>
            <article v-html="info.proclaim"></article>
         </div>
@@ -54,5 +54,9 @@
     padding:10px;
     overflow: hidden;
   }
+}
+img[alt="avatar"]{
+  width:120px;
+  height:120px;
 }
 </style>

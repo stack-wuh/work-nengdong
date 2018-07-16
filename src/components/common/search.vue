@@ -229,8 +229,25 @@ export default {
           params.type = 'addPagesCollege'
         }else if(path == '/setting/major'){
           params.type = 'addSettingMajor'
+          let arr = []
+          this.$http('/SchoolFellow/getAgeList').then(res=>{
+            res.data && res.data.map(item=>{
+              var obj = {name:item.age_name,value:item.id}
+              arr.push(obj)
+            })
+            this.$store.commit('addMajorYearList',{year:arr})
+          })
         }else if(path == '/setting/klass'){
           params.type = 'addSettingKlass'
+          this.$http('/SchoolFellow/getStudent_Info_Line').then(res=>{
+          let arr = []
+           res && res.map(item=>{
+              var obj = {name:item.line_name,value:item.id}
+              arr.push(obj)
+            })
+            console.log(arr)
+            this.$store.commit('addKlassList',{list:arr})
+          })
         }else if(path == '/setting/official'){
           params.type = 'addSettingOfficial'
         }else if(path == '/setting/concat'){

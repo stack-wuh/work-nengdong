@@ -122,7 +122,8 @@ export default {
       error: 1,
       uploadUrl: rootPath + "addImages",
       imgUrl: "",
-      itemValue: ""
+      itemValue: "",
+      yearList:[], // 学年列表
     };
   },
   computed: {
@@ -422,10 +423,7 @@ export default {
                   this.hideDialog();
                 }
               });
-            } else if (
-              type == "addSettingMajor" ||
-              type == "editSettingMajor"
-            ) {
+            } else if (type == "addSettingMajor" || type == "editSettingMajor") {
               this.$http("SchoolFellow/addStudent_info_Line", data).then(
                 res => {
                   let error = res.error == 0 ? "success" : "error";
@@ -529,7 +527,7 @@ export default {
           this.$refs.myUpload.submit();
         }
       }
-    }
+    },
   },
   created() {}
 };

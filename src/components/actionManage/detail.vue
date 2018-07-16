@@ -76,7 +76,7 @@ const json2Excel = require('js-export-excel')
         e && this.fetchData()
       },
       fetchData(){
-        this.$http('SchoolFellow/GWActivity',{id:this.$route.params.id}).then(res=>{
+        this.$http('SchoolFellow/GWActivity',{id:this.$route.params.id,student_info_id:sessionStorage.getItem('userId')}).then(res=>{
         this.list = res.data.find(item=>{
               return item.id == this.$route.params.id
           })

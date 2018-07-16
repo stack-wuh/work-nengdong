@@ -315,8 +315,8 @@ export default {
       this.myForm.data.push(JSON.parse(JSON.stringify(this.temp)));
     },
     handleSubmit(){
-      const query = this.$route.query
-      var url = query.type == 1 ? '/SchoolFellow/addAlumnus_Info' : '/SchoolFellow/addOutAlumnus_Info'
+      const params = this.$route.params
+      var url = params.type == 1 ? '/SchoolFellow/addAlumnus_Info' : '/SchoolFellow/addOutAlumnus_Info'
       this.$refs.myForm.validate(valid=>{
         if(valid){
           var data = JSON.parse(JSON.stringify(this.myForm))

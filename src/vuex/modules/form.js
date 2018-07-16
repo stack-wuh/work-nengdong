@@ -513,10 +513,24 @@ const state = {
             trigger:'blur'
           }
         ]
+      },
+      {
+        name:'学年',
+        prop:'student_info_age_id',
+        isSelect:true,
+        rules:[
+          {
+            required:true,
+            message:'请选择学年',
+            trigger:['blur','change']
+          }
+        ],
+        list:[]
       }
     ],
     validForm:{
       line_name:'',
+      student_info_age_id:'',
       id:''
     }
   },
@@ -534,10 +548,24 @@ const state = {
             trigger:'blur'
           }
         ]
-      }
+      },
+      {
+        name:'学年',
+        prop:'student_info_age_id',
+        isSelect:true,
+        list:[],
+        rules:[
+          {
+            required:true,
+            message:'请选择学年',
+            trigger:['blur','change']
+          }
+        ]
+      }      
     ],
     validForm:{
       line_name:'',
+      student_info_age_id:'',
       id:''
     }
   },
@@ -555,10 +583,24 @@ const state = {
             trigger:'blur'
           }
         ]
+      },
+      {
+        name:'专业',
+        prop:'student_info_line_id',
+        isSelect:true,
+        list:[],
+        rules:[
+          {
+            required:true,
+            message:'请选择专业',
+            trigger:['blur','change']
+          }
+        ]
       }
     ],
     validForm:{
-      class_name:''
+      class_name:'',
+      student_info_line_id:''
     }
   },
   //设置--编辑班级设置
@@ -575,10 +617,24 @@ const state = {
             trigger:'blur'
           }
         ]
-      }
+      },
+      {
+        name:'专业',
+        prop:'student_info_line_id',
+        isSelect:true,
+        list:[],
+        rules:[
+          {
+            required:true,
+            message:'请选择专业',
+            trigger:['blur','change']
+          }
+        ]
+      }      
     ],
     validForm:{
       class_name:'',
+      student_info_line_id:'',
       id:''
     } 
   },

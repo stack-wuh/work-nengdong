@@ -928,6 +928,13 @@ export default {
         });
       }
       if (this.type == "major") {
+          let arr = []
+          this.$http('/SchoolFellow/getAgeList').then(res=>{
+            res.data && res.data.map(item=>{
+              var obj = {name:item.age_name,value:item.id}
+              arr.push(obj)
+            })
+          })
         this.$store.commit("saveValue", {
           title: "编辑",
           status: true,
@@ -935,10 +942,19 @@ export default {
           value: $event.row,
           type: "editSettingMajor",
           action: "edit",
-          id: $event.row.id
+          id: $event.row.id,
+          list:arr
         });
+
       }
       if (this.type == "klass") {
+          let arr = []
+          this.$http('/SchoolFellow/getStudent_Info_Line').then(res=>{
+            res && res.map(item=>{
+              var obj = {name:item.line_name,value:item.id}
+              arr.push(obj)
+            })
+          })        
         this.$store.commit("saveValue", {
           title: "编辑",
           status: true,
@@ -946,6 +962,7 @@ export default {
           value: $event.row,
           type: "editSettingKlass",
           action: "edit",
+          list:arr,
           id: $event.row.id
         });
       }

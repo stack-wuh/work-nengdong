@@ -55,7 +55,7 @@
         })
       },
       fetchData(){
-        this.$http('SchoolFellow/GWAlumni_Pages',{id:this.$route.params.id}).then(res=>{
+        this.$http('SchoolFellow/GWAlumni_Pages',{id:this.$route.params.id,student_info_id:sessionStorage.getItem('userId')}).then(res=>{
           this.page.list = res.data[0]
           this.page.list.address = this.page.list.alumni_pages_album.address.split(',')
         })

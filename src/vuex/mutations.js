@@ -28,6 +28,8 @@ const mutations = {
     state.form[status.name].validForm = status.value
     state.action = status.action
     state.id = status.id
+    state.form[status.name].info[1].list = status.list
+    console.log(state.form[status.name])
   },
 
   //dialog框提交成功之后，页面刷新
@@ -147,6 +149,16 @@ const mutations = {
     }else{
       this.state.isShowChooseBtn = !this.state.isShowChooseBtn
     }
+  },
+
+  //编辑/添加系统设置 -- 专业 -- 增加学年下拉选项 
+  addMajorYearList(state,status){
+    state.form.addSettingMajor.info[1].list = status.year
+  },
+  //编辑/添加班级设置 -- 班级 -- 增加专业下拉选项
+  addKlassList(state,status){
+    state.form.addSettingKlass.info[1].list = status.list
+    console.log(status)
   }
 }
 
