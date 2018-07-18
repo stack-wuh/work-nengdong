@@ -37,16 +37,16 @@
         <p class="title danger">未收到( {{no_reciver_sum}} )</p>
         <p class="list-item" v-for="(item,index) in  no_reciver" :key="index">
           <span>{{index+1}}</span>
-          <span>asdasd</span>
+          <span>{{item && item.name}}</span>
           <span>工号/学号：</span>
-          <span>{{item.receive_id}}</span>
+          <span>{{item && item.number}}</span>
         </p>
         <p class="title">收到 ({{yes_reciver_sum}})</p>
         <p class="list-item" v-for="(item,index) in yes_reciver" :key="index">
-          <span>1</span>
-          <span>维多利亚</span>
+          <span>{{index+1}}</span>
+          <span>{{item && item.name}}</span>
           <span>工号/学号: </span>
-          <span>{{item.receive_id}}</span>
+          <span>{{item && item.number}}</span>
         </p>
       </section>
     </section>
@@ -94,8 +94,8 @@ export default {
         this.info.isCollect = this.info.collect_name ? true : false
         this.no_reciver_sum = res.noSum
         this.yes_reciver_sum = res.yesSum
-        this.no_reciver = res.no
-        this.yes_reciver = res.yes
+        this.no_reciver = res.no && res.no[0].studentList
+        this.yes_reciver = res.yes && res.yes[0].studentList
       })
     }
   },

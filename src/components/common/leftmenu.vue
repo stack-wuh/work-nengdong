@@ -2,7 +2,7 @@
   <section class="wrapper">
     <h3>校友端<span>管理平台</span></h3>
     <ul>
-      <li v-on:mouseover="mouseOver(item,$event)" v-on:mouseout="mouseOut(item,$event)" @click.prevent.stop="handleClick(item,$event)" :class="{'active' : item.active || item.isActive}" v-for="(item,index) in menuList" :key="index">
+      <li v-on:mouseover="mouseOver(item,$event)" v-on:mouseout="mouseOut(item,$event)" @click.prevent.stop="handleClick(item,$event)" :class="{'active' : item.active || item.isActive,'active':item.routers.indexOf($route.name)!==-1}" v-for="(item,index) in menuList" :key="index">
         <img class="nav-icon" :src="item.navIcon" alt="nav-icon">
         <span>{{item.name}}</span>
         <i :class="[item.active ? 'my-icon-moreunfold' : 'my-icon-more',item.subList.length>0 ? 'full':'empty']"></i>
@@ -185,20 +185,6 @@ const iconRootPath = './static'
       format(){
         return this.list
       },
-      routeName(){
-        return this.$route.name
-      }
-    },
-    watch:{
-      routeName(){
-        this.menuList.map(item => {
-          if(item.routers && item.routers.indexOf(this.routeName) !== -1){
-            item.isActive = true
-          }else{
-            item.isActive = false
-          }
-        })
-      },
     },
     methods:{ 
       mouseOver(data,$event){
@@ -210,6 +196,7 @@ const iconRootPath = './static'
         this.list = []
       },
       handleClick(data,$event){
+        data.isActive = true
         this.menuList.map(item=>{
           if(item.name == data.name){
             this.$router.push(item.urlPath)
