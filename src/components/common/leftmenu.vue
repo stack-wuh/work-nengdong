@@ -6,7 +6,6 @@
         <img class="nav-icon" :src="item.navIcon" alt="nav-icon">
         <span>{{item.name}}</span>
         <i :class="[item.active ? 'my-icon-moreunfold' : 'my-icon-more',item.subList.length>0 ? 'full':'empty']"></i>
-        
         <transition name="fade">
           <subnav  v-show="item.active && format.length>0" :class="[list.length > 6 ? 'sub-list-other sub-list' : 'sub-list']" :subList="format" />
         </transition>
@@ -33,7 +32,8 @@ const iconRootPath = './static'
             tips:0,
             urlPath:'/message',
             active:false,
-            mouse:false
+            mouse:false,
+            routers:['message','messageDetail','messagePublish','messageGroup']
           },  
           {
             navIcon:iconRootPath + '/img/index-list2.png',
@@ -43,6 +43,7 @@ const iconRootPath = './static'
             urlPath:'/firend/firend',
             active:false,
             mouse:false,
+            routers:['firendIndex','firendAdd','firendDetail',]
           },              
           {
             navIcon:iconRootPath + '/img/index-list3.png',
@@ -60,7 +61,8 @@ const iconRootPath = './static'
             ],
             tips:0,
             active:false,
-            mouse:false
+            mouse:false,
+            routers:['action','actionList','actionItem','actionDetail'],
           },              
           {
             navIcon:iconRootPath + '/img/index-list4.png',
@@ -86,7 +88,8 @@ const iconRootPath = './static'
               }
             ],
             tips:0,
-            urlPath:'/pages'
+            urlPath:'/pages',
+            routers:['pages','pagesNew','pagesDetail','pagesSchool']
           },              
           {
             navIcon:iconRootPath + '/img/index-list7.png',
@@ -104,7 +107,8 @@ const iconRootPath = './static'
               }
             ],
             tips:0,
-            urlPath:'/concat'
+            urlPath:'/concat',
+            routers:['concat','concatAction','concatDetail']
           },             
           {
             navIcon:iconRootPath + '/img/index-list5.png',
@@ -113,7 +117,8 @@ const iconRootPath = './static'
             tips:0,
             urlPath:'/school',
             active:false,
-            mouse:false
+            mouse:false,
+            routers:['school']
           },            
           {
             navIcon:iconRootPath + '/img/index-list6.png',
@@ -122,7 +127,8 @@ const iconRootPath = './static'
             tips:0,
             urlPath:'/donate',
             active:false,
-            mouse:false
+            mouse:false,
+            routers:['donate']
           },            
           {
             navIcon:iconRootPath + '/img/index-list8.png',
@@ -168,7 +174,8 @@ const iconRootPath = './static'
             tips:0,
             urlPath:'/setting',
             active:false,
-            mouse:false
+            mouse:false,
+            routers:['year','major','klass','type','official','settingConcat','settingFirends','helpList','helpType']
           },            
         ],
         list:[]
@@ -177,7 +184,21 @@ const iconRootPath = './static'
     computed:{
       format(){
         return this.list
+      },
+      routeName(){
+        return this.$route.name
       }
+    },
+    watch:{
+      routeName(){
+        this.menuList.map(item => {
+          if(item.routers && item.routers.indexOf(this.routeName) !== -1){
+            item.isActive = true
+          }else{
+            item.isActive = false
+          }
+        })
+      },
     },
     methods:{ 
       mouseOver(data,$event){
@@ -189,12 +210,9 @@ const iconRootPath = './static'
         this.list = []
       },
       handleClick(data,$event){
-        data.isActive = true
         this.menuList.map(item=>{
           if(item.name == data.name){
             this.$router.push(item.urlPath)
-          }else if(item.name !== data.name){
-            item.isActive = false
           }
         })
       },

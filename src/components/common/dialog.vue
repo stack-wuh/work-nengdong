@@ -48,7 +48,7 @@
           </el-form-item>
         </el-form>
         <section class="wrapper" v-if="form.type == 'uploadFile'">
-          {{uploadFileUrl}} -- '导入信息'
+          <!-- {{uploadFileUrl}} -- '导入信息' -->
             <el-upload ref="myUpload" class="upload-demo" name="file" :action="uploadFileUrl" :auto-upload="false" :show-file-list="true" :on-success="handelUpload" >
               <el-button>选择文件</el-button>
             </el-upload>
@@ -67,7 +67,6 @@ export default {
   props: ["title", "isShowDialog", "id"],
   data() {
     return {
-      // uploadFileUrl:window.rootPath + '/SchoolFellow/addImages',   // 文件上传
       updatePwd: {
         info: [
           {

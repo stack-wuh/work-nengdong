@@ -135,7 +135,10 @@ export default {
         justify-content: flex-start;
         min-height:80px;
         img{
-          margin-right:10px;
+          width:80px;
+          height:80px;
+          margin:10px 10px 10px 0;
+
         }
       }
       .detail{
